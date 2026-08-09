@@ -1,0 +1,4 @@
+interface:
+  display_name: "短视频剪辑"
+  short_description: "把已授权素材转为带字幕、合规检查和发布清单的短视频交付包"
+  default_prompt: "Use $short-form-video-editing to turn approved assets into a compliant short-form video delivery package."

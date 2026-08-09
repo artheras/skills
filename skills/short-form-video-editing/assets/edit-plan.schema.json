@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ARIA short-form edit plan",
+  "type": "object",
+  "required": ["project_id", "platform", "beats"],
+  "properties": {
+    "project_id": { "type": "string", "minLength": 1 },
+    "platform": { "type": "string", "minLength": 1 },
+    "beats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "start", "end", "purpose", "visual"],
+        "properties": {
+          "id": { "type": "string" },
+          "start": { "type": "number", "minimum": 0 },
+          "end": { "type": "number", "exclusiveMinimum": 0 },
+          "purpose": { "type": "string", "enum": ["hook", "evidence", "conclusion", "cta"] },
+          "visual": { "type": "string" },
+          "copy": { "type": "string" },
+          "caption": { "type": "string" },
+          "pending": { "type": "boolean" }
+        }
+      }
+    },
+    "transition_count": { "type": "integer", "minimum": 0 },
+    "opening_hook_seconds": { "type": "number", "minimum": 0 }
+  }
+}

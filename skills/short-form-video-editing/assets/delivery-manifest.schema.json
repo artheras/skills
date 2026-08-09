@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ARIA short-form video delivery manifest",
+  "type": "object",
+  "required": ["project_id", "platform", "output", "assets", "edit_plan", "captions", "status"],
+  "properties": {
+    "project_id": { "type": "string", "minLength": 1 },
+    "platform": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "enum": ["draft", "review", "release", "published"] },
+    "output": {
+      "type": "object",
+      "required": ["filename", "width", "height", "fps", "duration_seconds"]
+    },
+    "assets": { "type": "array", "minItems": 1 },
+    "edit_plan": { "type": "object" },
+    "captions": { "type": "object" },
+    "financial_context": { "type": "object" }
+  }
+}
