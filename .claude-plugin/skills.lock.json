@@ -59,6 +59,11 @@
       "sha256": "6fa339cbec2cf441688115adf6ec7fb907daabc7b27c9a06d3e638b30d9832ca",
       "version": "0.9.0"
     },
+    "app-engineering-skills:web-motion-design": {
+      "path": "skills/web-motion-design",
+      "sha256": "3daa4811f5fe64e1aefadb841be1baa3ee36132bd888e9efccf8b3c5d1f7c103",
+      "version": "0.9.0"
+    },
     "enterprise-operations-skills:devops-incident-responder": {
       "path": "skills/devops-incident-responder",
       "sha256": "bfd86f8fde69a8b5017d39e917124bd0d402e6e6039068ab9052a498a90f8654",
