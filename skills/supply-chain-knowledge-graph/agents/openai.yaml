@@ -1,0 +1,4 @@
+interface:
+  display_name: "Supply Chain Knowledge Graph"
+  short_description: "Map a company's upstream/downstream dependency graph and propagate risk across it"
+  default_prompt: "Use $supply-chain-knowledge-graph to map this company's supplier and customer dependencies and flag concentration risk."

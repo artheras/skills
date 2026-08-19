@@ -47,6 +47,7 @@ verifies the catalog against `skills.lock.json` before anything executes.
 | [`strategy-generation`](skills/strategy-generation) | Turns trading ideas into disciplined specs and implementations through a six-stage pipeline with three executable gates: a spec validator (hard risk controls, cost assumption, overfit preflight, forbidden-claim scan, honesty ledger for tried variants), then backtest-validation, then risk-assessment. Deploy advice caps at paper trading (`scripts/validate_strategy_spec.py --demo`). |
 | [`portfolio-optimization`](skills/portfolio-optimization) | Estimation-robust weights with no expected-return inputs: inverse vol, long-only min variance, ERC risk parity, and inline HRP — plus a walk-forward `compare` mode that reports honestly when the optimizer fails to beat equal weight out-of-sample. Disclosed covariance shrinkage; weights ship with risk contributions (`scripts/optimize_portfolio.py --demo`). |
 | [`execution-position`](skills/execution-position) | The pre-trade gate: sizes a signal (vol-target, or fractional Kelly only from a declared edge, hard-capped at 0.25), checks position/gross/cash/liquidity limits and stop-distance sanity, estimates costs, and emits paper-only order intents — live execution fails mechanically (`scripts/position_gate.py --demo`). |
+| [`supply-chain-knowledge-graph`](skills/supply-chain-knowledge-graph) | Maps a company's dependency graph — upstream suppliers, downstream customers, competitors — instead of reading its financials in isolation, so that a shock reaching the target through a supplier is visible before it shows up in the target's own numbers. Expands two hops, then tests the graph for the two failure modes that make a dependency actually dangerous rather than merely present: a single supplier above 15% of COGS (concentration), and downstream customers facing demand destruction. Ships a stdlib-only harness (`scripts/supply_chain_mapper.py --demo`). |
 | [`equity-research-report`](skills/equity-research-report) | Produces comprehensive equity reports through an auditable plan, normalized evidence bundle, specialist agents, deterministic fallbacks, critic pass, and executable completion gates. |
 
 The `quant-research-skills` plugin above is the research pipeline. A second
@@ -65,6 +66,9 @@ standards:
 | [`minimal-editorial-exports`](skills/minimal-editorial-exports) | A second, deliberately restrained style for the one surface per document that's allowed to be quiet — a report cover page, a PPTX title slide, a standalone chart export, a Canva one-pager — never the dense report body itself. Heavy negative space around one focal point, one accent color tied to real signal meaning, restrained serif/monospace type, texture only where the export format can render it (HTML/PDF, not PPTX/DOCX). Names exactly where this plugs into Aria Code's own export pipeline (`report_generator.py`'s chart palette, `pdf_report.py`'s theme cover page, `report_exporters.py`'s PPTX/DOCX title slide, `canva_client.py`'s Autofill data). Ships a runnable gate (`scripts/exports_gate.py --demo`) that fails a dense cover carrying borrowed dashboard chrome and format-mismatched texture next to a corrected minimal-editorial compile of the same cover. |
 | [`minimal-editorial-poster`](skills/minimal-editorial-poster) | Domain-agnostic sibling of `minimal-editorial-exports` — compiles a minimal zine/editorial poster prompt for a theme, sentence, or brief from any domain Aria Code touches (finance, real estate, or none at all), not just for styling Aria Code's own exports. Nine first-principles fields answered in order (canvas, attention geometry, anchor, anchor treatment, typography, color logic, texture, emotional temperature, hard avoids), a variation engine so a batch of posters doesn't compile to the same recipe, and an explicit negative-constraints list. Actually executes the compiled prompt when a backend is configured — local self-hosted SDXL-Turbo (`aria.report.generate_image_local`/`edit_image_local`, no API key) or OpenAI's `gpt-image-1` — choosing generate vs. edit from the Anchor field and an `img2img` `strength` value from ranges tuned against a real run (0.55 confirmed on an actual portrait: duotone + simplified background + texture all came through while the subject stayed recognizable). Falls back to prompt-only + a non-image brief when no backend is configured. Ships a runnable gate (`scripts/poster_gate.py --demo`) that reproduces a real commercial-travel-poster prompt failing next to the corrected minimal-editorial compile for the same photo, catching leaked hard-avoid terms, doubled saturated colors, and negative-space that isn't really 70%+. |
 
+| [`short-form-video-editing`](skills/short-form-video-editing) | Converts approved footage, posters, charts, and image assets into a platform-ready short-form video delivery package: edit plan, captions, publish copy, verification metadata, music declaration, and a deterministic gate. Keeps the financial-publishing boundary explicit: no invented performance, named data sources, audit-ready review ownership, and a signed-off delivery manifest before release. |
+| [`aria-music-direction`](skills/aria-music-direction) | Creates rights-aware music direction for ARIA media: no-music rationale or an original/licensed/commissioned/user-supplied cue declaration, concise cue brief, mix targets, territory and term, proof location, clearance status, and named release approval. Ships an offline gate that blocks incomplete or uncleared cue manifests while intentionally bundling no third-party audio. |
+
 A third plugin, `realty-operations-skills`, covers operating-rights and
 revenue-share property arrangements — a separate vertical, because verifying a
 private operator's self-reported revenue is a different discipline from
@@ -73,6 +77,18 @@ analysing a listed company:
 | Skill | What it does |
 |---|---|
 | [`operator-revenue-integrity`](skills/operator-revenue-integrity) | Verifies an operator's or tenant's self-reported revenue before it settles a revenue-share or guarantee. Rejects the check most people actually run — reconciling declared revenue against the operator's own POS — because POS, payment codes, and bookkeeping are all inside the counterparty's control, and an operator routing customers to a personal payment code produces records that are internally consistent and understated at once. Only signals the operator does not control count as evidence: utility meters, door-access and foot-traffic logs, delivery-platform settlements, inventory deliveries. Documents what each signal can and cannot establish plus its specific false-alarm modes (seasonal HVAC swings dominate the energy ratio; a wrong margin assumption moves inventory-implied revenue more than most real underreporting would). Orchestrates the `cashflow_verify`, `energy_anomaly`, `fulfillment_risk`, and `revenue_share` agents. |
+
+A fourth plugin, `enterprise-operations-skills`, covers operating a company's
+*own* internal systems through an agent rather than analysing an external
+market. These read and act on internal systems of record — an incident tracker,
+a contract repository, an ERP — so each one ends at a human approval gate
+rather than at a conclusion:
+
+| Skill | What it does |
+|---|---|
+| [`devops-incident-responder`](skills/devops-incident-responder) | Triages an IT incident from its own logs before touching anything: pulls the error record, names a root cause, then applies the narrowest remediation that clears it and writes the resolution back to the ticket. The only skill in this catalog whose declared workflow has non-reversible side effects on live infrastructure (service restart, ticket write-back), which is why its `skill-policy.json` declares `workspace_write` and approval-gated execution instead of the read-only default the other operations skills use. |
+| [`enterprise-legal-audit`](skills/enterprise-legal-audit) | Scans a vendor contract or SLA for the clause classes a human reviewer is specifically looking for — unlimited liability, auto-renewal traps, termination asymmetry — rather than summarizing the document. Runs the algorithmic flags, then routes anything carrying a high-risk flag to human General Counsel sign-off instead of clearing it. Verdict gates (PASS/WARN/FAIL). No bundled scripts: depends entirely on the Enterprise Lakehouse & RAG MCP server being connected. |
+| [`logistics-warehouse-audit`](skills/logistics-warehouse-audit) | Checks warehouse inventory health, inbound exceptions, and freight-forwarder sync latency against the ERP, in that order — sync health first, because an inbound-status answer read from a lagging feed is wrong in a way that looks fine. Surfaces SKUs below minimum stock and damaged/quantity-mismatch shipments. Replenishment is **draft-only**: the skill is required to state explicitly that human approval in the ERP frontend is what actually commits an order. |
 
 ## Install
 
@@ -105,6 +121,7 @@ $quant-research-skills:factor-research
 $quant-research-skills:strategy-generation
 $quant-research-skills:portfolio-optimization
 $quant-research-skills:execution-position
+$quant-research-skills:supply-chain-knowledge-graph
 $app-engineering-skills:industry-design-direction
 $app-engineering-skills:ui-design-system
 $app-engineering-skills:trading-ui-patterns
@@ -114,7 +131,12 @@ $app-engineering-skills:ai-generated-ui-craft
 $app-engineering-skills:ui-asset-sourcing
 $app-engineering-skills:minimal-editorial-exports
 $app-engineering-skills:minimal-editorial-poster
+$app-engineering-skills:short-form-video-editing
+$app-engineering-skills:aria-music-direction
 $realty-operations-skills:operator-revenue-integrity
+$enterprise-operations-skills:devops-incident-responder
+$enterprise-operations-skills:enterprise-legal-audit
+$enterprise-operations-skills:logistics-warehouse-audit
 ```
 
 Inside Aria Code:

@@ -2,11 +2,11 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "ARIA short-form video delivery manifest",
   "type": "object",
-  "required": ["project_id", "platform", "output", "assets", "edit_plan", "captions", "status"],
+  "required": ["project_id", "platform", "output", "assets", "edit_plan", "captions", "music", "status"],
   "properties": {
     "project_id": { "type": "string", "minLength": 1 },
     "platform": { "type": "string", "minLength": 1 },
-    "status": { "type": "string", "enum": ["draft", "review", "release", "published"] },
+    "status": { "type": "string", "enum": ["draft", "ready_for_review", "released"] },
     "output": {
       "type": "object",
       "required": ["filename", "width", "height", "fps", "duration_seconds"]
@@ -14,6 +14,53 @@
     "assets": { "type": "array", "minItems": 1 },
     "edit_plan": { "type": "object" },
     "captions": { "type": "object" },
+    "music": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["no_music", "original", "licensed", "commissioned", "user_supplied"]
+        },
+        "reason": { "type": "string", "minLength": 1 },
+        "human_approval": { "type": "boolean" },
+        "track": {
+          "type": "object",
+          "properties": {
+            "asset_id": { "type": "string", "minLength": 1 },
+            "title": { "type": "string", "minLength": 1 },
+            "source": { "type": "string", "minLength": 1 },
+            "rights": { "type": "string", "minLength": 1 },
+            "license_proof": { "type": "string", "minLength": 1 },
+            "territory": { "type": "string", "minLength": 1 },
+            "term": { "type": "string", "minLength": 1 },
+            "asset_status": { "type": "string", "enum": ["pending", "cleared"] }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "mode": { "const": "no_music" } } },
+          "then": { "required": ["reason"] },
+          "else": {
+            "required": ["track"],
+            "properties": {
+              "track": {
+                "required": [
+                  "asset_id",
+                  "title",
+                  "source",
+                  "rights",
+                  "license_proof",
+                  "territory",
+                  "term"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
     "financial_context": { "type": "object" }
   }
 }

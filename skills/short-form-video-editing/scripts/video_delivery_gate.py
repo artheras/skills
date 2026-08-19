@@ -17,6 +17,7 @@ VERTICAL_PLATFORMS = {
 }
 FEED_PLATFORMS = {"x_feed", "linkedin"}
 ALLOWED_STATUSES = {"draft", "ready_for_review", "released"}
+MUSIC_MODES = {"no_music", "original", "licensed", "commissioned", "user_supplied"}
 
 
 def add_finding(
@@ -39,6 +40,9 @@ def has_errors(findings: list[dict[str, str]]) -> bool:
 
 def validate_manifest(manifest: dict[str, Any]) -> list[dict[str, str]]:
     findings: list[dict[str, str]] = []
+    if not is_non_empty_string(manifest.get("project_id")):
+        add_finding(findings, "error", "project_id_missing", "project_id is required.")
+
     platform = manifest.get("platform")
     status = manifest.get("status")
     output = manifest.get("output")
@@ -168,6 +172,72 @@ def validate_manifest(manifest: dict[str, Any]) -> list[dict[str, str]]:
     elif not is_non_empty_string(captions.get("language")):
         add_finding(findings, "error", "caption_language_missing", "caption language is required.")
 
+    music = manifest.get("music")
+    if not isinstance(music, dict):
+        add_finding(findings, "error", "music_declaration_missing", "music mode must be declared.")
+    else:
+        mode = music.get("mode")
+        if mode not in MUSIC_MODES:
+            add_finding(
+                findings,
+                "error",
+                "invalid_music_mode",
+                "music mode must be no_music, original, licensed, commissioned, or user_supplied.",
+            )
+        elif mode == "no_music":
+            if not is_non_empty_string(music.get("reason")):
+                add_finding(
+                    findings,
+                    "error",
+                    "music_reason_missing",
+                    "no_music needs an editorial reason.",
+                )
+        else:
+            track = music.get("track")
+            if not isinstance(track, dict):
+                add_finding(
+                    findings,
+                    "error",
+                    "music_track_missing",
+                    "music track provenance is required.",
+                )
+            else:
+                required_track_fields = (
+                    "asset_id",
+                    "title",
+                    "source",
+                    "rights",
+                    "license_proof",
+                    "territory",
+                    "term",
+                )
+                missing = [
+                    field
+                    for field in required_track_fields
+                    if not is_non_empty_string(track.get(field))
+                ]
+                if missing:
+                    add_finding(
+                        findings,
+                        "error",
+                        "music_provenance_incomplete",
+                        f"music track needs: {', '.join(missing)}.",
+                    )
+                if status == "released" and track.get("asset_status") != "cleared":
+                    add_finding(
+                        findings,
+                        "error",
+                        "music_not_cleared",
+                        "released music must have a cleared asset status.",
+                    )
+                if status == "released" and music.get("human_approval") is not True:
+                    add_finding(
+                        findings,
+                        "error",
+                        "music_release_not_approved",
+                        "released music needs human approval.",
+                    )
+
     financial = manifest.get("financial_context")
     if isinstance(financial, dict) and financial.get("contains_financial_content") is True:
         if not is_non_empty_string(financial.get("as_of")):
@@ -192,19 +262,95 @@ def validate_manifest(manifest: dict[str, Any]) -> list[dict[str, str]]:
     return findings
 
 
+def build_demo_manifest() -> dict[str, Any]:
+    return {
+        "project_id": "aria-aapl-earnings-recap",
+        "platform": "xiaohongshu",
+        "status": "ready_for_review",
+        "output": {
+            "filename": "aapl-earnings-recap.mp4",
+            "width": 1080,
+            "height": 1920,
+            "duration_seconds": 32,
+            "fps": 30,
+        },
+        "assets": [
+            {
+                "source": "ARIA approved market chart",
+                "rights": "first-party approved",
+            }
+        ],
+        "edit_plan": {
+            "beats": [
+                {"start_seconds": 0, "end_seconds": 2, "purpose": "hook"},
+                {"start_seconds": 2, "end_seconds": 24, "purpose": "evidence"},
+                {"start_seconds": 24, "end_seconds": 32, "purpose": "close"},
+            ]
+        },
+        "captions": {"included": True, "language": "zh-CN"},
+        "music": {
+            "mode": "no_music",
+            "reason": "Voice-led market recap; no soundtrack is cleared for this draft.",
+        },
+        "financial_context": {
+            "contains_financial_content": True,
+            "as_of": "2026-08-09T09:30:00+08:00",
+            "sources": ["approved first-party market feed"],
+            "disclosure": "仅供研究参考，不构成投资建议。",
+            "human_approval": True,
+        },
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", required=True, type=Path)
+    source_group = parser.add_mutually_exclusive_group(required=True)
+    source_group.add_argument("--manifest", type=Path)
+    source_group.add_argument("--demo", action="store_true")
     args = parser.parse_args()
 
     try:
-        manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+        manifest = (
+            build_demo_manifest()
+            if args.demo
+            else json.loads(args.manifest.read_text(encoding="utf-8"))
+        )
     except (OSError, json.JSONDecodeError) as error:
-        print(json.dumps({"valid": False, "findings": [{"severity": "error", "code": "manifest_unreadable", "message": str(error)}]}, ensure_ascii=False, indent=2))
+        print(
+            json.dumps(
+                {
+                    "valid": False,
+                    "findings": [
+                        {
+                            "severity": "error",
+                            "code": "manifest_unreadable",
+                            "message": str(error),
+                        }
+                    ],
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return 1
 
     if not isinstance(manifest, dict):
-        print(json.dumps({"valid": False, "findings": [{"severity": "error", "code": "manifest_not_object", "message": "manifest root must be an object."}]}, ensure_ascii=False, indent=2))
+        print(
+            json.dumps(
+                {
+                    "valid": False,
+                    "findings": [
+                        {
+                            "severity": "error",
+                            "code": "manifest_not_object",
+                            "message": "manifest root must be an object.",
+                        }
+                    ],
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return 1
 
     findings = validate_manifest(manifest)

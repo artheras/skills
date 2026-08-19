@@ -1,0 +1,4 @@
+interface:
+  display_name: "ARIA Music Direction"
+  short_description: "Create a rights-safe music brief and mix plan"
+  default_prompt: "Use $aria-music-direction to create a rights-safe music cue brief and validate the music manifest."

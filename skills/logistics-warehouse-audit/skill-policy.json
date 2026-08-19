@@ -1,0 +1,17 @@
+{
+  "schema_version": "aria.skill-policy.v1",
+  "allowed_tools": [
+    "read_file",
+    "query_enterprise_knowledge_base",
+    "check_logistics_sync_health",
+    "check_inventory_health",
+    "check_inbound_exceptions",
+    "draft_replenishment_order"
+  ],
+  "permissions": ["read-only"],
+  "scripts": {
+    "execution": "none",
+    "network": false,
+    "workspace_write": false
+  }
+}
