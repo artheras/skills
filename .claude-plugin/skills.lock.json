@@ -64,6 +64,31 @@
       "sha256": "3daa4811f5fe64e1aefadb841be1baa3ee36132bd888e9efccf8b3c5d1f7c103",
       "version": "0.9.0"
     },
+    "commerce-operations-skills:ads-optimizer": {
+      "path": "skills/ads-optimizer",
+      "sha256": "6cdf85c396fc2fb2fff6046d54332ef5f844e2cee5952eeed9327de30b6ece4c",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:competitor-monitor": {
+      "path": "skills/competitor-monitor",
+      "sha256": "903ef5e23e074502bee5d8adbce3927947c25745c7c1538fd26af039a0302a30",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:cross-listing": {
+      "path": "skills/cross-listing",
+      "sha256": "802e66f83cdcecdb9c894435e7b9d50a5d7aae981dd0e06deab86369d0f8def8",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:inventory-planner": {
+      "path": "skills/inventory-planner",
+      "sha256": "133d39b3bc8ea885a14121c060cdff55943eeb958e35634c2a810300c8566480",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:profit-engine": {
+      "path": "skills/profit-engine",
+      "sha256": "388bd008053d45d9d424eb3625ee0f4bbf4fe9638f4dae9e4a30116c5cfb382f",
+      "version": "0.9.0"
+    },
     "enterprise-operations-skills:devops-incident-responder": {
       "path": "skills/devops-incident-responder",
       "sha256": "bfd86f8fde69a8b5017d39e917124bd0d402e6e6039068ab9052a498a90f8654",

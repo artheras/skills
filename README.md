@@ -91,6 +91,19 @@ rather than at a conclusion:
 | [`enterprise-legal-audit`](skills/enterprise-legal-audit) | Scans a vendor contract or SLA for the clause classes a human reviewer is specifically looking for — unlimited liability, auto-renewal traps, termination asymmetry — rather than summarizing the document. Runs the algorithmic flags, then routes anything carrying a high-risk flag to human General Counsel sign-off instead of clearing it. Verdict gates (PASS/WARN/FAIL). No bundled scripts: depends entirely on the Enterprise Lakehouse & RAG MCP server being connected. |
 | [`logistics-warehouse-audit`](skills/logistics-warehouse-audit) | Checks warehouse inventory health, inbound exceptions, and freight-forwarder sync latency against the ERP, in that order — sync health first, because an inbound-status answer read from a lagging feed is wrong in a way that looks fine. Surfaces SKUs below minimum stock and damaged/quantity-mismatch shipments. Replenishment is **draft-only**: the skill is required to state explicitly that human approval in the ERP frontend is what actually commits an order. |
 
+A fifth plugin, `commerce-operations-skills`, covers running a cross-border
+e-commerce operation through an agent — a seller's own marketplace listings,
+stock, P&L, ad spend, and competitive landscape, rather than internal
+IT/legal/warehouse systems:
+
+| Skill | What it does |
+|---|---|
+| [`cross-listing`](skills/cross-listing) | Migrates a product listing from one marketplace to another (OZON ↔ Wildberries) as a validated draft. Normalizes into a canonical schema before touching either marketplace's own field names, maps categories with no best-guess fallback, carries dimensions/weight/certifications verbatim (an unknown value is reported unknown, never backfilled with a plausible number), and gates any price move beyond ±15% on explicit confirmation. Publish is structurally out of reach: `skill-policy.json` never lists a publish-capable tool, so the refusal isn't just prose — the skill has no way to call one. |
+| [`inventory-planner`](skills/inventory-planner) | Turns current stock, sales velocity, and supplier lead time into a draft restock recommendation per SKU — days-of-cover against a reorder point, classified `ok`/`reorder_now`/`urgent`/`stockout`. The forecasting sibling of `logistics-warehouse-audit`: refuses to size a SKU with no sales-velocity estimate or no declared lead time rather than guess one, the same discipline `execution-position` applies to position sizing. Flags stock already in transit before suggesting more, and rounds a suggested order up to a declared MOQ with the rounding disclosed. Never sends or commits a purchase order — draft only. |
+| [`profit-engine`](skills/profit-engine) | Rolls up revenue minus ten real cost buckets (COGS, platform commission, advertising, logistics, warehousing, returns, refunds, payment fees, penalties, FX impact, tax) into net profit per store, then decomposes a period-over-period profit change into a ranked bridge — answering "GMV grew 18% but profit fell 7%" with the actual driver (advertising spend, in the shipped demo) instead of a bare total. A store with any missing cost bucket never gets zero-filled: it's reported `profit_incomplete` with an upper bound, since a missing cost can only overstate profit, never understate it, and portfolio rollups exclude incomplete stores from the total rather than blending in an understated number. |
+| [`ads-optimizer`](skills/ads-optimizer) | Turns campaign spend/revenue/orders and a seller-declared ACOS target into a bid recommendation — `recommend_pause`/`recommend_decrease_bid`/`recommend_increase_bid`/`no_action` — never an executed bid change. Checks zero-conversion campaigns before ACOS-based rules so "not converting" is never scored as merely inefficient, refuses to score a campaign below a minimum-spend threshold rather than judge it on noise, and caps every step size at a non-negotiable `max_step_pct`. No mutating ads tool is reachable from the skill at all — the refusal to execute is declared in `skill-policy.json`, not just written guidance. |
+| [`competitor-monitor`](skills/competitor-monitor) | Reads a competitor's price, inventory-proxy, search rank, and review-velocity deltas against six named patterns (clearance push, aggressive ad push, stockout risk, price war, fading listing, restock recovery) — requiring at least two corroborating signals per match, and phrasing every result as "consistent with," never "is." A single moving number, or fewer than two available signals, is `no_clear_pattern` rather than a forced narrative. Ranks competitors by how much evidence corroborates a read, not by how dramatic a lone signal looks, and never calls a tool that changes the seller's own price, bid, or listing — the response is the next skill's or the seller's decision. |
+
 ## Install
 
 Aria Code discovers the catalog through `ARIA_SKILLS_PATH` or a sibling
@@ -139,6 +152,11 @@ $realty-operations-skills:operator-revenue-integrity
 $enterprise-operations-skills:devops-incident-responder
 $enterprise-operations-skills:enterprise-legal-audit
 $enterprise-operations-skills:logistics-warehouse-audit
+$commerce-operations-skills:cross-listing
+$commerce-operations-skills:inventory-planner
+$commerce-operations-skills:profit-engine
+$commerce-operations-skills:ads-optimizer
+$commerce-operations-skills:competitor-monitor
 ```
 
 Inside Aria Code:
