@@ -3,10 +3,10 @@
   "allowed_tools": [
     "read_file",
     "query_enterprise_knowledge_base",
-    "check_logistics_sync_health",
-    "check_inventory_health",
-    "check_inbound_exceptions",
-    "draft_replenishment_order"
+    "warehouse.logistics_sync_health",
+    "warehouse.inventory_health",
+    "warehouse.inbound_exception_review",
+    "erp.draft_replenishment_order"
   ],
   "permissions": ["read-only"],
   "scripts": {

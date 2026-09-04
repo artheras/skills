@@ -56,7 +56,7 @@
     },
     "app-engineering-skills:ui-design-system": {
       "path": "skills/ui-design-system",
-      "sha256": "6fa339cbec2cf441688115adf6ec7fb907daabc7b27c9a06d3e638b30d9832ca",
+      "sha256": "69bad0e231e2a9b94d628f71e21c055a7370bed306883c36218d8ecea5dc0204",
       "version": "0.9.0"
     },
     "app-engineering-skills:web-motion-design": {
@@ -101,7 +101,7 @@
     },
     "enterprise-operations-skills:logistics-warehouse-audit": {
       "path": "skills/logistics-warehouse-audit",
-      "sha256": "758bdcacbc8ab864c915b5875f5ef95cd2875319640b013e279dd2fbb4fa8512",
+      "sha256": "eb155fe4b4b49ee02f50745573abbd7235e7e0d0176282dfc7b5237fad9bd942",
       "version": "0.9.0"
     },
     "quant-research-skills:backtest-validation": {
