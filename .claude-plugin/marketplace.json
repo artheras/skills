@@ -85,7 +85,7 @@
     {
       "name": "commerce-operations-skills",
       "version": "0.9.0",
-      "description": "Skills for running a cross-border e-commerce operation through an agent — migrating listings between marketplaces (OZON, Wildberries) as reviewable drafts, forecasting restocks, rolling up multi-store profit with a bucket-by-bucket bridge, recommending ad-bid adjustments against a declared ACOS target, and reading competitor price/rank/inventory-proxy/review signals into hedged pattern matches. Separate vertical from the other operations skills: these act on a seller's own marketplace catalogs, P&L, ad accounts, and competitive landscape, not internal IT/legal/warehouse systems, so the workflow and the guardrails are marketplace-specific.",
+      "description": "Skills for running a cross-border e-commerce operation through an agent — migrating listings between marketplaces (OZON, Wildberries) as reviewable drafts, forecasting restocks, rolling up multi-store profit with a bucket-by-bucket bridge, recommending ad-bid adjustments against a declared ACOS target, reading competitor price/rank/inventory-proxy/review signals into hedged pattern matches, and — behind a seller-controlled, deny-by-default automation policy the Agent cannot enable itself — publishing an approved Wildberries listing draft or cancelling eligible Wildberries FBS orders. Separate vertical from the other operations skills: these act on a seller's own marketplace catalogs, P&L, ad accounts, and competitive landscape, not internal IT/legal/warehouse systems, so the workflow and the guardrails are marketplace-specific.",
       "source": "./",
       "homepage": "https://github.com/artherahq/skills",
       "repository": "https://github.com/artherahq/skills",
@@ -95,7 +95,8 @@
         "./skills/inventory-planner",
         "./skills/profit-engine",
         "./skills/ads-optimizer",
-        "./skills/competitor-monitor"
+        "./skills/competitor-monitor",
+        "./skills/commerce-operations-agent"
       ]
     }
   ]

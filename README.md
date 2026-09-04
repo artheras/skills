@@ -94,7 +94,9 @@ rather than at a conclusion:
 A fifth plugin, `commerce-operations-skills`, covers running a cross-border
 e-commerce operation through an agent — a seller's own marketplace listings,
 stock, P&L, ad spend, and competitive landscape, rather than internal
-IT/legal/warehouse systems:
+IT/legal/warehouse systems. Every skill here drafts or recommends; exactly
+one (`commerce-operations-agent`) is authorised to act, and only behind a
+seller-controlled policy the Agent cannot enable itself:
 
 | Skill | What it does |
 |---|---|
@@ -103,6 +105,7 @@ IT/legal/warehouse systems:
 | [`profit-engine`](skills/profit-engine) | Rolls up revenue minus ten real cost buckets (COGS, platform commission, advertising, logistics, warehousing, returns, refunds, payment fees, penalties, FX impact, tax) into net profit per store, then decomposes a period-over-period profit change into a ranked bridge — answering "GMV grew 18% but profit fell 7%" with the actual driver (advertising spend, in the shipped demo) instead of a bare total. A store with any missing cost bucket never gets zero-filled: it's reported `profit_incomplete` with an upper bound, since a missing cost can only overstate profit, never understate it, and portfolio rollups exclude incomplete stores from the total rather than blending in an understated number. |
 | [`ads-optimizer`](skills/ads-optimizer) | Turns campaign spend/revenue/orders and a seller-declared ACOS target into a bid recommendation — `recommend_pause`/`recommend_decrease_bid`/`recommend_increase_bid`/`no_action` — never an executed bid change. Checks zero-conversion campaigns before ACOS-based rules so "not converting" is never scored as merely inefficient, refuses to score a campaign below a minimum-spend threshold rather than judge it on noise, and caps every step size at a non-negotiable `max_step_pct`. No mutating ads tool is reachable from the skill at all — the refusal to execute is declared in `skill-policy.json`, not just written guidance. |
 | [`competitor-monitor`](skills/competitor-monitor) | Reads a competitor's price, inventory-proxy, search rank, and review-velocity deltas against six named patterns (clearance push, aggressive ad push, stockout risk, price war, fading listing, restock recovery) — requiring at least two corroborating signals per match, and phrasing every result as "consistent with," never "is." A single moving number, or fewer than two available signals, is `no_clear_pattern` rather than a forced narrative. Ranks competitors by how much evidence corroborates a read, not by how dramatic a lone signal looks, and never calls a tool that changes the seller's own price, bid, or listing — the response is the next skill's or the seller's decision. |
+| [`commerce-operations-agent`](skills/commerce-operations-agent) | The one skill in this catalog authorised to take a live marketplace action — publishing a validated Wildberries `cross-listing` draft, or cancelling eligible Wildberries FBS orders — and only because both are deny-by-default behind a seller-maintained automation policy the Agent cannot itself create, edit, or enable. Checks `commerce.automation.status` before either operation, generates a fresh idempotency key per new request (never per retry), and for cancellation requires explicit order IDs plus a fresh eligibility preflight — never a product title, fuzzy search, or inferred order. OZON stays draft-only here too, for the same reason `cross-listing` never fabricates a category mapping: no verified product-import adapter exists for it yet. |
 
 ## Install
 
@@ -157,6 +160,7 @@ $commerce-operations-skills:inventory-planner
 $commerce-operations-skills:profit-engine
 $commerce-operations-skills:ads-optimizer
 $commerce-operations-skills:competitor-monitor
+$commerce-operations-skills:commerce-operations-agent
 ```
 
 Inside Aria Code:

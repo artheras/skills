@@ -69,6 +69,11 @@
       "sha256": "6cdf85c396fc2fb2fff6046d54332ef5f844e2cee5952eeed9327de30b6ece4c",
       "version": "0.9.0"
     },
+    "commerce-operations-skills:commerce-operations-agent": {
+      "path": "skills/commerce-operations-agent",
+      "sha256": "a9f1f369d473f531a9c38879ec432b5ba12ba23ff07118f6f28c4c247baadf94",
+      "version": "0.9.0"
+    },
     "commerce-operations-skills:competitor-monitor": {
       "path": "skills/competitor-monitor",
       "sha256": "903ef5e23e074502bee5d8adbce3927947c25745c7c1538fd26af039a0302a30",
