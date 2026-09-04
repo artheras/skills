@@ -9,6 +9,11 @@
       "sha256": "2b028648cda5e3780e9f96f61105a4671ea57e3d73238b6001e3b8924481e632",
       "version": "0.9.0"
     },
+    "app-engineering-skills:aria-music-direction": {
+      "path": "skills/aria-music-direction",
+      "sha256": "186b7817055fbeffb5bcbfa7cf698f86d600a339f22d9935224559ec116b6600",
+      "version": "0.9.0"
+    },
     "app-engineering-skills:conversational-ui-restraint": {
       "path": "skills/conversational-ui-restraint",
       "sha256": "79bca0d4e1838140002bdf0e0ca202331b3a39cf53bc03682863c13bc66f1df7",
@@ -26,7 +31,12 @@
     },
     "app-engineering-skills:minimal-editorial-poster": {
       "path": "skills/minimal-editorial-poster",
-      "sha256": "5917c76e0fde9afcd6647fac5dbfaf950191b17daaacffdee32ebb53eaeac15b",
+      "sha256": "37b5fb749d3e793c159c694c21ef49786a3a1e98b7ae1c906f646385881eb6e4",
+      "version": "0.9.0"
+    },
+    "app-engineering-skills:short-form-video-editing": {
+      "path": "skills/short-form-video-editing",
+      "sha256": "dcace72d6d07e814f4f960234ce68087626f4fd3afd63149defd2b64f3419366",
       "version": "0.9.0"
     },
     "app-engineering-skills:terminal-software-design": {
@@ -46,7 +56,57 @@
     },
     "app-engineering-skills:ui-design-system": {
       "path": "skills/ui-design-system",
-      "sha256": "2ba8e92367ece1c25e6c5f75f0d02b61895a88922641ff2c65c3f26cf42b6ba9",
+      "sha256": "69bad0e231e2a9b94d628f71e21c055a7370bed306883c36218d8ecea5dc0204",
+      "version": "0.9.0"
+    },
+    "app-engineering-skills:web-motion-design": {
+      "path": "skills/web-motion-design",
+      "sha256": "3daa4811f5fe64e1aefadb841be1baa3ee36132bd888e9efccf8b3c5d1f7c103",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:ads-optimizer": {
+      "path": "skills/ads-optimizer",
+      "sha256": "6cdf85c396fc2fb2fff6046d54332ef5f844e2cee5952eeed9327de30b6ece4c",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:commerce-operations-agent": {
+      "path": "skills/commerce-operations-agent",
+      "sha256": "a9f1f369d473f531a9c38879ec432b5ba12ba23ff07118f6f28c4c247baadf94",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:competitor-monitor": {
+      "path": "skills/competitor-monitor",
+      "sha256": "903ef5e23e074502bee5d8adbce3927947c25745c7c1538fd26af039a0302a30",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:cross-listing": {
+      "path": "skills/cross-listing",
+      "sha256": "802e66f83cdcecdb9c894435e7b9d50a5d7aae981dd0e06deab86369d0f8def8",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:inventory-planner": {
+      "path": "skills/inventory-planner",
+      "sha256": "133d39b3bc8ea885a14121c060cdff55943eeb958e35634c2a810300c8566480",
+      "version": "0.9.0"
+    },
+    "commerce-operations-skills:profit-engine": {
+      "path": "skills/profit-engine",
+      "sha256": "388bd008053d45d9d424eb3625ee0f4bbf4fe9638f4dae9e4a30116c5cfb382f",
+      "version": "0.9.0"
+    },
+    "enterprise-operations-skills:devops-incident-responder": {
+      "path": "skills/devops-incident-responder",
+      "sha256": "bfd86f8fde69a8b5017d39e917124bd0d402e6e6039068ab9052a498a90f8654",
+      "version": "0.9.0"
+    },
+    "enterprise-operations-skills:enterprise-legal-audit": {
+      "path": "skills/enterprise-legal-audit",
+      "sha256": "def2e75e8da1829b2e340b39cdd3faea2ca9c6d0ef4c3158ee3c7c7294149afc",
+      "version": "0.9.0"
+    },
+    "enterprise-operations-skills:logistics-warehouse-audit": {
+      "path": "skills/logistics-warehouse-audit",
+      "sha256": "eb155fe4b4b49ee02f50745573abbd7235e7e0d0176282dfc7b5237fad9bd942",
       "version": "0.9.0"
     },
     "quant-research-skills:backtest-validation": {
@@ -102,6 +162,11 @@
     "quant-research-skills:strategy-generation": {
       "path": "skills/strategy-generation",
       "sha256": "191eb595327e1e2149a7b35efa063c3199bd7566e01687777640dc72b1d91628",
+      "version": "0.9.0"
+    },
+    "quant-research-skills:supply-chain-knowledge-graph": {
+      "path": "skills/supply-chain-knowledge-graph",
+      "sha256": "8403e01d7fa915937670d3115bd843f0233ad8a49988790d4058cac8062ca71e",
       "version": "0.9.0"
     },
     "realty-operations-skills:operator-revenue-integrity": {

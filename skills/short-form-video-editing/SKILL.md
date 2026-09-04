@@ -23,6 +23,8 @@ images, poster artwork, brand copy, and destination platform.
   is needed.
 - Use minimal-editorial-exports when the same visual system also needs a print or static
   export.
+- Use aria-music-direction when a soundtrack needs a rights-safe cue brief, mix hand-off,
+  or release manifest.
 - Do not use unlicensed music, third-party clips, trademarks, screenshots, or market data
   without recording their source and usage rights.
 - Do not upload, publish, execute trades, or expose brokerage, API, or personal data.
@@ -34,8 +36,10 @@ Collect the minimum information before producing the final package:
 1. Objective, audience, platform, language, and call to action.
 2. Approved assets with an owner, source URL or record, and usage rights.
 3. Target format: vertical social, horizontal feed, or square feed.
-4. Desired duration, style references, brand tokens, and narration or music direction.
-5. If financial content is present: as-of time, data sources, required disclosure, and
+4. Desired duration, style references, brand tokens, and narration.
+5. Music mode: `no_music`, `original`, `licensed`, `commissioned`, or `user_supplied`.
+   For music, identify the intended cue, clearance holder, territory, and term.
+6. If financial content is present: as-of time, data sources, required disclosure, and
    named human approver for release.
 
 If any required asset rights or financial source is missing, label the corresponding edit
@@ -75,7 +79,14 @@ Create edit-plan.json using assets/edit-plan.schema.json. For every beat record:
 
 Use references/motion-tokens.md for durations and motion restraint.
 
-### 4. Produce captions and publishing copy
+### 4. Direct music safely
+
+If music is included, create `music-cue-manifest.json` using `aria-music-direction`.
+Record the rights source, license evidence, territory, term, mix intent, and human
+clearance before release. Voice-led market recaps may use `no_music`; record the
+editorial reason in the delivery manifest.
+
+### 5. Produce captions and publishing copy
 
 Deliver both SRT and VTT captions. Keep captions to two lines, preserve sentence meaning,
 and leave platform UI safe areas clear. Include:
@@ -85,7 +96,7 @@ and leave platform UI safe areas clear. Include:
 - Alt text or an accessible visual description.
 - Hashtags only when they serve discovery rather than pad the caption.
 
-### 5. Apply financial-content guardrails
+### 6. Apply financial-content guardrails
 
 For market, investing, trading, macro, or crypto content:
 
@@ -96,7 +107,7 @@ For market, investing, trading, macro, or crypto content:
   unqualified performance claims.
 - Never show account IDs, API keys, credentials, balances, order controls, or private
   portfolio data without explicit approved redaction.
-- Require a named human approval before a finance video is marked release or published.
+- Require a named human approval before a finance video is marked `released`.
 
 See references/financial-content-rules.md for the release checklist.
 
@@ -108,6 +119,7 @@ Return a folder containing:
 - captions.srt and captions.vtt
 - publish-copy.md
 - delivery-manifest.json
+- music-cue-manifest.json when music is used
 - source-notes.md
 - approved media exports, or explicit placeholders for exports that still need rendering
 
@@ -115,8 +127,8 @@ Validate delivery-manifest.json before handoff:
 
     python3 scripts/video_delivery_gate.py --manifest delivery-manifest.json
 
-The validator enforces output format, captions, assets provenance, financial disclosures,
-and release approval. A draft may carry pending approval; release and published items may
+The validator enforces output format, captions, asset and music provenance, financial
+disclosures, and release approval. A draft may carry pending approval; released items may
 not.
 
 ## Quality bar
@@ -126,5 +138,6 @@ The final package must feel intentional at muted autoplay:
 - The first frame is recognizable without audio.
 - The visual hierarchy prioritizes the claim, supporting data, then brand.
 - Captions remain readable above platform controls.
-- Music and transitions support, rather than obscure, source-backed information.
+- Music must be cleared and mixed below narration; transitions support, rather than obscure,
+  source-backed information.
 - Every factual financial statement can be traced back to a recorded source.

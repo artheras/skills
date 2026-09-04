@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inventory & Replenishment Planner"
+  short_description: "Turn stock, sales velocity, and lead time into a draft restock plan — refuses to size a SKU it can't forecast"
+  default_prompt: "Use $inventory-planner to build a draft replenishment plan from current stock and sales velocity."

@@ -38,6 +38,21 @@ skeleton; `--validate` checks a filled one.
   },
   "stroke": { "hairline": 0.5, "border": 1 },
 
+  // Optional. The motion layer — duration tiers (ms) and easing curves — so
+  // animation is part of the design system rather than hardcoded per component.
+  // Owned by the `web-motion-design` skill; full schema, rules, and the
+  // CSS/SwiftUI/RN mapping live in that skill's references/motion_tokens.md.
+  // Validated here when present; omit the key entirely and it is skipped.
+  "motion": {
+    "duration": { "instant": 100, "fast": 150, "base": 200, "slow": 300, "deliberate": 400 },
+    "easing": {
+      "enter": [0, 0, 0.2, 1],      // ease-out  — things arriving
+      "exit":  [0.4, 0, 1, 1],      // ease-in   — things leaving
+      "inOut": [0.4, 0, 0.2, 1]     // ease-in-out — moving on screen
+    },
+    "reduced_motion": "reduce"      // "reduce" | "disable"
+  },
+
   // Optional: declares which text colors sit on which surface, so the
   // validator can check WCAG contrast. Omit and contrast is skipped.
   "contrast_pairs": [
@@ -59,6 +74,12 @@ skeleton; `--validate` checks a filled one.
   a set of distinct tiers, not two tiers with the same number.
 - `spacing.steps` (if present) must each be a multiple of `spacing.base`, and
   strictly increasing when sorted.
+- `motion` (if present): `duration` values are positive **milliseconds** and must
+  be distinct — a value under 1 is rejected as seconds written into a
+  millisecond field (`0.3` meaning 300ms silently produces an invisible
+  animation), and anything over 1000ms warns. `easing` values are 4-number
+  cubic-bezier arrays whose **x** control points (indices 0 and 2) sit within
+  `[0,1]`; y may fall outside, which is how overshoot curves are expressed.
 - `contrast_pairs` (if present): each `text` and `on` must name a real color;
   the validator computes WCAG 2.1 relative-luminance contrast for **both**
   light and dark and flags any below `min` (default 4.5 for body text, use 3.0

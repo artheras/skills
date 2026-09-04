@@ -1,0 +1,4 @@
+interface:
+  display_name: "Warehouse & Logistics Audit"
+  short_description: "Check inventory health, inbound exceptions, and freight sync — drafts only, human approves"
+  default_prompt: "Use $logistics-warehouse-audit to check this warehouse's inventory health and inbound exceptions."

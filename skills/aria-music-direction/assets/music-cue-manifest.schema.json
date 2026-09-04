@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ARIA music cue manifest",
+  "type": "object",
+  "required": ["project_id", "status", "usage", "mix"],
+  "properties": {
+    "project_id": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["draft", "ready_for_review", "released"]},
+    "usage": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {"type": "string", "enum": ["no_music", "original", "licensed", "commissioned", "user_supplied"]},
+        "reason": {"type": "string"},
+        "cue_id": {"type": "string"}
+      }
+    },
+    "track": {
+      "type": "object",
+      "properties": {
+        "asset_id": {"type": "string"},
+        "title": {"type": "string"},
+        "source": {"type": "string"},
+        "rights": {"type": "string"},
+        "license_proof": {"type": "string"},
+        "territory": {"type": "string"},
+        "term": {"type": "string"},
+        "asset_status": {"type": "string", "enum": ["brief_only", "cleared"]}
+      }
+    },
+    "mix": {
+      "type": "object",
+      "required": ["target_lufs", "ducking_db"],
+      "properties": {
+        "target_lufs": {"type": "number"},
+        "ducking_db": {"type": "number"},
+        "true_peak_dbtp": {"type": "number"}
+      }
+    },
+    "human_approval": {"type": "boolean"},
+    "financial_context": {"type": "object"}
+  }
+}

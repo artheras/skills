@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Motion Design"
+  short_description: "Transitions, micro-interactions, and the duration/easing scale that keeps them coherent"
+  default_prompt: "Use $web-motion-design to add or review the motion layer of this UI — transitions, hover/press feedback, and the duration/easing tokens behind them."

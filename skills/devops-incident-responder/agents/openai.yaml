@@ -1,0 +1,4 @@
+interface:
+  display_name: "DevOps Incident Responder"
+  short_description: "Triage an incident from logs, apply a scoped remediation, and write the resolution back"
+  default_prompt: "Use $devops-incident-responder to triage this incident and propose the remediation before anything is restarted."

@@ -11,6 +11,7 @@ from video_delivery_gate import has_errors, validate_manifest
 
 
 VALID_MANIFEST = {
+    "project_id": "aria-aapl-earnings-recap",
     "platform": "xiaohongshu",
     "status": "ready_for_review",
     "output": {
@@ -34,6 +35,10 @@ VALID_MANIFEST = {
         ]
     },
     "captions": {"included": True, "language": "zh-CN"},
+    "music": {
+        "mode": "no_music",
+        "reason": "Voice-led market recap; no soundtrack is cleared for this draft.",
+    },
     "financial_context": {
         "contains_financial_content": True,
         "as_of": "2026-08-09T09:30:00+08:00",
@@ -69,6 +74,27 @@ class VideoDeliveryGateTests(unittest.TestCase):
         self.assertTrue(
             {"invalid_vertical_ratio", "asset_provenance_incomplete", "captions_required"}.issubset(codes)
         )
+
+    def test_released_music_requires_clearance_and_approval(self) -> None:
+        manifest = copy.deepcopy(VALID_MANIFEST)
+        manifest["status"] = "released"
+        manifest["music"] = {
+            "mode": "licensed",
+            "track": {
+                "asset_id": "cue-001",
+                "title": "Signal Line",
+                "source": "ARIA licensed catalog",
+                "rights": "sync license",
+                "license_proof": "license-001",
+                "territory": "worldwide",
+                "term": "2026-12-31",
+                "asset_status": "pending",
+            },
+        }
+        findings = validate_manifest(manifest)
+        codes = {item["code"] for item in findings}
+        self.assertTrue(has_errors(findings))
+        self.assertTrue({"music_not_cleared", "music_release_not_approved"}.issubset(codes))
 
 
 if __name__ == "__main__":

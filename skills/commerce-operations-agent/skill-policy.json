@@ -1,0 +1,15 @@
+{
+  "schema_version": "aria.skill-policy.v1",
+  "allowed_tools": [
+    "commerce.automation.status",
+    "commerce.automation.publish_wildberries_draft",
+    "commerce.automation.cancel_wildberries_fbs_orders",
+    "drafts.get"
+  ],
+  "permissions": ["network", "workspace-write"],
+  "scripts": {
+    "execution": "none",
+    "network": true,
+    "workspace_write": false
+  }
+}

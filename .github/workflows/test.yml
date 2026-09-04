@@ -294,6 +294,121 @@ jobs:
       - name: Regression tests
         run: pytest test_validate_strategy_spec.py -q
 
+  cross-listing:
+    name: cross-listing harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/cross-listing/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Smoke — the bundled harness runs and emits no warnings
+        run: |
+          python -W error::RuntimeWarning validate_listing_draft.py --demo > /dev/null
+
+      - name: Regression tests
+        run: pytest test_validate_listing_draft.py -q
+
+  inventory-planner:
+    name: inventory-planner harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/inventory-planner/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Smoke — the bundled harness runs and emits no warnings
+        run: |
+          python -W error::RuntimeWarning replenishment_plan.py --demo > /dev/null
+
+      - name: Regression tests
+        run: pytest test_replenishment_plan.py -q
+
+  profit-engine:
+    name: profit-engine harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/profit-engine/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Smoke — the bundled harness runs and emits no warnings
+        run: |
+          python -W error::RuntimeWarning profit_waterfall.py --demo > /dev/null
+
+      - name: Regression tests
+        run: pytest test_profit_waterfall.py -q
+
+  ads-optimizer:
+    name: ads-optimizer harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/ads-optimizer/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Smoke — the bundled harness runs and emits no warnings
+        run: |
+          python -W error::RuntimeWarning ads_bid_optimizer.py --demo > /dev/null
+
+      - name: Regression tests
+        run: pytest test_ads_bid_optimizer.py -q
+
+  competitor-monitor:
+    name: competitor-monitor harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/competitor-monitor/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Smoke — the bundled harness runs and emits no warnings
+        run: |
+          python -W error::RuntimeWarning pattern_match.py --demo > /dev/null
+
+      - name: Regression tests
+        run: pytest test_pattern_match.py -q
+
   industry-design-direction:
     name: industry-design-direction harness
     runs-on: ubuntu-latest
@@ -433,3 +548,39 @@ jobs:
 
       - name: Regression tests
         run: pytest test_pattern_audit.py -q
+
+  short-form-video-editing:
+    name: short-form-video-editing harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/short-form-video-editing/scripts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependency
+        run: pip install --quiet pytest
+      - name: Smoke — delivery gate runs and emits no warnings
+        run: python -W error::RuntimeWarning video_delivery_gate.py --demo > /dev/null
+      - name: Regression tests
+        run: pytest test_video_delivery_gate.py -q
+
+  aria-music-direction:
+    name: aria-music-direction harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/aria-music-direction/scripts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependency
+        run: pip install --quiet pytest
+      - name: Smoke — music gate runs and emits no warnings
+        run: python -W error::RuntimeWarning music_manifest_gate.py --demo > /dev/null
+      - name: Regression tests
+        run: pytest test_music_manifest_gate.py -q

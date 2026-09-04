@@ -22,7 +22,7 @@ A finance delivery manifest must include:
 1. An as-of timestamp.
 2. At least one source record.
 3. An approved disclosure in the final language.
-4. Human approval before status is set to release or published.
+4. Named human approval before status is set to `released`.
 
 Default disclosure:
 

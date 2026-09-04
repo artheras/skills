@@ -29,13 +29,14 @@
         "./skills/factor-research",
         "./skills/strategy-generation",
         "./skills/portfolio-optimization",
-        "./skills/execution-position"
+        "./skills/execution-position",
+        "./skills/supply-chain-knowledge-graph"
       ]
     },
     {
       "name": "app-engineering-skills",
       "version": "0.9.0",
-      "description": "Skills that help the user build and enforce their own app-engineering conventions \u2014 a design system of their choosing, reference-product UI patterns (X, TradingView, Trading212) for trading/investing apps, the category disciplines (dense terminals vs. conversational UI), the generation-time craft pass that keeps AI-built UI from reading as templated, plus editorial/poster styling for aria-code's own exports and for standalone creative assets across any domain \u2014 separate from the quant-research pipeline.",
+      "description": "Skills that help the user build and enforce their own app-engineering conventions — a design system of their choosing, reference-product UI patterns (X, TradingView, Trading212) for trading/investing apps, the category disciplines (dense terminals vs. conversational UI), the generation-time craft pass that keeps AI-built UI from reading as templated, plus editorial/poster styling, rights-aware music direction, and short-form video delivery for ARIA exports and standalone creative assets across any domain — separate from the quant-research pipeline.",
       "source": "./",
       "homepage": "https://github.com/artherahq/skills",
       "repository": "https://github.com/artherahq/skills",
@@ -48,20 +49,54 @@
         "./skills/conversational-ui-restraint",
         "./skills/ai-generated-ui-craft",
         "./skills/ui-asset-sourcing",
+        "./skills/web-motion-design",
         "./skills/minimal-editorial-exports",
-        "./skills/minimal-editorial-poster"
+        "./skills/minimal-editorial-poster",
+        "./skills/short-form-video-editing",
+        "./skills/aria-music-direction"
       ]
     },
     {
       "name": "realty-operations-skills",
       "version": "0.9.0",
-      "description": "Skills for operating-rights and revenue-share property arrangements, where the counterparty reports the number that determines what they owe. Separate vertical from the public-market research pipeline \u2014 verifying a private operator's declared revenue is a different discipline from analysing a listed company.",
+      "description": "Skills for operating-rights and revenue-share property arrangements, where the counterparty reports the number that determines what they owe. Separate vertical from the public-market research pipeline — verifying a private operator's declared revenue is a different discipline from analysing a listed company.",
       "source": "./",
       "homepage": "https://github.com/artherahq/skills",
       "repository": "https://github.com/artherahq/skills",
       "strict": false,
       "skills": [
         "./skills/operator-revenue-integrity"
+      ]
+    },
+    {
+      "name": "enterprise-operations-skills",
+      "version": "0.9.0",
+      "description": "Skills for operating a company's own internal systems through an agent — IT incident response, vendor-contract audit, and warehouse/logistics ERP checks. Separate vertical from the public-market research pipeline: these read and act on internal systems of record, so every one of them ends at a human approval gate rather than at a conclusion.",
+      "source": "./",
+      "homepage": "https://github.com/artherahq/skills",
+      "repository": "https://github.com/artherahq/skills",
+      "strict": false,
+      "skills": [
+        "./skills/devops-incident-responder",
+        "./skills/enterprise-legal-audit",
+        "./skills/logistics-warehouse-audit"
+      ]
+    },
+    {
+      "name": "commerce-operations-skills",
+      "version": "0.9.0",
+      "description": "Skills for running a cross-border e-commerce operation through an agent — migrating listings between marketplaces (OZON, Wildberries) as reviewable drafts, forecasting restocks, rolling up multi-store profit with a bucket-by-bucket bridge, recommending ad-bid adjustments against a declared ACOS target, reading competitor price/rank/inventory-proxy/review signals into hedged pattern matches, and — behind a seller-controlled, deny-by-default automation policy the Agent cannot enable itself — publishing an approved Wildberries listing draft or cancelling eligible Wildberries FBS orders. Separate vertical from the other operations skills: these act on a seller's own marketplace catalogs, P&L, ad accounts, and competitive landscape, not internal IT/legal/warehouse systems, so the workflow and the guardrails are marketplace-specific.",
+      "source": "./",
+      "homepage": "https://github.com/artherahq/skills",
+      "repository": "https://github.com/artherahq/skills",
+      "strict": false,
+      "skills": [
+        "./skills/cross-listing",
+        "./skills/inventory-planner",
+        "./skills/profit-engine",
+        "./skills/ads-optimizer",
+        "./skills/competitor-monitor",
+        "./skills/commerce-operations-agent"
       ]
     }
   ]
