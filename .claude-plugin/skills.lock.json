@@ -29,6 +29,11 @@
       "sha256": "5917c76e0fde9afcd6647fac5dbfaf950191b17daaacffdee32ebb53eaeac15b",
       "version": "0.9.0"
     },
+    "app-engineering-skills:short-form-video-editing": {
+      "path": "skills/short-form-video-editing",
+      "sha256": "07705622bbf69865595178e25857ae873ae3d4523ec80513e541b96144a6104d",
+      "version": "0.9.0"
+    },
     "app-engineering-skills:terminal-software-design": {
       "path": "skills/terminal-software-design",
       "sha256": "f718eda25f2455ffff74d53ec952c9ee3f54895cdaee31e2a750330f4ff59ac5",
