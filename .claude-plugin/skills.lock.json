@@ -1,7 +1,7 @@
 {
   "schema_version": "aria.skills-lock.v1",
-  "organization": "artherahq",
-  "repository": "https://github.com/artherahq/skills",
+  "organization": "artheras",
+  "repository": "https://github.com/artheras/skills",
   "catalog_version": "0.9.0",
   "skills": {
     "app-engineering-skills:ai-generated-ui-craft": {

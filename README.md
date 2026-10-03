@@ -1,12 +1,12 @@
 # Arthera Skills
 
-[![test](https://github.com/artherahq/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artherahq/skills/actions/workflows/test.yml)
+[![test](https://github.com/artheras/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artheras/skills/actions/workflows/test.yml)
 
 The skill catalog for **Aria Code** — Arthera's AI quant terminal. Each skill
 packages one piece of research discipline (point-in-time data hygiene, backtest
 trust gates, risk decomposition, strategy spec gates…) as instructions plus
 runnable verification scripts that Aria loads dynamically when a task matches.
-Maintained by [`artherahq`](https://github.com/artherahq).
+Maintained by [`artheras`](https://github.com/artheras).
 
 The catalog uses the open Agent Skills layout — a flat `skills/` directory, a
 `spec/` describing the format, a `template/` for new skills, and a plugin
@@ -81,7 +81,7 @@ Aria Code discovers the catalog through `ARIA_SKILLS_PATH` or a sibling
 checkout and registers each skill as `plugin:skill`:
 
 ```bash
-git clone https://github.com/artherahq/skills aria-skills
+git clone https://github.com/artheras/skills aria-skills
 export ARIA_SKILLS_PATH=/path/to/aria-skills/skills
 ```
 
@@ -124,7 +124,7 @@ Inside Aria Code:
 - `/skills doctor` verifies catalog integrity and declared permissions.
 - `/skills trace` shows why a skill was selected or blocked.
 
-The repo doubles as a standard plugin marketplace (`artherahq/skills`), so any
+The repo doubles as a standard plugin marketplace (`artheras/skills`), so any
 Agent-Skills-compatible runtime can install the same catalog.
 
 ## Integrity And Permissions
