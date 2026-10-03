@@ -1,12 +1,12 @@
 # Arthera Skills
 
-[![test](https://github.com/artherahq/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artherahq/skills/actions/workflows/test.yml)
+[![test](https://github.com/artheras/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artheras/skills/actions/workflows/test.yml)
 
 The skill catalog for **Aria Code** — Arthera's AI quant terminal. Each skill
 packages one piece of research discipline (point-in-time data hygiene, backtest
 trust gates, risk decomposition, strategy spec gates…) as instructions plus
 runnable verification scripts that Aria loads dynamically when a task matches.
-Maintained by [`artherahq`](https://github.com/artherahq).
+Maintained by [`artheras`](https://github.com/artheras).
 
 The catalog uses the open Agent Skills layout — a flat `skills/` directory, a
 `spec/` describing the format, a `template/` for new skills, and a plugin
@@ -64,6 +64,7 @@ standards:
 | [`ui-asset-sourcing`](skills/ui-asset-sourcing) | The step after a direction exists and before the boxes are filled: icons, imagery, logos, placeholder content. Targets two failure modes that are visible instantly and both come from *recalling* instead of *fetching* — invented SVG path data (a "Stripe logo" emitted from memory renders as a blob) and emoji standing in for interface icons. Names which icon set suits which aesthetic (Lucide/Heroicons/Phosphor/Tabler/Material, Simple Icons for real brand marks) and insists on import-by-name over hand-written paths. For imagery it maps style direction to imagery *kind* — the wrong kind being a bigger error than a mediocre execution of the right one — and gives prompt patterns that carry the chosen palette's hex values into Aria Code's own generators (`aria.report.generate_image_local` free/local, `aria.report.generate_image` paid), including where each backend actually fails (SDXL-Turbo cannot render legible text). Draws a hard line at generated people, places, and brand marks presented as real. Ships a lint (`scripts/asset_lint.py`) for the three mechanically-checkable gate items — emoji-as-icon, uncited long SVG path data, mixed icon sets — separate from `ui-design-system`'s token-conformance linter, plus a real fetcher (`scripts/fetch_icon.py`) that pulls actual SVG source from Lucide/Heroicons/Tabler/Phosphor/Simple Icons' published registries instead of an icon being hand-recalled, validating the response actually parses as SVG rather than trusting a 200 status alone. |
 | [`minimal-editorial-exports`](skills/minimal-editorial-exports) | A second, deliberately restrained style for the one surface per document that's allowed to be quiet — a report cover page, a PPTX title slide, a standalone chart export, a Canva one-pager — never the dense report body itself. Heavy negative space around one focal point, one accent color tied to real signal meaning, restrained serif/monospace type, texture only where the export format can render it (HTML/PDF, not PPTX/DOCX). Names exactly where this plugs into Aria Code's own export pipeline (`report_generator.py`'s chart palette, `pdf_report.py`'s theme cover page, `report_exporters.py`'s PPTX/DOCX title slide, `canva_client.py`'s Autofill data). Ships a runnable gate (`scripts/exports_gate.py --demo`) that fails a dense cover carrying borrowed dashboard chrome and format-mismatched texture next to a corrected minimal-editorial compile of the same cover. |
 | [`minimal-editorial-poster`](skills/minimal-editorial-poster) | Domain-agnostic sibling of `minimal-editorial-exports` — compiles a minimal zine/editorial poster prompt for a theme, sentence, or brief from any domain Aria Code touches (finance, real estate, or none at all), not just for styling Aria Code's own exports. Nine first-principles fields answered in order (canvas, attention geometry, anchor, anchor treatment, typography, color logic, texture, emotional temperature, hard avoids), a variation engine so a batch of posters doesn't compile to the same recipe, and an explicit negative-constraints list. Actually executes the compiled prompt when a backend is configured — local self-hosted SDXL-Turbo (`aria.report.generate_image_local`/`edit_image_local`, no API key) or OpenAI's `gpt-image-1` — choosing generate vs. edit from the Anchor field and an `img2img` `strength` value from ranges tuned against a real run (0.55 confirmed on an actual portrait: duotone + simplified background + texture all came through while the subject stayed recognizable). Falls back to prompt-only + a non-image brief when no backend is configured. Ships a runnable gate (`scripts/poster_gate.py --demo`) that reproduces a real commercial-travel-poster prompt failing next to the corrected minimal-editorial compile for the same photo, catching leaked hard-avoid terms, doubled saturated colors, and negative-space that isn't really 70%+. |
+| [`short-form-video-editing`](skills/short-form-video-editing) | Turns approved footage, posters, charts and image assets into a platform-ready short-form video package — edit plan, captions, publish copy and a delivery manifest — with platform specs, asset provenance and finance-content rules in its references. Prepares the package; it does not publish, handle account credentials, or invent rights for a source asset. Ships a delivery gate (`scripts/video_delivery_gate.py --manifest delivery.json`) that validates the manifest against `assets/delivery-manifest.schema.json` before release. |
 
 A third plugin, `realty-operations-skills`, covers operating-rights and
 revenue-share property arrangements — a separate vertical, because verifying a
@@ -74,13 +75,24 @@ analysing a listed company:
 |---|---|
 | [`operator-revenue-integrity`](skills/operator-revenue-integrity) | Verifies an operator's or tenant's self-reported revenue before it settles a revenue-share or guarantee. Rejects the check most people actually run — reconciling declared revenue against the operator's own POS — because POS, payment codes, and bookkeeping are all inside the counterparty's control, and an operator routing customers to a personal payment code produces records that are internally consistent and understated at once. Only signals the operator does not control count as evidence: utility meters, door-access and foot-traffic logs, delivery-platform settlements, inventory deliveries. Documents what each signal can and cannot establish plus its specific false-alarm modes (seasonal HVAC swings dominate the energy ratio; a wrong margin assumption moves inventory-implied revenue more than most real underreporting would). Orchestrates the `cashflow_verify`, `energy_anomaly`, `fulfillment_risk`, and `revenue_share` agents. |
 
+A fourth plugin, `logistics-operations-skills`, is for third-party logistics.
+A 3PL holds many shippers' stock and waybills side by side, so both skills run
+for one shipper at a time and refuse to mix clients' data — a refusal never
+names the other shippers — with an explicit internal view for the 3PL's own
+use that is marked not for client distribution:
+
+| Skill | What it does |
+|---|---|
+| [`inventory-policy`](skills/inventory-policy) | Reorder points, safety stock and order quantities from a shipper's own demand history and lead times — safety stock z·√(L·σ_d² + d̄²·σ_L²), so lead-time spread counts as well as demand spread — plus ABC by annual consumption value, XYZ by demand variability, and dead/slow stock. Refuses to produce a policy from under 14 days of history rather than a confidently wrong one, and states what it does not model (capacity, MOQs, case packs, supplier terms). Standard library only; `scripts/inventory_policy.py --demo` checks hand-computed reference values (safety stock 18, reorder point 78, order 133). |
+| [`carrier-scorecard`](skills/carrier-scorecard) | Ranks carriers within each lane by the Wilson lower bound of their on-time rate, so one lucky delivery (1/1 → 0.21) does not outrank a long record (98/100 → 0.93); flags freight overcharges by modified z-score of cost per kg — falling back to mean absolute deviation on contracted lanes, where most shipments share one rate and the usual median absolute deviation is zero; and suggests a switch only when the alternative is cheaper *and* at least as reliable. Standard library only; `scripts/carrier_scorecard.py --demo` reproduces a 900 saving and a contracted-lane overcharge. |
+
 ## Install
 
 Aria Code discovers the catalog through `ARIA_SKILLS_PATH` or a sibling
 checkout and registers each skill as `plugin:skill`:
 
 ```bash
-git clone https://github.com/artherahq/skills aria-skills
+git clone https://github.com/artheras/skills aria-skills
 export ARIA_SKILLS_PATH=/path/to/aria-skills/skills
 ```
 
@@ -114,7 +126,10 @@ $app-engineering-skills:ai-generated-ui-craft
 $app-engineering-skills:ui-asset-sourcing
 $app-engineering-skills:minimal-editorial-exports
 $app-engineering-skills:minimal-editorial-poster
+$app-engineering-skills:short-form-video-editing
 $realty-operations-skills:operator-revenue-integrity
+$logistics-operations-skills:inventory-policy
+$logistics-operations-skills:carrier-scorecard
 ```
 
 Inside Aria Code:
@@ -122,7 +137,7 @@ Inside Aria Code:
 - `/skills doctor` verifies catalog integrity and declared permissions.
 - `/skills trace` shows why a skill was selected or blocked.
 
-The repo doubles as a standard plugin marketplace (`artherahq/skills`), so any
+The repo doubles as a standard plugin marketplace (`artheras/skills`), so any
 Agent-Skills-compatible runtime can install the same catalog.
 
 ## Integrity And Permissions

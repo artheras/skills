@@ -44,8 +44,8 @@ def build_lock(repository: Path) -> dict:
             }
     return {
         "schema_version": "aria.skills-lock.v1",
-        "organization": "artherahq",
-        "repository": "https://github.com/artherahq/skills",
+        "organization": "artheras",
+        "repository": "https://github.com/artheras/skills",
         "catalog_version": catalog_version,
         "skills": dict(sorted(entries.items())),
     }

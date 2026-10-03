@@ -433,3 +433,50 @@ jobs:
 
       - name: Regression tests
         run: pytest test_pattern_audit.py -q
+
+  inventory-policy:
+    name: inventory-policy harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/inventory-policy/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Standard library only by design, so pytest is the only install.
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Smoke — the demo reproduces its hand-computed reference values
+        run: python -W error inventory_policy.py --demo > /dev/null
+
+      - name: Tests
+        run: pytest -q
+
+  carrier-scorecard:
+    name: carrier-scorecard harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/carrier-scorecard/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Standard library only by design, so pytest is the only install.
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Smoke — the demo reproduces its hand-computed reference values
+        run: python -W error carrier_scorecard.py --demo > /dev/null
+
+      - name: Tests
+        run: pytest -q
+
