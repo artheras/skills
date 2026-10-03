@@ -75,6 +75,17 @@ analysing a listed company:
 |---|---|
 | [`operator-revenue-integrity`](skills/operator-revenue-integrity) | Verifies an operator's or tenant's self-reported revenue before it settles a revenue-share or guarantee. Rejects the check most people actually run — reconciling declared revenue against the operator's own POS — because POS, payment codes, and bookkeeping are all inside the counterparty's control, and an operator routing customers to a personal payment code produces records that are internally consistent and understated at once. Only signals the operator does not control count as evidence: utility meters, door-access and foot-traffic logs, delivery-platform settlements, inventory deliveries. Documents what each signal can and cannot establish plus its specific false-alarm modes (seasonal HVAC swings dominate the energy ratio; a wrong margin assumption moves inventory-implied revenue more than most real underreporting would). Orchestrates the `cashflow_verify`, `energy_anomaly`, `fulfillment_risk`, and `revenue_share` agents. |
 
+A fourth plugin, `logistics-operations-skills`, is for third-party logistics.
+A 3PL holds many shippers' stock and waybills side by side, so both skills run
+for one shipper at a time and refuse to mix clients' data — a refusal never
+names the other shippers — with an explicit internal view for the 3PL's own
+use that is marked not for client distribution:
+
+| Skill | What it does |
+|---|---|
+| [`inventory-policy`](skills/inventory-policy) | Reorder points, safety stock and order quantities from a shipper's own demand history and lead times — safety stock z·√(L·σ_d² + d̄²·σ_L²), so lead-time spread counts as well as demand spread — plus ABC by annual consumption value, XYZ by demand variability, and dead/slow stock. Refuses to produce a policy from under 14 days of history rather than a confidently wrong one, and states what it does not model (capacity, MOQs, case packs, supplier terms). Standard library only; `scripts/inventory_policy.py --demo` checks hand-computed reference values (safety stock 18, reorder point 78, order 133). |
+| [`carrier-scorecard`](skills/carrier-scorecard) | Ranks carriers within each lane by the Wilson lower bound of their on-time rate, so one lucky delivery (1/1 → 0.21) does not outrank a long record (98/100 → 0.93); flags freight overcharges by modified z-score of cost per kg — falling back to mean absolute deviation on contracted lanes, where most shipments share one rate and the usual median absolute deviation is zero; and suggests a switch only when the alternative is cheaper *and* at least as reliable. Standard library only; `scripts/carrier_scorecard.py --demo` reproduces a 900 saving and a contracted-lane overcharge. |
+
 ## Install
 
 Aria Code discovers the catalog through `ARIA_SKILLS_PATH` or a sibling
@@ -117,6 +128,8 @@ $app-engineering-skills:minimal-editorial-exports
 $app-engineering-skills:minimal-editorial-poster
 $app-engineering-skills:short-form-video-editing
 $realty-operations-skills:operator-revenue-integrity
+$logistics-operations-skills:inventory-policy
+$logistics-operations-skills:carrier-scorecard
 ```
 
 Inside Aria Code:

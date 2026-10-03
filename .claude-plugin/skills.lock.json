@@ -54,6 +54,16 @@
       "sha256": "2ba8e92367ece1c25e6c5f75f0d02b61895a88922641ff2c65c3f26cf42b6ba9",
       "version": "0.9.0"
     },
+    "logistics-operations-skills:carrier-scorecard": {
+      "path": "skills/carrier-scorecard",
+      "sha256": "f7c39b814a61087a1aa10cc15b2f8e18bc20ff68551040e738b5f95f38d2438a",
+      "version": "0.9.0"
+    },
+    "logistics-operations-skills:inventory-policy": {
+      "path": "skills/inventory-policy",
+      "sha256": "87517047bcd2b24529e2559331c791aa562deebd4f1a3d6a3f14acbb5eb3a168",
+      "version": "0.9.0"
+    },
     "quant-research-skills:backtest-validation": {
       "path": "skills/backtest-validation",
       "sha256": "3e8fbe9e534aafe6c6cb4aec56e7459ac7ae377f2f1ecd7f0942eea9ab0b3218",
