@@ -1,0 +1,10 @@
+{
+  "schema_version": "aria.skill-policy.v1",
+  "allowed_tools": ["read_file", "run_command"],
+  "permissions": ["read-only", "network"],
+  "scripts": {
+    "execution": "approval",
+    "network": true,
+    "workspace_write": false
+  }
+}

@@ -57,12 +57,17 @@
     "logistics-operations-skills:carrier-scorecard": {
       "path": "skills/carrier-scorecard",
       "sha256": "f7c39b814a61087a1aa10cc15b2f8e18bc20ff68551040e738b5f95f38d2438a",
-      "version": "0.9.0"
+      "version": "0.10.0"
     },
     "logistics-operations-skills:inventory-policy": {
       "path": "skills/inventory-policy",
       "sha256": "87517047bcd2b24529e2559331c791aa562deebd4f1a3d6a3f14acbb5eb3a168",
-      "version": "0.9.0"
+      "version": "0.10.0"
+    },
+    "logistics-operations-skills:stablecoin-settlement-audit": {
+      "path": "skills/stablecoin-settlement-audit",
+      "sha256": "83306cb8ef79d5ba063e1d9d4bda30ba4fb8bcf93109270cf5fb72ee0fc05107",
+      "version": "0.10.0"
     },
     "quant-research-skills:backtest-validation": {
       "path": "skills/backtest-validation",

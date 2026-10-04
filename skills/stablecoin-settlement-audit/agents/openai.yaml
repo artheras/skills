@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stablecoin Settlement Audit"
+  short_description: "Reconcile freight invoices against USDC payments on Solana: shortfalls, duplicates, overdue and payments to the wrong address"
+  default_prompt: "Use $stablecoin-settlement-audit to check these freight invoices against the USDC payments made for them."
