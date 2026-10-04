@@ -87,6 +87,12 @@ use that is marked not for client distribution:
 | [`carrier-scorecard`](skills/carrier-scorecard) | Ranks carriers within each lane by the Wilson lower bound of their on-time rate, so one lucky delivery (1/1 → 0.21) does not outrank a long record (98/100 → 0.93); flags freight overcharges by modified z-score of cost per kg — falling back to mean absolute deviation on contracted lanes, where most shipments share one rate and the usual median absolute deviation is zero; and suggests a switch only when the alternative is cheaper *and* at least as reliable. Standard library only; `scripts/carrier_scorecard.py --demo` reproduces a 900 saving and a contracted-lane overcharge. |
 | [`stablecoin-settlement-audit`](skills/stablecoin-settlement-audit) | Reconciles freight invoices against USDC payments on Solana — paid, short-paid, paid twice, overdue — and reports first any payment that cited an invoice but went to an address other than its payee, the signature of address substitution, without counting it as paid. Matches by memo reference before amount, resolves references against every shipper's invoices before scoping to one (so another shipper's payment is never credited to this one), and keeps money as exact integers of the token's smallest unit. Read-only: it never needs or accepts a private key; payments come from an export or, with `--rpc`, from a Solana node, including Transaction V1, and any transaction it cannot read is reported as incomplete data rather than skipped. Standard library only; `scripts/settlement_audit.py --demo` reproduces a 300 shortfall, a 640.50 duplicate and 300 paid to the wrong address. |
 
+## Security
+
+Report vulnerabilities privately — see [SECURITY.md](SECURITY.md). CI rejects
+any skill that runs code from a source that can change after review, and the
+skills that touch money or wallets never ask for a private key or seed phrase.
+
 ## Install
 
 Aria Code discovers the catalog through `ARIA_SKILLS_PATH` or a sibling

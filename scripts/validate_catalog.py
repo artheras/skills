@@ -15,6 +15,9 @@ Checks, in the order a missing piece bites:
   3. folder name matches the `name:` in the SKILL.md frontmatter
   4. every skill carries skill-policy.json and agents/openai.yaml
   5. every skill is listed in README.md
+  6. no skill fetches and runs code from a moving source — a pipe into a
+     shell, `bash <(curl …)`, `npx …@latest`, an install from a git branch,
+     or a package.json lifecycle hook
 
 Exits non-zero with every failure listed, not just the first — fixing these one
 CI round-trip at a time is miserable.
@@ -30,6 +33,22 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 IGNORED = {".DS_Store", "__pycache__", ".pytest_cache"}
+
+# Remote code that runs on install or use, from a source that can change after
+# review. These are what directory maintainers such as solana.com/skills reject
+# on sight (their CONTRIBUTING lists the same shapes), and an agent that
+# follows a skill's instructions will run them without a second look.
+# Downloading data from a moving URL — icons from unpkg@latest — is not on the
+# list: nothing fetched there is executed.
+REMOTE_EXECUTION = [
+    (re.compile(r"(curl|wget)\b[^\n|]*\|\s*(sudo\s+)?(sh|bash|zsh|python3?)\b"), "pipes a download into a shell"),
+    (re.compile(r"\b(bash|sh|zsh)\s+<\(\s*(curl|wget)\b"), "runs a downloaded script"),
+    (re.compile(r"\bnpx\s+(-y\s+)?\S+@latest\b"), "runs an unpinned npx package"),
+    (re.compile(r"\bpip3?\s+install\s+[^\n]*git\+https?://[^\s@]+(\s|$)"), "pip-installs from a git branch"),
+    (re.compile(r"\bnpm\s+(i|install)\s+[^\n]*github:[^\s#]+(\s|$)"), "npm-installs from a git branch"),
+    (re.compile(r'"(preinstall|postinstall|prepare)"\s*:'), "has a package.json lifecycle script"),
+]
+TEXT_SUFFIXES = {".md", ".py", ".sh", ".js", ".mjs", ".ts", ".json", ".yaml", ".yml", ".toml", ".txt"}
 
 
 def _frontmatter_name(skill_md: Path) -> str | None:
@@ -108,6 +127,18 @@ def validate(repo: Path = REPO) -> list[str]:
                     f"{name}: agents/openai.yaml default_prompt must reference "
                     f"${name} so the invocation is copy-pasteable"
                 )
+
+        for path in sorted(p for p in folder.rglob("*") if p.is_file() and p.suffix in TEXT_SUFFIXES
+                           and not set(p.parts) & IGNORED):
+            text = path.read_text(encoding="utf-8", errors="replace")
+            for pattern, why in REMOTE_EXECUTION:
+                match = pattern.search(text)
+                if match:
+                    line = text.count("\n", 0, match.start()) + 1
+                    failures.append(
+                        f"{name}: {path.relative_to(folder)}:{line} {why} "
+                        f"({match.group(0).strip()[:60]!r}); pin it or remove it"
+                    )
 
         if f"skills/{name})" not in readme:
             failures.append(f"{name}: not listed in README.md — undiscoverable")
