@@ -457,6 +457,30 @@ jobs:
       - name: Tests
         run: pytest -q
 
+  stablecoin-settlement-audit:
+    name: stablecoin-settlement-audit harness
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/stablecoin-settlement-audit/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Standard library only by design, so pytest is the only install. The
+      # tests never touch the network; --rpc is exercised against a fake node.
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Smoke — the demo reproduces its hand-computed reference values
+        run: python -W error settlement_audit.py --demo > /dev/null
+
+      - name: Tests
+        run: pytest -q
+
   carrier-scorecard:
     name: carrier-scorecard harness
     runs-on: ubuntu-latest
