@@ -68,7 +68,7 @@
     {
       "name": "logistics-operations-skills",
       "version": "0.10.0",
-      "description": "Skills for third-party logistics: replenishment policy and carrier selection computed from a shipper's own demand history and waybills, and reconciliation of freight invoices against stablecoin payments on Solana, with every formula and matching rule stated so it can be recomputed. Each analysis runs for one shipper at a time and refuses to mix clients' data, because a 3PL holds many clients' commercial figures side by side.",
+      "description": "Skills for third-party logistics: replenishment policy and carrier selection computed from a shipper's own demand history and waybills, and reconciliation of freight invoices against on-chain stablecoin payments, with every formula and matching rule stated so it can be recomputed. Each analysis runs for one shipper at a time and refuses to mix clients' data, because a 3PL holds many clients' commercial figures side by side.",
       "source": "./",
       "homepage": "https://github.com/artheras/skills",
       "repository": "https://github.com/artheras/skills",

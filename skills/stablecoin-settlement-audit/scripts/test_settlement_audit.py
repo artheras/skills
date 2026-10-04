@@ -57,7 +57,7 @@ class TestMoney:
 
     def test_a_mistyped_payee_address_is_refused(self):
         with pytest.raises(InputError):
-            run([{"invoice_id": "A", "payee_wallet": "0xNotSolana", "amount": "1"}], [])
+            run([{"invoice_id": "A", "payee_wallet": "0xNotAnAddress", "amount": "1"}], [])
 
 
 class TestMatching:
