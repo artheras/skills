@@ -99,3 +99,41 @@ class VideoDeliveryGateTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PlatformVocabularyTest(unittest.TestCase):
+    """The names the gate accepts and the names video_plan emits.
+
+    The gate knew "instagram_reels" and "youtube_shorts" but not the shorter
+    names the planner actually produces — and not douyin, which is the
+    workflow's default platform. The most ordinary delivery there is was
+    rejected outright as an unsupported destination.
+    """
+
+    def codes(self, **overrides) -> set:
+        manifest = copy.deepcopy(VALID_MANIFEST)
+        manifest.update(overrides)
+        return {finding["code"] for finding in validate_manifest(manifest)}
+
+    def test_douyin_is_a_supported_destination(self):
+        self.assertNotIn("unsupported_platform", self.codes(platform="douyin"))
+
+    def test_the_names_the_planner_emits_are_accepted(self):
+        for platform in ("douyin", "bilibili", "shorts", "reels", "x", "youtube"):
+            with self.subTest(platform=platform):
+                self.assertNotIn("unsupported_platform", self.codes(platform=platform))
+
+    def test_the_longer_names_still_work(self):
+        for platform in ("instagram_reels", "youtube_shorts", "x_feed", "linkedin"):
+            with self.subTest(platform=platform):
+                self.assertNotIn("unsupported_platform", self.codes(platform=platform))
+
+    def test_a_vertical_destination_still_requires_9_16(self):
+        output = dict(VALID_MANIFEST["output"], width=1920, height=1080)
+        self.assertIn("invalid_vertical_ratio", self.codes(platform="douyin", output=output))
+
+    def test_a_feed_destination_still_rejects_a_vertical_cut(self):
+        self.assertIn("invalid_feed_ratio", self.codes(platform="x"))
+
+    def test_something_that_is_not_a_destination_is_still_rejected(self):
+        self.assertIn("unsupported_platform", self.codes(platform="myspace"))

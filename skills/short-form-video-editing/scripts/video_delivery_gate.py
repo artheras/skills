@@ -9,13 +9,21 @@ from pathlib import Path
 from typing import Any
 
 
+# The names video_plan actually emits, alongside the longer ones this gate
+# has always used. douyin is the workflow's default platform and was in
+# neither set, so every delivery for it was rejected as an unsupported
+# destination — the one platform most likely to be asked for.
 VERTICAL_PLATFORMS = {
     "tiktok",
     "xiaohongshu",
+    "douyin",
+    "bilibili",
     "instagram_reels",
+    "reels",
     "youtube_shorts",
+    "shorts",
 }
-FEED_PLATFORMS = {"x_feed", "linkedin"}
+FEED_PLATFORMS = {"x_feed", "x", "linkedin", "youtube"}
 ALLOWED_STATUSES = {"draft", "ready_for_review", "released"}
 MUSIC_MODES = {"no_music", "original", "licensed", "commissioned", "user_supplied"}
 

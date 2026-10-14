@@ -1,143 +1,177 @@
 ---
 name: short-form-video-editing
 description: >-
-  Turn approved footage, posters, charts, and image assets into a platform-ready
-  short-form video package: edit plan, captions, publish copy, and delivery manifest.
-  Use when creating social clips, product explainers, market recaps, or finance videos
-  that need platform specifications, asset provenance, subtitle, and release checks.
+  Turn a script and the user's own images or clips into a finished short-form
+  video: an edit plan, narration, captions, the rendered file and its checks.
+  Use when making social clips, product explainers, recaps, tutorials, or any
+  video that needs platform specifications, asset provenance, and release checks.
 ---
 
 # Short-form Video Editing
 
-Create a production-ready edit package from approved assets. This skill specifies the
-edit, subtitles, copy, and release checks; it does not publish content, handle account
-credentials, or invent rights for a source asset.
+Make a video from material the user has supplied or approved. This skill plans the
+edit, narrates it, renders it, and reports what it checked. It does not publish,
+handle account credentials, or invent rights for a source asset.
+
+## How this runs
+
+Inside ARIA Desktop and Aria Code this is not a document-writing exercise: two
+tools do the work, and they are offered in **Work** only, when the desktop
+declares `client_capabilities.video_workflow`.
+
+| Tool | What it does | Cost |
+| --- | --- | --- |
+| `video_plan` | Describes every asset, writes the edit plan (beats, narration, captions, camera moves). | Planner calls only; nothing is rendered |
+| `video_render` | Narration, captions, the final file, and its checks. | TTS and encoding; Veo only if the plan contains generated shots |
+
+**The order is fixed and the confirmation is not optional.** Call `video_plan`,
+show the user the plan in a few lines, ask whether to render, and call
+`video_render` only after they agree. A plan with generated shots makes the
+desktop ask the user to confirm the cost before anything is billed; a refusal
+comes back as the result, not as an error.
+
+`video_plan` takes `script`, `assets`, `title`, and optionally `platform`,
+`target_seconds`, `allow_generation`. `video_render` takes the same `title`.
+
+Assets are paths relative to the connected project folder, or `attachment:1`,
+`attachment:2` … in the original media attachment order — images and clips only,
+not documents or connectors. Video preview frames are not separate assets.
+
+Models: `gemini-3.8-flash` plans, `gemini-2.5-flash-tts` narrates,
+`veo-3.1-fast-generate-001` generates shots when they are allowed and confirmed.
 
 ## Scope and boundaries
 
-Use this skill after the user has supplied or approved the source footage, charts,
-images, poster artwork, brand copy, and destination platform.
+Use after the user has supplied or approved the source material and said where it
+is going.
 
-- Use ui-asset-sourcing before selecting visual assets whose source or licence is unclear.
-- Use minimal-editorial-poster when a static opening card, thumbnail, or campaign poster
-  is needed.
-- Use minimal-editorial-exports when the same visual system also needs a print or static
-  export.
-- Use aria-music-direction when a soundtrack needs a rights-safe cue brief, mix hand-off,
-  or release manifest.
-- Do not use unlicensed music, third-party clips, trademarks, screenshots, or market data
-  without recording their source and usage rights.
-- Do not upload, publish, execute trades, or expose brokerage, API, or personal data.
+- Use `ui-asset-sourcing` before choosing visuals whose source or licence is unclear.
+- Use `minimal-editorial-poster` for a standalone opening card, thumbnail, or poster.
+- Use `aria-music-direction` when a soundtrack needs a rights-safe cue brief.
+- Do not use unlicensed music, third-party clips, trademarks, screenshots, or data
+  without recording where they came from and what rights apply.
+- Do not upload, publish, or expose credentials, API keys, or personal data.
 
 ## Required intake
 
-Collect the minimum information before producing the final package:
+1. Objective, audience, platform, language, call to action.
+2. Approved assets, each with an owner and a usage-rights record.
+3. Target format: vertical, horizontal, or square.
+4. Duration, style references, brand tokens, narration voice.
+5. Music mode: `no_music`, `original`, `licensed`, `commissioned`, `user_supplied`.
 
-1. Objective, audience, platform, language, and call to action.
-2. Approved assets with an owner, source URL or record, and usage rights.
-3. Target format: vertical social, horizontal feed, or square feed.
-4. Desired duration, style references, brand tokens, and narration.
-5. Music mode: `no_music`, `original`, `licensed`, `commissioned`, or `user_supplied`.
-   For music, identify the intended cue, clearance holder, territory, and term.
-6. If financial content is present: as-of time, data sources, required disclosure, and
-   named human approver for release.
+If rights or a source are missing, mark the affected beat `pending` rather than
+treating it as ready. `pending` means *the user must still supply or approve
+something* — it is not a defect in the render, and a video can be complete and
+still carry pending beats.
 
-If any required asset rights or financial source is missing, label the corresponding edit
-beat as pending instead of treating it as ready.
+### When the content makes claims about the world
+
+Market, health, legal, safety, and similar content carries one extra obligation:
+every time-sensitive or factual claim names its source and its as-of time, and
+nothing is promised that the material does not support. Finance has the strictest
+form of this — see `references/financial-content-rules.md`, which also carries the
+disclosure wording and the named-approver requirement before release. Apply the
+same discipline to any domain where being wrong costs the viewer something.
 
 ## Workflow
 
-### 1. Define the platform cut
+### 1. Choose the platform cut
 
-Choose one primary cut before editing:
+- Douyin, Xiaohongshu, TikTok, Reels, Shorts, Bilibili: 1080 x 1920, 9:16.
+- X, LinkedIn, YouTube landscape: 16:9 or 1:1, chosen from the publishing objective.
 
-- TikTok, Xiaohongshu, Instagram Reels, and YouTube Shorts: 1080 x 1920, 9:16.
-- X and LinkedIn: 16:9 or 1:1, selected from the publishing objective.
-
-See references/platform-specs.md for safe-area and subtitle guidance. Produce a separate
-manifest for each materially different crop, language, or platform claim.
+See `references/platform-specs.md` for safe areas and subtitle placement. Produce a
+separate plan for each materially different crop, language, or claim.
 
 ### 2. Build a concise story
 
-Use a three-beat outline unless the user asks for a different treatment:
+Hook, evidence, close — unless the user asks for another treatment.
 
-1. Hook: establish the question, event, or visual change within two seconds.
-2. Evidence: show the key proof, chart, product action, or source-backed explanation.
-3. Close: state the qualified conclusion and a single call to action.
+1. **Hook**: establish the question or visual change inside the first three seconds.
+2. **Evidence**: the proof, product action, or source-backed explanation.
+3. **Close**: the qualified conclusion and a single call to action.
 
-Keep decorative scene transitions to two or fewer. Favour cuts, restrained emphasis,
-and readable charts over motion that competes with the data.
+### 3. Let the plan obey the rules the renderer enforces
 
-### 3. Produce the edit plan
+`video_plan` applies these; a plan that breaks them is rejected and re-asked once,
+so writing against them saves a round of paid calls:
 
-Create edit-plan.json using assets/edit-plan.schema.json. For every beat record:
+- 2–6 seconds per beat, one idea each; beats are contiguous and total about
+  `target_seconds`.
+- Narration must fit its beat when spoken — roughly four Chinese characters per
+  second. Captions are shorter than the narration.
+- A shot taken from the material **names which asset** (`asset_id`). The same asset
+  may be reused, but not for more than two consecutive beats, and with a different
+  camera move.
+- Use every supplied asset if there is room for it.
+- `source=generate` only where material is genuinely missing; `source=animate` to put
+  motion into one of the user's own images, keeping that image. Both are billed per
+  second and need `allow_generation`.
+- Do not invent data, prices, or promises.
 
-- Start and end time, purpose, visual asset, crop or motion instruction, and on-screen copy.
-- Caption line or narration text.
-- Source attribution placement when it is required.
-- A pending flag for any missing approval, source, or asset licence.
+`assets/edit-plan.schema.json` is the written form of this. It requires `asset_id`
+for `asset` and `animate` beats, because a plan that omits it renders nothing.
 
-Use references/motion-tokens.md for durations and motion restraint.
+### 4. Read what the render reports
 
-### 4. Direct music safely
+`video_render` returns `status` plus a list of checks, and both matter:
 
-If music is included, create `music-cue-manifest.json` using `aria-music-direction`.
-Record the rights source, license evidence, territory, term, mix intent, and human
-clearance before release. Voice-led market recaps may use `no_music`; record the
-editorial reason in the delivery manifest.
+| Check | Meaning |
+| --- | --- |
+| `duration`, `frame_size` | The file matches the plan and the platform |
+| `audio`, `long_silence` | There is narration, and no dead air |
+| `black_frames` | No blank stretches |
+| `pending_beats` | Something awaits the user — rights, material, a fact |
+| `captions_burned_in` | Whether captions are in the picture or only a track |
 
-### 5. Produce captions and publishing copy
+`rendered_with_issues` does **not** mean the file is broken. Say which check failed
+and what it means for the user. A pending beat is a question for them; a failed
+`frame_size` is a defect.
 
-Deliver both SRT and VTT captions. Keep captions to two lines, preserve sentence meaning,
-and leave platform UI safe areas clear. Include:
+**Captions**: burning them into the picture needs an ffmpeg built with libass. Without
+it the workflow embeds a selectable subtitle track instead and says so. Douyin,
+TikTok and the rest do not display a subtitle track, so for those platforms burned-in
+captions are a release requirement, not a preference.
 
-- Primary post copy.
-- One concise alternative hook.
-- Alt text or an accessible visual description.
-- Hashtags only when they serve discovery rather than pad the caption.
+## What the render writes
 
-### 6. Apply financial-content guardrails
+In the project folder:
 
-For market, investing, trading, macro, or crypto content:
+- `edit_plan.json` — the plan, after validation
+- `assets.json` — what each supplied asset is
+- `<project>.mp4` — the video
+- `subtitles.srt` — captions
+- `narration.wav` and `narration/` — the spoken track, per beat
+- `clips/` — the rendered shots
+- `manifest.json` — duration, aspect, models used, checks, notes, pending beats
 
-- Include the data source and as-of time for every time-sensitive claim.
-- Use the disclosure: “仅作信息展示，不构成投资建议。” or “Illustrative only. Not
-  investment advice.” unless legal review supplies approved localized wording.
-- Avoid guaranteed returns, urgency, personalised buy or sell recommendations, and
-  unqualified performance claims.
-- Never show account IDs, API keys, credentials, balances, order controls, or private
-  portfolio data without explicit approved redaction.
-- Require a named human approval before a finance video is marked `released`.
+`manifest.json` is the record of the release. Its `notes` carry what the planner
+wants the user to know — thin material, rights to clear — and they are worth
+repeating to the user rather than leaving in the file.
 
-See references/financial-content-rules.md for the release checklist.
+## Before release
 
-## Deliverable package
-
-Return a folder containing:
-
-- edit-plan.json
-- captions.srt and captions.vtt
-- publish-copy.md
-- delivery-manifest.json
-- music-cue-manifest.json when music is used
-- source-notes.md
-- approved media exports, or explicit placeholders for exports that still need rendering
-
-Validate delivery-manifest.json before handoff:
+`manifest.json` records what was rendered. It does not record whether the video may
+be published — who owns the material, whether the music is cleared, who approved it.
+That is `delivery-manifest.json`, written against `assets/delivery-manifest.schema.json`
+and checked by:
 
     python3 scripts/video_delivery_gate.py --manifest delivery-manifest.json
 
-The validator enforces output format, captions, asset and music provenance, financial
-disclosures, and release approval. A draft may carry pending approval; released items may
-not.
+It enforces the output format for the destination, captions, asset and music
+provenance, any required disclosure, and release approval. A `draft` may carry
+pending approval; a `released` item may not.
+
+Alongside it, keep `publish-copy.md` (post copy, one alternative hook, alt text) and
+`source-notes.md` (where each asset came from and under what rights).
 
 ## Quality bar
 
-The final package must feel intentional at muted autoplay:
+The video must read at muted autoplay:
 
-- The first frame is recognizable without audio.
-- The visual hierarchy prioritizes the claim, supporting data, then brand.
-- Captions remain readable above platform controls.
-- Music must be cleared and mixed below narration; transitions support, rather than obscure,
-  source-backed information.
-- Every factual financial statement can be traced back to a recorded source.
+- The first frame is recognizable without sound.
+- The hierarchy is claim, then support, then brand.
+- Captions stay clear of platform controls.
+- Music, if any, is cleared and mixed below the narration.
+- Every factual statement traces back to a recorded source.
