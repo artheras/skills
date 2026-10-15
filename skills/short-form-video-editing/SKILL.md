@@ -105,12 +105,15 @@ so writing against them saves a round of paid calls:
   may be reused, but not for more than two consecutive beats, and with a different
   camera move.
 - Use every supplied asset if there is room for it.
+- The last beat is a `conclusion` or a `cta`; the first is the `hook`.
 - `source=generate` only where material is genuinely missing; `source=animate` to put
   motion into one of the user's own images, keeping that image. Both are billed per
-  second and need `allow_generation`.
+  second, are capped at 8 seconds a shot, and need `allow_generation`. A plain camera
+  move on supplied material is free — use it wherever it will do.
 - Do not invent data, prices, or promises.
 
-`assets/edit-plan.schema.json` is the written form of this. It requires `asset_id`
+`references/motion-tokens.md` describes the four camera moves and when each earns its
+place. `assets/edit-plan.schema.json` is the written form of this. It requires `asset_id`
 for `asset` and `animate` beats, because a plan that omits it renders nothing.
 
 ### 4. Read what the render reports
