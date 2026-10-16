@@ -19,6 +19,11 @@
       "sha256": "79bca0d4e1838140002bdf0e0ca202331b3a39cf53bc03682863c13bc66f1df7",
       "version": "0.9.0"
     },
+    "app-engineering-skills:figma-design-sync": {
+      "path": "skills/figma-design-sync",
+      "sha256": "99b713225bb65b0705964b453ac40b3e21abeea58695dfb379761d92aeb84d6e",
+      "version": "0.9.0"
+    },
     "app-engineering-skills:industry-design-direction": {
       "path": "skills/industry-design-direction",
       "sha256": "8880b3a3a021f7d9c84d1d5b6f59a78aed5a1e89e986703eb088dc222b15b05f",
@@ -36,7 +41,7 @@
     },
     "app-engineering-skills:short-form-video-editing": {
       "path": "skills/short-form-video-editing",
-      "sha256": "dcace72d6d07e814f4f960234ce68087626f4fd3afd63149defd2b64f3419366",
+      "sha256": "55b0202d5f19343039bbc07f91cf38e06d6248fe223e18e0cfcfc8f319099d94",
       "version": "0.9.0"
     },
     "app-engineering-skills:terminal-software-design": {
