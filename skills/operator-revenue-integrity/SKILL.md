@@ -1,7 +1,7 @@
 ---
 name: operator-revenue-integrity
 description: >-
-  Verify an operator's or tenant's self-reported revenue before it is used to
+  Verify an operator’s or tenant’s self-reported revenue before it is used to
   settle a revenue-share, guarantee, or performance clause. Trigger for
   "核实流水", "商户流水是不是真的", "这个月分账对不对", "怀疑商户漏报流水",
   "能耗和流水对不上", "verify operator revenue", "tenant underreporting

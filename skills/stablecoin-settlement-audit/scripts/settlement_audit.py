@@ -49,6 +49,7 @@ import json
 import re
 import ssl
 import sys
+import urllib.parse
 import urllib.request
 from collections import defaultdict
 from datetime import date, datetime, timezone
@@ -384,6 +385,32 @@ def _rpc(url: str, method: str, params: list):
 MAX_TX_VERSION = 1
 
 
+LOCAL_RPC_HOSTS = {"localhost", "127.0.0.1", "::1"}
+
+
+def _check_rpc_url(url: str) -> None:
+    """https anywhere, plain http only to this machine.
+
+    The host is parsed, not prefix-matched: "http://localhost.evil.com" and
+    "http://127.0.0.1.evil.com" start with a local-looking string but resolve
+    to someone else's server, which would then see every payee wallet queried
+    over an unencrypted connection and could answer with forged transfers.
+    """
+    try:
+        parsed = urllib.parse.urlsplit(url)
+        host = parsed.hostname
+        parsed.port  # raises ValueError on a malformed port
+    except ValueError:
+        raise InputError("--rpc is not a valid URL") from None
+    if not host:
+        raise InputError("--rpc must be an https URL (or a local node)")
+    if parsed.scheme == "https":
+        return
+    if parsed.scheme == "http" and host in LOCAL_RPC_HOSTS:
+        return
+    raise InputError("--rpc must be an https URL (or a local node: localhost, 127.0.0.1, ::1)")
+
+
 def fetch_transfers(url: str, payees, mint=USDC_MINT, limit=100, rpc=_rpc, unreadable=None) -> list:
     """Incoming `mint` transfers to each payee wallet. Reads only; signs nothing.
 
@@ -392,8 +419,7 @@ def fetch_transfers(url: str, payees, mint=USDC_MINT, limit=100, rpc=_rpc, unrea
     turn a paid invoice into an "unpaid" one.
     """
     unreadable = unreadable if unreadable is not None else []
-    if not (url.startswith("https://") or url.startswith("http://localhost") or url.startswith("http://127.0.0.1")):
-        raise InputError("--rpc must be an https URL (or a local node)")
+    _check_rpc_url(url)
     found = []
     for payee in sorted(set(payees)):
         accounts = rpc(url, "getTokenAccountsByOwner", [payee, {"mint": mint}, {"encoding": "jsonParsed"}])

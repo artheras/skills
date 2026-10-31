@@ -5,15 +5,16 @@ description: >-
   or brief from ANY domain aria-code touches — a financial story, a real-estate
   listing highlight, a sports recap, a general subject — not tied to
   financial-report styling. Trigger for "做一张极简海报", "zine风格的海报",
-  "minimal poster for [subject]", "给这个故事配一张海报", or when the user
-  wants a standalone poster-style creative asset rather than a data export.
-  Produces a ready-to-use image-generation prompt and, when an image backend
-  is configured, actually executes it via aria.report.generate_image_local /
-  edit_image_local (self-hosted, no API key) or the OpenAI-backed equivalents
-  — falls back to prompt-only + a non-image brief when neither is available.
-  Do NOT trigger for styling aria-code's own report/PPTX/Canva exports (use
-  `minimal-editorial-exports` for that — this skill is for a standalone
-  poster from a theme, not a data-export cover).
+  "minimal poster for", "给这个故事配一张海报", "editorial poster", or when the
+  user wants a standalone poster-style creative asset rather than a data
+  export. Produces a ready-to-use image-generation prompt and, when an image
+  backend is configured, actually executes it via generate_image / edit_image
+  in aria-code’s chat loop or aria.report.generate_image_local /
+  edit_image_local over MCP (self-hosted, no API key), or the OpenAI-backed
+  equivalents — falls back to prompt-only + a non-image brief when neither is
+  available. Do NOT trigger for styling aria-code’s own report/PPTX/Canva
+  exports (use `minimal-editorial-exports` for that — this skill is for a
+  standalone poster from a theme, not a data-export cover).
 ---
 
 # Minimal Editorial Poster
@@ -98,7 +99,9 @@ the actual subject each time, not at random:
 
 aria-code has two image backends, both MCP-exposed (`packages/aria_mcp/server.py`),
 mirroring the local-vs-cloud choice `local_llm_provider.py`/`openai_image_client.py`
-already make for chat:
+already make for chat. The `aria.report.*` names below are what an MCP client
+sees; inside aria-code's own chat loop the local backend is called as
+`generate_image` / `edit_image` instead, and the OpenAI backend is MCP-only:
 
 - **Local, self-hosted** (`local_image_provider.py`, default `stabilityai/sdxl-turbo`
   fp16) — `aria.report.generate_image_local` for a from-scratch anchor,

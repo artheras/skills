@@ -211,3 +211,28 @@ class TestReadingTheChain:
 
 def test_the_demo_reproduces_its_reference_values():
     assert sa.demo() == 0
+
+
+@pytest.mark.parametrize("url", [
+    "http://localhost.evil.com/",
+    "http://127.0.0.1.evil.com:8899",
+    "http://localhost@evil.com/",
+    "http://evil.com/?localhost",
+    "http://node.example.com/",
+    "ftp://localhost/",
+    "https://",
+    "http://localhost:notaport/",
+])
+def test_rpc_url_must_be_https_or_a_real_local_host(url):
+    with pytest.raises(InputError):
+        sa.fetch_transfers(url, ["payee"], rpc=lambda *a: {"value": []})
+
+
+@pytest.mark.parametrize("url", [
+    "https://api.mainnet-beta.solana.com",
+    "http://localhost:8899",
+    "http://127.0.0.1:8899/",
+    "http://[::1]:8899",
+])
+def test_rpc_url_accepts_https_and_local_nodes(url):
+    assert sa.fetch_transfers(url, ["payee"], rpc=lambda *a: {"value": []}) == []

@@ -8,15 +8,16 @@ description: >-
   "risk control 真的在跑吗", "audit trail", "监管合规", or whenever the user
   is about to claim a system is validated/production-ready/risk-managed to
   someone outside the team, or is drafting the kind of document that answers
-  "how is this validated, is risk control actually running, where are the
-  boundaries." Also trigger when a risk control, circuit breaker, or safety
-  mechanism is being marked "done" — this skill's job includes catching the
-  gap between "the code exists" and "the code has been verified to actually
-  trigger," which is the single most common false claim in this category.
-  Do NOT trigger for the underlying research/risk/backtest work itself —
-  `backtest-validation`, `risk-assessment`, and `multiple-testing-correction`
-  produce the evidence; this skill checks that evidence is honestly compiled
-  and disclosed, not that the underlying work is correct.
+  how the system is validated, whether risk control is actually running, and
+  where its boundaries are. Also trigger when a risk control, circuit breaker,
+  or safety mechanism is being marked as finished — this skill’s job includes
+  catching the gap between code that exists and code that has been verified
+  to actually trigger, which is the single most common false claim in this
+  category. Do NOT trigger for the underlying research/risk/backtest work
+  itself — `backtest-validation`, `risk-assessment`, and
+  `multiple-testing-correction` produce the evidence; this skill checks that
+  evidence is honestly compiled and disclosed, not that the underlying work is
+  correct.
 ---
 
 # Compliance Audit Trail

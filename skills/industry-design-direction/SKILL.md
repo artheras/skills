@@ -5,18 +5,19 @@ description: >-
   which aesthetic, which palette, which font pairing, which page structure —
   from a library of 95 industry profiles, 57 defined styles, 96 palettes, 57
   font pairings, and 30 landing structures. Trigger for "design a landing page
-  for a dental clinic",
-  "帮我设计一个餐厅网站", "what should a fintech app look like", "给这个 SaaS 产品定一套
-  配色和字体", "我要做一个电商网站，用什么风格", or whenever someone needs a starting
-  direction for a product whose industry is known but whose look is not.
+  for a dental clinic", "帮我设计一个餐厅网站", "what should a fintech app look
+  like", "给这个 SaaS 产品定一套配色和字体", "我要做一个电商网站，用什么风格",
+  or whenever someone needs a starting direction for a product whose industry
+  is known but whose look is not.
   Do NOT trigger once a direction already exists and the job is enforcing it
   across screens (use `ui-design-system` — that skill operationalizes a chosen
   aesthetic into tokens; this one chooses it). Do NOT trigger for dense
   dashboards/terminals (`terminal-software-design`), chat interfaces
   (`conversational-ui-restraint`), or trading-app components
   (`trading-ui-patterns`) — those are category skills with far more depth for
-  their category than the one-line profile here. Portable: every reference file
-  is self-contained prose, no script dependency.
+  their category than the one-line profile here. Every reference file is
+  self-contained prose usable in any assistant; the bundled
+  `scripts/verify_contrast.py` data-integrity gate needs Python.
 ---
 
 # Industry design direction

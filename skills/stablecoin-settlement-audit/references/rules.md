@@ -55,5 +55,7 @@ on each token account (`--limit`, default 100) → `getTransaction` with
 `jsonParsed` and `maxSupportedTransactionVersion: 1` (Transaction V1 reached
 mainnet in September 2026; requesting version 0 makes the node refuse V1
 transactions). A transaction that cannot be read is listed under
-`incomplete`, never skipped. Only https URLs or a local node are accepted.
+`incomplete`, never skipped. Only https URLs or a local node are accepted —
+plain http only when the parsed host is `localhost`, `127.0.0.1` or `::1`, so
+`http://localhost.evil.com` is refused.
 Nothing is signed or sent.

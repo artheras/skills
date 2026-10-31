@@ -4,13 +4,14 @@ description: >-
   Decompose and judge the risk of a portfolio, strategy, or single position
   from its actual history. Trigger for "我的组合风险大吗", "最大回撤会有多深",
   "如果市场跌20%我亏多少", "该不该降仓", "组合太集中了吗", "portfolio risk",
-  "VaR", "stress test my holdings", or whenever the user (1) holds or proposes
-  a set of positions and asks how risky it is, (2) asks what a market drop
-  would do to them, (3) asks whether to reduce/hedge/diversify, or (4) receives
-  a strategy from another skill and needs its risk characterized before acting.
-  Fire even for casual phrasing ("这样拿着安全吗", "is this too much NVDA?").
-  Do NOT trigger for backtest trustworthiness questions (that is
-  backtest-validation) or pure data lookups.
+  "value at risk", "在险价值", "stress test my holdings", or whenever the user
+  (1) holds or proposes a set of positions and asks how risky it is, (2) asks
+  what a market drop would do to them, (3) asks whether to
+  reduce/hedge/diversify, or (4) receives a strategy from another skill and
+  needs its risk characterized before acting. Fire even for casual phrasing
+  ("这样拿着安全吗", "is this too much NVDA?"). Do NOT trigger for backtest
+  trustworthiness questions (that is backtest-validation) or pure data
+  lookups.
 ---
 
 # Risk Assessment

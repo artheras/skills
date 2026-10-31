@@ -1,0 +1,23 @@
+# skills.lock.json pins a SHA-256 of each skill's raw bytes, so a CRLF
+# checkout (core.autocrlf on Windows) fails Aria Code's integrity check and no
+# skill can activate automatically. Keep text LF in the repo and working trees.
+* text=auto eol=lf
+
+# Binary formats: never touch line endings. text=auto already detects binary
+# content; these make the intent explicit for files a skill may add later.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary
+*.gz   binary
+*.tgz  binary
+*.mp4  binary
+*.mov  binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary

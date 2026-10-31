@@ -1,0 +1,50 @@
+{
+  "_comment": [
+    "Tool names a skill-policy.json `allowed_tools` entry may use. Checked by",
+    "scripts/validate_catalog.py. Aria Code keeps only core file tools plus the",
+    "union of active skills' allowed_tools in the model's tool schema",
+    "(apps/cli/providers/llm/ollama_stream.py, _skill_tool_schema_allowed), so a",
+    "name that is not a real tool silently grants nothing.",
+    "Sources in aria-code (src/aria_code/): apps/cli/local_tool_schemas.py and",
+    "aria_cli.py LOCAL_TOOLS for core tools; packages/aria_skills/loader.py",
+    "CORE_FILE_TOOLS; tools/local_finance_tools.py LOCAL_FINANCE_TOOL_REGISTRY;",
+    "tools/image_gen_tools.py; and, for MCP tools matched by their short name",
+    "(mcp__<server>__<short_name>), packages/aria_mcp/bridge.py and the",
+    "research-run tools listed in ollama_stream.py. Fully-qualified",
+    "mcp__<server>__<tool> names are accepted without being listed here.",
+    "Update this file when aria-code adds or renames a tool."
+  ],
+  "core": [
+    "read_file", "analyze_file", "write_file", "edit_file", "multi_edit",
+    "list_files", "list_dir", "search_code", "search", "glob",
+    "run_command", "process", "web_fetch", "github",
+    "notebook_read", "notebook_edit",
+    "lsp_hover", "lsp_definition", "lsp_references",
+    "ask_user", "update_todos",
+    "write_spreadsheet", "export_markdown_pdf",
+    "get_market_data", "get_market_history", "broker_query", "broker_order"
+  ],
+  "finance": [
+    "get_crypto_data", "get_forex_data", "get_commodities_data", "get_futures_data",
+    "calculate_factors", "get_ai_signal", "get_market_insights", "get_predictions",
+    "backtest_strategy", "cloud_backtest", "get_risk_metrics", "optimize_positions",
+    "get_sector_performance", "get_northbound_flow", "screen_ashare",
+    "get_limit_up_pool", "get_market_indices", "analyze_news", "get_bonds_data",
+    "piotroski_fscore", "altman_zscore", "get_options_chain", "calculate_ichimoku",
+    "get_fear_greed_index", "get_funding_rates", "get_funding_rates_compare",
+    "walk_forward_backtest", "run_portfolio_backtest", "peer_comparison",
+    "web_search"
+  ],
+  "image": [
+    "generate_image", "edit_image"
+  ],
+  "mcp": [
+    "research_report_assess",
+    "research_run_create", "research_run_get", "research_run_transition",
+    "research_run_attach_artifact", "research_run_record_quality",
+    "research_run_events",
+    "aria.report.generate_image", "aria.report.edit_image",
+    "aria.report.generate_image_local", "aria.report.edit_image_local",
+    "aria.report.estimate_image_cost"
+  ]
+}

@@ -5,14 +5,14 @@
     "url": "https://github.com/artheras"
   },
   "metadata": {
-    "description": "Reusable Agent Skills for quantitative finance research, extracted from the Aria toolchain.",
-    "version": "0.9.0",
+    "description": "Reusable Agent Skills from the Aria toolchain: quantitative finance research, app engineering and design, realty operations, and third-party logistics.",
+    "version": "0.11.0",
     "repository": "https://github.com/artheras/skills"
   },
   "plugins": [
     {
       "name": "quant-research-skills",
-      "version": "0.9.0",
+      "version": "0.11.0",
       "description": "Skills that enforce research discipline for equity reports, factors, and strategy backtesting through evidence and deterministic validation gates.",
       "source": "./",
       "homepage": "https://github.com/artheras/skills",
@@ -34,7 +34,7 @@
     },
     {
       "name": "app-engineering-skills",
-      "version": "0.9.0",
+      "version": "0.11.0",
       "description": "Skills that help the user build and enforce their own app-engineering conventions \u2014 a design system of their choosing, reference-product UI patterns (X, TradingView, Trading212) for trading/investing apps, the category disciplines (dense terminals vs. conversational UI), the generation-time craft pass that keeps AI-built UI from reading as templated, plus editorial/poster styling for aria-code's own exports and for standalone creative assets across any domain \u2014 separate from the quant-research pipeline.",
       "source": "./",
       "homepage": "https://github.com/artheras/skills",
@@ -55,7 +55,7 @@
     },
     {
       "name": "realty-operations-skills",
-      "version": "0.9.0",
+      "version": "0.11.0",
       "description": "Skills for operating-rights and revenue-share property arrangements, where the counterparty reports the number that determines what they owe. Separate vertical from the public-market research pipeline \u2014 verifying a private operator's declared revenue is a different discipline from analysing a listed company.",
       "source": "./",
       "homepage": "https://github.com/artheras/skills",
@@ -67,7 +67,7 @@
     },
     {
       "name": "logistics-operations-skills",
-      "version": "0.10.0",
+      "version": "0.11.0",
       "description": "Skills for third-party logistics: replenishment policy and carrier selection computed from a shipper's own demand history and waybills, and reconciliation of freight invoices against on-chain stablecoin payments, with every formula and matching rule stated so it can be recomputed. Each analysis runs for one shipper at a time and refuses to mix clients' data, because a 3PL holds many clients' commercial figures side by side.",
       "source": "./",
       "homepage": "https://github.com/artheras/skills",

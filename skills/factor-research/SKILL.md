@@ -10,7 +10,7 @@ description: >-
   building a strategy, or (4) hands a signal to strategy construction. Fire
   even for informal phrasing ("这个指标选股靠谱吗"). Do NOT trigger for
   single-asset technical indicator questions (no cross-section) or for
-  validating a finished strategy's returns (that is backtest-validation).
+  validating a finished strategy’s returns (that is backtest-validation).
 ---
 
 # Factor Research
