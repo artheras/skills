@@ -1,4 +1,4 @@
-# Arthera Skills
+# Aria Skills
 
 [![test](https://github.com/artheras/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artheras/skills/actions/workflows/test.yml)
 
