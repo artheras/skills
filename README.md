@@ -3,9 +3,11 @@
 [![test](https://github.com/artheras/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artheras/skills/actions/workflows/test.yml)
 
 The skill catalog for **Aria Code** — Arthera's AI quant terminal. Each skill
-packages one piece of research discipline (point-in-time data hygiene, backtest
-trust gates, risk decomposition, strategy spec gates…) as instructions plus
-runnable verification scripts that Aria loads dynamically when a task matches.
+packages one piece of discipline — quant research (point-in-time data hygiene,
+backtest trust gates, risk decomposition, strategy spec gates…), app
+engineering and design, realty operations, and third-party logistics — as
+instructions, usually with runnable verification scripts, that Aria loads
+dynamically when a task matches.
 Maintained by [`artheras`](https://github.com/artheras).
 
 The catalog uses the open Agent Skills layout — a flat `skills/` directory, a
@@ -163,7 +165,7 @@ python scripts/build_skill_lock.py --check
 ## Layout
 
 ```
-aria-skills/
+skills/                      # repository root (artheras/skills)
 ├── .claude-plugin/
 │   ├── marketplace.json     # installable marketplace metadata
 │   └── skills.lock.json     # versioned content-integrity lock
@@ -171,15 +173,27 @@ aria-skills/
 │   └── <skill-name>/
 │       ├── SKILL.md         # triggering + workflow + guardrails
 │       ├── skill-policy.json# declared tools / permissions / script policy
+│       ├── agents/          # interface descriptor (openai.yaml)
 │       ├── references/      # methodology, thresholds, schemas
 │       └── scripts/         # runnable harness or gate + its pytest suite
 ├── spec/                    # the SKILL.md format, briefly
-├── scripts/                 # catalog integrity tooling (skills.lock builder)
+├── scripts/                 # catalog tooling: lock builder, catalog validator,
+│                            # known Aria tool names (aria_known_tools.json)
 └── template/                # scaffold for a new skill
 ```
 
-Every skill ships an executable verifier with a `--demo` mode — the discipline
-is enforced by scripts and exit codes, not by prose.
+Most skills ship an executable verifier, and most of those have a `--demo`
+mode — where a check can be mechanical, it is enforced by scripts and exit
+codes, not by prose. The exceptions are deliberate:
+
+- **Reference-only, no scripts:** `terminal-software-design`,
+  `conversational-ui-restraint`, `ai-generated-ui-craft`, and
+  `operator-revenue-integrity` (which directs work to Aria Code's realty
+  agents instead). Their policies declare `"execution": "none"`.
+- **Verifier without `--demo`:** `equity-research-report`
+  (`validate_equity_report.py`) and `short-form-video-editing`
+  (`video_delivery_gate.py`) validate a real manifest; CI runs their tests and
+  checks that an empty or invalid manifest fails closed.
 
 ## Run the bundled harness
 

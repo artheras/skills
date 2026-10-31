@@ -16,7 +16,8 @@ Prefer capturing what the user already has over generating from nothing:
   the recurring ones as tokens, collapsing near-duplicates.
 - **They are starting fresh** → this is a conversation, not a script. Ask about
   domain, mood, light/dark needs, and one or two reference products they like.
-  `ui-ux-pro-max` is the right tool for exploring palette/type options. Once
+  The `industry-design-direction` skill is the right tool for exploring
+  palette/type options. Once
   they choose, record the choice — the recording is this skill's job.
 
 Emit the file with `python scripts/design_tokens.py --template` as the starting

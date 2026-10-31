@@ -1,10 +1,19 @@
 ---
 name: short-form-video-editing
 description: >-
-  Turn approved footage, posters, charts, and image assets into a platform-ready
-  short-form video package: edit plan, captions, publish copy, and delivery manifest.
-  Use when creating social clips, product explainers, market recaps, or finance videos
-  that need platform specifications, asset provenance, subtitle, and release checks.
+  Turn approved footage, posters, charts, and image assets into a
+  platform-ready short-form video package: edit plan, captions (SRT/VTT),
+  publish copy, and a delivery manifest checked by a release gate. Trigger for
+  "short-form video", "make a TikTok video", "Instagram Reels edit", "YouTube
+  Shorts cut", "video edit plan", "剪一个短视频", "做一条抖音视频",
+  "小红书视频", "短视频字幕", "视频发布文案", or when creating social clips,
+  product explainers, market recaps, or finance videos that need platform
+  specifications, asset provenance, subtitles, and release checks. Do NOT
+  trigger for a static poster or thumbnail on its own (use
+  `minimal-editorial-poster` or `minimal-editorial-exports`), for finding or
+  licensing source assets (use `ui-asset-sourcing`), or for uploading to or
+  publishing from a platform account — this skill prepares the package and
+  never publishes.
 ---
 
 # Short-form Video Editing

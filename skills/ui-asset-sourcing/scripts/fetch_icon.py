@@ -10,18 +10,27 @@ already renders as a blob. This script exists so there's a real fetch to
 reach for instead of recalling path data — the "import by name" the
 skill's Quality gate asks for actually being possible, not just stated.
 
-Five registries, each a stable public URL template for the raw SVG:
-  lucide       https://unpkg.com/lucide-static@latest/icons/{name}.svg
-  heroicons    https://raw.githubusercontent.com/tailwindlabs/heroicons/master/optimized/24/outline/{name}.svg
-  tabler       https://unpkg.com/@tabler/icons@latest/icons/outline/{name}.svg
-  phosphor     https://unpkg.com/@phosphor-icons/core@latest/assets/regular/{name}.svg
-  simple-icons https://unpkg.com/simple-icons@latest/icons/{name}.svg   (real brand marks)
+Five registries, each a public URL template for the raw SVG, pinned to one
+released version so the same command returns the same bytes next month:
+  lucide       https://unpkg.com/lucide-static@1.66.0/icons/{name}.svg
+  heroicons    https://raw.githubusercontent.com/tailwindlabs/heroicons/v2.2.0/optimized/24/outline/{name}.svg
+  tabler       https://unpkg.com/@tabler/icons@3.50.0/icons/outline/{name}.svg
+  phosphor     https://unpkg.com/@phosphor-icons/core@2.1.1/assets/regular/{name}.svg
+  simple-icons https://unpkg.com/simple-icons@16.36.0/icons/{name}.svg   (real brand marks)
+
+`@latest` / `master` would let whatever is published upstream tomorrow flow
+straight into a user's project unreviewed. Bump a version deliberately (check
+the icon paths still exist in that release) and update the tests with it.
 
 A 404 from any of these still returns HTTP 200 with an HTML or plain-text
 error body on some of these CDNs — never trust a 200 alone. `validate_svg`
 checks the body actually parses as SVG (`<svg`, a real shape element) and
 doesn't look like an error page, and fails loud with the resolved URL when
-it doesn't, rather than silently writing garbage to disk.
+it doesn't, rather than silently writing garbage to disk. It also rejects
+anything an inline SVG could execute or pull in: <script>, on* event
+attributes, <foreignObject>, javascript: URLs, a <use> pointing outside the
+document, and DOCTYPE/ENTITY declarations. A fetched icon is pasted into the
+user's markup, so active content in it runs with their page's privileges.
 
 Try it with no network:  python fetch_icon.py --demo
 """
@@ -35,12 +44,23 @@ import urllib.error
 import urllib.request
 from typing import Callable, Dict, List, Optional, Tuple
 
+# Pinned releases — verified to contain the icon paths below (npm tarballs
+# for the unpkg packages, the v2.2.0 tag for heroicons).
+_VERSIONS: Dict[str, str] = {
+    "lucide": "1.66.0",
+    "heroicons": "v2.2.0",
+    "tabler": "3.50.0",
+    "phosphor": "2.1.1",
+    "simple-icons": "16.36.0",
+}
+
 _REGISTRIES: Dict[str, str] = {
-    "lucide": "https://unpkg.com/lucide-static@latest/icons/{name}.svg",
-    "heroicons": "https://raw.githubusercontent.com/tailwindlabs/heroicons/master/optimized/24/outline/{name}.svg",
-    "tabler": "https://unpkg.com/@tabler/icons@latest/icons/outline/{name}.svg",
-    "phosphor": "https://unpkg.com/@phosphor-icons/core@latest/assets/regular/{name}.svg",
-    "simple-icons": "https://unpkg.com/simple-icons@latest/icons/{name}.svg",
+    "lucide": f"https://unpkg.com/lucide-static@{_VERSIONS['lucide']}/icons/{{name}}.svg",
+    "heroicons": "https://raw.githubusercontent.com/tailwindlabs/heroicons/"
+                 f"{_VERSIONS['heroicons']}/optimized/24/outline/{{name}}.svg",
+    "tabler": f"https://unpkg.com/@tabler/icons@{_VERSIONS['tabler']}/icons/outline/{{name}}.svg",
+    "phosphor": f"https://unpkg.com/@phosphor-icons/core@{_VERSIONS['phosphor']}/assets/regular/{{name}}.svg",
+    "simple-icons": f"https://unpkg.com/simple-icons@{_VERSIONS['simple-icons']}/icons/{{name}}.svg",
 }
 
 _USER_AGENT = "aria-skills-ui-asset-sourcing/1.0 (+fetch_icon.py)"
@@ -48,6 +68,32 @@ _DEFAULT_TIMEOUT = 10.0
 
 _SHAPE_TAGS = ("<path", "<circle", "<rect", "<polygon", "<polyline", "<ellipse", "<line")
 _ERROR_PAGE_MARKERS = ("<html", "cannot get", "404", "not found", "error code")
+
+_TAG_RE = re.compile(r"<[^>]*>", re.S)
+_EVENT_ATTR_RE = re.compile(r"[\s/\"']on[a-z]+\s*=", re.I)
+_USE_HREF_RE = re.compile(r"""(?:xlink:)?href\s*=\s*["']?\s*([^"'\s>]*)""", re.I)
+
+
+def _active_content(content: str) -> Optional[str]:
+    """Why this SVG is unsafe to inline, or None. Conservative on purpose:
+    no icon from these five registries needs any of these constructs."""
+    low = content.lower()
+    if re.search(r"<\s*script\b", low):
+        return "contains a <script> element"
+    if re.search(r"<\s*foreignobject\b", low):
+        return "contains a <foreignObject> element"
+    if re.search(r"<!\s*(doctype|entity)\b", low):
+        return "contains a DOCTYPE/ENTITY declaration"
+    if re.search(r"javascript\s*:", low):
+        return "contains a javascript: URL"
+    for tag in _TAG_RE.findall(content):
+        if _EVENT_ATTR_RE.search(tag):
+            return "has an on* event-handler attribute"
+        if re.match(r"<\s*use\b", tag, re.I):
+            for ref in _USE_HREF_RE.findall(tag):
+                if not ref.startswith("#"):
+                    return f"has a <use> referencing outside the document ({ref[:60]})"
+    return None
 
 
 # Simple Icons slugs are NOT kebab-case like the other four registries — they
@@ -94,6 +140,9 @@ def validate_svg(content: str) -> Tuple[bool, str]:
                        f"({', '.join(t.strip('<') for t in _SHAPE_TAGS)})"
     if any(marker in low for marker in _ERROR_PAGE_MARKERS) and "<path" not in low:
         return False, "response looks like an error page, not an icon"
+    unsafe = _active_content(content)
+    if unsafe:
+        return False, f"unsafe SVG: {unsafe}"
     return True, "ok"
 
 

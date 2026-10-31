@@ -3,19 +3,19 @@ name: gamma-exposure
 description: >-
   Compute or review a Gamma Exposure (GEX) / dealer-hedging-behavior
   estimate from options open interest before it gets reported as if it
-  were an observed fact. Trigger for "GEX", "gamma exposure", "gamma
-  squeeze", "gamma wall", "zero gamma flip", "dealer positioning",
-  "做市商对冲", "伽马敞口", "波动率压制/放大", "0DTE flows", "净伽马",
-  or whenever the user is inferring options-dealer hedging pressure from
-  open interest and implied volatility, building a GEX chart/panel, or
-  about to state a GEX regime call ("dealers are long/short gamma at
-  X") as if it were measured rather than estimated under an assumption.
-  Also trigger when reviewing GEX-computation code for a silent sign or
-  scaling bug — the failure mode this skill exists to catch produces a
-  plausible-looking wrong answer, not a crash. Do NOT trigger for a plain
-  options-chain display (bid/ask/volume/greeks per contract, no hedging
-  inference) or for risk exposure of options the user actually holds —
-  that is `risk-assessment`.
+  were an observed fact. Trigger for "gamma exposure", "GEX chart", "GEX
+  level", "GEX profile", "gamma squeeze", "gamma wall", "zero gamma flip",
+  "dealer positioning", "做市商对冲", "伽马敞口", "波动率压制/放大",
+  "0DTE flows", "净伽马敞口", or whenever the user is inferring
+  options-dealer hedging pressure from open interest and implied volatility,
+  building a GEX chart/panel, or about to state a GEX regime call (dealers
+  are long/short gamma at some strike) as if it were measured rather than
+  estimated under an assumption. Also trigger when reviewing GEX-computation
+  code for a silent sign or scaling bug — the failure mode this skill exists
+  to catch produces a plausible-looking wrong answer, not a crash. Do NOT
+  trigger for a plain options-chain display (bid/ask/volume/greeks per
+  contract, no hedging inference) or for risk exposure of options the user
+  actually holds — that is `risk-assessment`.
 ---
 
 # Gamma Exposure (GEX)

@@ -4,18 +4,18 @@ description: >-
   Build or review a trading/investing-app component against the specific
   conventions of X (timeline post, action bar), TradingView (watchlist row,
   technical rating gauge), or Trading212 (order ticket, holdings row).
-  Trigger for "make this look like TradingView/X/Trading212", "watchlist row
-  like TradingView", "order ticket like Trading212", "technical rating
-  gauge", "做一个像 TradingView 一样的自选股列表", "参考 X 的帖子卡片样式",
+  Trigger for "make this look like TradingView", "look like Trading212",
+  "watchlist row like TradingView", "order ticket like Trading212", "technical
+  rating gauge", "做一个像 TradingView 一样的自选股列表", "参考 X 的帖子卡片样式",
   or when reviewing a finished component against one of these reference
   patterns before shipping it. Also trigger when a watchlist/quote/holdings
-  component needs to render more than one market's data (e.g. both US and
+  component needs to render more than one market’s data (e.g. both US and
   CN symbols) — this is where the direction-color convention silently
   breaks. Do NOT trigger to invent a generic app aesthetic from a blank
-  slate (use `ui-ux-pro-max` for open-ended style exploration) or to freeze
-  the user's own palette/spacing choices into reusable tokens (that's
-  `ui-design-system`) — this skill is specifically about matching one of
-  these three products' own component conventions, not the user's.
+  slate (use `industry-design-direction` for open-ended style exploration) or
+  to freeze the user’s own palette/spacing choices into reusable tokens
+  (that’s `ui-design-system`) — this skill is specifically about matching one
+  of these three products’ own component conventions, not the user’s.
 ---
 
 # Trading UI Patterns

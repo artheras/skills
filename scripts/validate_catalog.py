@@ -18,6 +18,24 @@ Checks, in the order a missing piece bites:
   6. no skill fetches and runs code from a moving source — a pipe into a
      shell, `bash <(curl …)`, `npx …@latest`, an install from a git branch,
      or a package.json lifecycle hook
+  7. SKILL.md stays inside Aria Code's loader limits — starts with "---\n"
+     (no BOM), LF line endings (a CRLF copy fails the lock digest), at most
+     20,000 characters, a name matching
+     ^[a-z0-9][a-z0-9-]{0,63}$, a non-empty description and body. The loader
+     drops a skill that breaks any of these without a word.
+  8. every `allowed_tools` entry is a tool Aria actually has
+     (scripts/aria_known_tools.json). Aria narrows the model's tool schema to
+     core file tools plus the active skills' allowed_tools, so a misspelt
+     name does not fail — it just removes the tool the skill needed.
+  9. quoted trigger phrases in the description are specific enough. The
+     loader activates a skill on any quoted phrase found as a substring of
+     the user's message, so "VaR" fires on "various" and "done" on almost
+     anything. Each phrase must be at least 5 characters (4 if it contains
+     CJK), not a single bare English word, not split by a line fold between
+     CJK characters, and not contained in another skill's phrase.
+ 10. every skill with a scripts/ directory has a CI job in
+     .github/workflows/test.yml, and lists run_command in a non-empty
+     allowed_tools unless its scripts policy is "execution": "none"
 
 Exits non-zero with every failure listed, not just the first — fixing these one
 CI round-trip at a time is miserable.
@@ -48,6 +66,16 @@ REMOTE_EXECUTION = [
     (re.compile(r"\bnpm\s+(i|install)\s+[^\n]*github:[^\s#]+(\s|$)"), "npm-installs from a git branch"),
     (re.compile(r'"(preinstall|postinstall|prepare)"\s*:'), "has a package.json lifecycle script"),
 ]
+# Mirrors aria-code src/aria_code/packages/aria_skills/loader.py.
+NAME_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
+MAX_SKILL_CHARS = 20_000
+QUOTED_RE = re.compile(r'"([^"]+)"|“([^”]+)”|\'([^\']+)\'')
+CJK_RE = re.compile(r"[\u3400-\u9fff]")
+MIN_PHRASE_CHARS = 5
+MIN_CJK_PHRASE_CHARS = 4
+MCP_QUALIFIED_RE = re.compile(r"^mcp__[A-Za-z0-9_.-]+__[A-Za-z0-9_.-]+$")
+KNOWN_TOOLS_FILE = Path(__file__).resolve().parent / "aria_known_tools.json"
+
 TEXT_SUFFIXES = {".md", ".py", ".sh", ".js", ".mjs", ".ts", ".json", ".yaml", ".yml", ".toml", ".txt"}
 
 
@@ -60,8 +88,99 @@ def _frontmatter_name(skill_md: Path) -> str | None:
     return name.group(1) if name else None
 
 
-def validate(repo: Path = REPO) -> list[str]:
+def _frontmatter_value(lines: list[str], key: str) -> str:
+    """Same parsing as aria-code's loader, including `>-` folded blocks."""
+    prefix = f"{key}:"
+    for index, line in enumerate(lines):
+        if not line.startswith(prefix):
+            continue
+        value = line[len(prefix):].strip()
+        if value not in {">", ">-", "|", "|-"}:
+            return value.strip("\"'")
+        folded = value.startswith(">")
+        parts: list[str] = []
+        for continuation in lines[index + 1:]:
+            if continuation and not continuation[0].isspace():
+                break
+            stripped = continuation.strip()
+            if stripped:
+                parts.append(stripped)
+        return (" " if folded else "\n").join(parts)
+    return ""
+
+
+def _loader_failures(name: str, text: str) -> tuple[list[str], str]:
+    """Return (failures, description) for the loader's silent-drop rules."""
     failures: list[str] = []
+    if "\r\n" in text:
+        # The loader reads with universal newlines, so CRLF parses — but the
+        # integrity lock hashes raw bytes, so a CRLF copy never matches it and
+        # the skill can no longer activate automatically.
+        failures.append(
+            f"{name}: SKILL.md has CRLF line endings; a CRLF checkout fails the "
+            f"skills.lock digest check (see .gitattributes)"
+        )
+        text = text.replace("\r\n", "\n")
+    if not text.startswith("---\n"):
+        failures.append(f"{name}: SKILL.md must start with '---\\n' or the loader skips it")
+        return failures, ""
+    if len(text) > MAX_SKILL_CHARS:
+        failures.append(
+            f"{name}: SKILL.md is {len(text):,} characters; the loader skips files over "
+            f"{MAX_SKILL_CHARS:,} — move material into references/"
+        )
+    end = text.find("\n---\n", 4)
+    if end < 0:
+        failures.append(f"{name}: SKILL.md frontmatter is not closed by '---'")
+        return failures, ""
+    lines = text[4:end].splitlines()
+    declared = _frontmatter_value(lines, "name")
+    if not NAME_RE.fullmatch(declared):
+        failures.append(f"{name}: name {declared!r} does not match {NAME_RE.pattern}")
+    description = _frontmatter_value(lines, "description")
+    if not description:
+        failures.append(f"{name}: empty description — the loader skips the skill")
+    if not text[end + 5:].strip():
+        failures.append(f"{name}: SKILL.md has no body — the loader skips the skill")
+    return failures, description
+
+
+def quoted_phrases(description: str) -> list[str]:
+    return [
+        next(group for group in match.groups() if group is not None).strip().lower()
+        for match in QUOTED_RE.finditer(description)
+    ]
+
+
+def _phrase_problem(phrase: str) -> str | None:
+    has_cjk = bool(CJK_RE.search(phrase))
+    minimum = MIN_CJK_PHRASE_CHARS if has_cjk else MIN_PHRASE_CHARS
+    if len(phrase) < minimum:
+        return f"is shorter than {minimum} characters"
+    if not has_cjk and re.fullmatch(r"[a-z]+[.,!?]?", phrase):
+        return "is a single common word"
+    if re.search(r"[\u3400-\u9fff] [\u3400-\u9fff]", phrase):
+        return "has a space between CJK characters (a line fold inside the quotes?)"
+    return None
+
+
+def load_known_tools(path: Path = KNOWN_TOOLS_FILE) -> set[str]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        str(tool)
+        for key, tools in payload.items()
+        if not key.startswith("_")
+        for tool in tools
+    }
+
+
+def validate(repo: Path = REPO, known_tools: set[str] | None = None) -> list[str]:
+    failures: list[str] = []
+    if known_tools is None:
+        known_tools = load_known_tools()
+    workflow_path = repo / ".github" / "workflows" / "test.yml"
+    workflow = workflow_path.read_text(encoding="utf-8") if workflow_path.is_file() else ""
+    phrases_by_skill: dict[str, list[str]] = {}
 
     skills_dir = repo / "skills"
     on_disk = {
@@ -94,6 +213,31 @@ def validate(repo: Path = REPO) -> list[str]:
     for name in sorted(on_disk):
         folder = skills_dir / name
 
+        skill_text = (folder / "SKILL.md").read_bytes().decode("utf-8", errors="replace")
+        loader_failures, description = _loader_failures(name, skill_text)
+        failures.extend(loader_failures)
+        phrases = quoted_phrases(description)
+        phrases_by_skill[name] = phrases
+        for phrase in phrases:
+            problem = _phrase_problem(phrase)
+            if problem:
+                failures.append(
+                    f"{name}: quoted trigger phrase {phrase!r} {problem} — the loader "
+                    f"activates on it as a substring of any message; reword or unquote it"
+                )
+
+        for match in QUOTED_RE.finditer(description):
+            if match.group(3) is not None and match.start() and description[match.start() - 1].isalnum():
+                failures.append(
+                    f"{name}: an ASCII apostrophe opens the accidental trigger phrase "
+                    f"{match.group(3)!r} — the loader reads '...' as a quote; write ’ instead"
+                )
+
+        if (folder / "scripts").is_dir() and f"working-directory: skills/{name}/scripts" not in workflow:
+            failures.append(
+                f"{name}: ships scripts/ but has no CI job in .github/workflows/test.yml"
+            )
+
         declared = _frontmatter_name(folder / "SKILL.md")
         if declared is None:
             failures.append(f"{name}: SKILL.md has no parseable `name:` frontmatter")
@@ -107,9 +251,23 @@ def validate(repo: Path = REPO) -> list[str]:
             failures.append(f"{name}: missing skill-policy.json")
         else:
             try:
-                json.loads((folder / "skill-policy.json").read_text(encoding="utf-8"))
+                policy = json.loads((folder / "skill-policy.json").read_text(encoding="utf-8"))
             except json.JSONDecodeError as exc:
                 failures.append(f"{name}: skill-policy.json is not valid JSON ({exc})")
+                policy = {}
+            tools = policy.get("allowed_tools") or []
+            execution = (policy.get("scripts") or {}).get("execution", "approval")
+            if (folder / "scripts").is_dir() and execution != "none" and tools and "run_command" not in tools:
+                failures.append(
+                    f"{name}: ships scripts/ with execution {execution!r} but allowed_tools "
+                    f"lacks run_command — the agent cannot run them while the skill is active"
+                )
+            for tool in tools:
+                if tool not in known_tools and not MCP_QUALIFIED_RE.match(str(tool)):
+                    failures.append(
+                        f"{name}: allowed_tools has {tool!r}, which is not an Aria tool "
+                        f"(see scripts/aria_known_tools.json)"
+                    )
 
         descriptor = folder / "agents" / "openai.yaml"
         if not descriptor.is_file():
@@ -158,6 +316,20 @@ def validate(repo: Path = REPO) -> list[str]:
                     f"{qualified})"
                 )
 
+    # A phrase contained in another skill's phrase means every message that
+    # fires the second skill also fires the first one.
+    for name, phrases in sorted(phrases_by_skill.items()):
+        for other, other_phrases in sorted(phrases_by_skill.items()):
+            if other == name:
+                continue
+            for phrase in phrases:
+                for other_phrase in other_phrases:
+                    if phrase in other_phrase:
+                        failures.append(
+                            f"{name}: trigger phrase {phrase!r} also fires on "
+                            f"{other}'s {other_phrase!r} — make them distinct"
+                        )
+
     return failures
 
 
@@ -177,7 +349,7 @@ def main() -> int:
             root = Path(tmp)
             (root / "skills" / "orphan-skill").mkdir(parents=True)
             (root / "skills" / "orphan-skill" / "SKILL.md").write_text(
-                "---\nname: orphan-skill\ndescription: Never registered.\n---\n",
+                "---\nname: orphan-skill\ndescription: Never registered.\n---\n\n# Orphan\n",
                 encoding="utf-8",
             )
             (root / ".claude-plugin").mkdir()

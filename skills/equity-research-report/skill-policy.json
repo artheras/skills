@@ -11,7 +11,8 @@
     "research_report_assess",
     "research_run_record_quality",
     "read_file",
-    "analyze_file"
+    "analyze_file",
+    "run_command"
   ],
   "agents": [
     "fundamental",

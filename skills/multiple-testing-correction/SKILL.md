@@ -2,22 +2,23 @@
 name: multiple-testing-correction
 description: >-
   Correct for multiple hypothesis testing before calling any factor,
-  sub-period, or parameter sweep "significant" — and check whether a claimed
-  set of "independent" signals or bets is actually a smaller number of
+  sub-period, or parameter-sweep result significant — and check whether a
+  claimed set of independent signals or bets is actually a smaller number of
   correlated ones wearing a disguise. Trigger for "测了8个因子哪个显著",
   "筛选因子", "factor screen", "parameter sweep", "which of these signals is
-  real", "p-hacking", "data snooping", "统计显著性", "breadth", "多重检验",
-  "这些信号真的独立吗", or whenever the user has run more than one
-  significance test in a batch and is about to act on which ones "passed."
-  Also trigger when a Sharpe/IR target is being justified by citing a number
-  of "independent" bets, signals, or symbols — that count needs a correlation
-  check before it goes into any Information Ratio math. Pair with
-  backtest-validation: that skill's Deflated Sharpe Ratio is this same
-  correction applied to the single case of "best strategy variant out of N
-  backtested"; this skill is the general case for any batch of hypothesis
-  tests, plus the separate breadth-illusion check neither skill otherwise
-  covers. Do NOT trigger for a single, pre-specified test with no batch and
-  no breadth claim — correcting one test against itself is a no-op.
+  real", "p-hacking", "data snooping", "统计显著性", "breadth illusion",
+  "effective breadth", "多重检验", "这些信号真的独立吗", "multiple testing
+  correction", or whenever the user has run more than one significance test in
+  a batch and is about to act on the ones that passed. Also trigger when a
+  Sharpe/IR target is being justified by citing a number of supposedly
+  independent bets, signals, or symbols — that count needs a correlation check
+  before it goes into any Information Ratio math. Pair with
+  backtest-validation: that skill’s Deflated Sharpe Ratio is this same
+  correction applied to the single case of picking the best strategy variant
+  out of N backtested; this skill is the general case for any batch of
+  hypothesis tests, plus the separate breadth-illusion check neither skill
+  otherwise covers. Do NOT trigger for a single, pre-specified test with no
+  batch and no breadth claim — correcting one test against itself is a no-op.
 ---
 
 # Multiple Testing Correction

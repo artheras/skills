@@ -6,6 +6,11 @@ description: >-
   and source analysis. Use when the user asks for "全面分析报告", "股票研报",
   "深度分析公司", "完整个股分析", "comprehensive equity report", or requests
   analysis of a stock, company, or equity thesis with current auditable data.
+  Do NOT trigger merely because a message mentions a report: converting,
+  exporting, summarising, or translating a document the user already has is
+  file work, not equity research. Also not for a quick quote lookup, a
+  private operator’s declared revenue (use `operator-revenue-integrity`), or
+  styling an export cover (use `minimal-editorial-exports`).
 ---
 
 # Equity Research Report

@@ -7,9 +7,10 @@ description: >-
   buy", "simulate this trade", or whenever the user (1) has a signal/decision
   and asks for the size, (2) wants a trade checked against limits before
   acting, (3) asks about stops or exposure, or (4) another skill hands over a
-  strategy/rebalance that needs execution shape. Fire even for casual "梭哈吗".
-  Do NOT trigger for portfolio-wide weight construction (portfolio-optimization)
-  or post-hoc risk analysis (risk-assessment). NEVER place live orders.
+  strategy/rebalance that needs execution shape. Fire even for casual
+  "要不要梭哈". Do NOT trigger for portfolio-wide weight construction
+  (portfolio-optimization) or post-hoc risk analysis (risk-assessment). NEVER
+  place live orders.
 ---
 
 # Execution & Position
