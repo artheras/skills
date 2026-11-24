@@ -4,7 +4,9 @@
 
 | Destination | Canvas | Primary ratio | Notes |
 | --- | --- | --- | --- |
-| TikTok | 1080 x 1920 | 9:16 | Keep captions and CTA clear of lower controls. |
+| Douyin | 1080 x 1920 | 9:16 | The workflow's default. Captions must be burned in — a subtitle track is not displayed. Lower-right UI is dense; keep the CTA left of it. |
+| TikTok | 1080 x 1920 | 9:16 | Keep captions and CTA clear of lower controls. Burn captions in. |
+| Bilibili | 1080 x 1920 vertical, or 1920 x 1080 | 9:16 or 16:9 | Vertical for the Story feed, landscape for the main site. Pick one and state it; they are different cuts, not one export. |
 | Xiaohongshu | 1080 x 1920 | 9:16 | Use a legible opening frame and restrained text density. |
 | Instagram Reels | 1080 x 1920 | 9:16 | Keep essential text in the central safe area. |
 | YouTube Shorts | 1080 x 1920 | 9:16 | Make the first frame understandable without a title card. |
@@ -24,6 +26,10 @@ often than the layout baseline above.
 - At 1080-wide vertical exports, start around 46 to 60 px for captions and tune for the
   actual font, language, and contrast.
 - Do not cover a chart axis, source label, or a key visual with a subtitle.
+- Burned-in captions need an ffmpeg built with libass. Without it the workflow
+  embeds a selectable subtitle track and says so in the `captions_burned_in`
+  check — which the Chinese and short-form platforms above will simply not show,
+  so for them that check failing is a release blocker rather than a note.
 
 ## Audio and watermark rules
 

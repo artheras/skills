@@ -9,9 +9,19 @@
       "sha256": "b6e749bd99103b8eadee00c8c899503b7afeac0e78c30d628209bc20441df093",
       "version": "0.11.0"
     },
+    "app-engineering-skills:aria-music-direction": {
+      "path": "skills/aria-music-direction",
+      "sha256": "186b7817055fbeffb5bcbfa7cf698f86d600a339f22d9935224559ec116b6600",
+      "version": "0.11.0"
+    },
     "app-engineering-skills:conversational-ui-restraint": {
       "path": "skills/conversational-ui-restraint",
       "sha256": "9cf3e120aae485ff1bc8b2a80a5026d14a8b1fa1da2b2c79da09422182056588",
+      "version": "0.11.0"
+    },
+    "app-engineering-skills:figma-design-sync": {
+      "path": "skills/figma-design-sync",
+      "sha256": "3b83f459338255af3cdbd9888ce926170878fc0f2603d274100c2763e0d626e9",
       "version": "0.11.0"
     },
     "app-engineering-skills:industry-design-direction": {
@@ -31,7 +41,7 @@
     },
     "app-engineering-skills:short-form-video-editing": {
       "path": "skills/short-form-video-editing",
-      "sha256": "9ef792ccd10ce0c80ce76af24443b4028b6e41a12ed600ca695a063fc3573e44",
+      "sha256": "753f0d671705af7be9091081a0961656dca58234350bbc9d6bfce70e7be6c738",
       "version": "0.11.0"
     },
     "app-engineering-skills:terminal-software-design": {
@@ -51,7 +61,57 @@
     },
     "app-engineering-skills:ui-design-system": {
       "path": "skills/ui-design-system",
-      "sha256": "e1a2c6ed4dde3ac138435f3a6af124f6e77d518b58d0a6c8ab5100c56d94c96f",
+      "sha256": "a1c3157b64405198384b68dfc5ff6301406f1d26a89f113723aea8dc75ba3526",
+      "version": "0.11.0"
+    },
+    "app-engineering-skills:web-motion-design": {
+      "path": "skills/web-motion-design",
+      "sha256": "2f073839290cd561fae50c2bcc2fcf2794ac95fd2e6aa0cb0bf8ac8dde802d26",
+      "version": "0.11.0"
+    },
+    "commerce-operations-skills:ads-optimizer": {
+      "path": "skills/ads-optimizer",
+      "sha256": "6cdf85c396fc2fb2fff6046d54332ef5f844e2cee5952eeed9327de30b6ece4c",
+      "version": "0.11.0"
+    },
+    "commerce-operations-skills:commerce-operations-agent": {
+      "path": "skills/commerce-operations-agent",
+      "sha256": "a9f1f369d473f531a9c38879ec432b5ba12ba23ff07118f6f28c4c247baadf94",
+      "version": "0.11.0"
+    },
+    "commerce-operations-skills:competitor-monitor": {
+      "path": "skills/competitor-monitor",
+      "sha256": "c062a9ae2d7d20dc06148d85e7d482ed67fb1374204fe9214807d67c135c1679",
+      "version": "0.11.0"
+    },
+    "commerce-operations-skills:cross-listing": {
+      "path": "skills/cross-listing",
+      "sha256": "802e66f83cdcecdb9c894435e7b9d50a5d7aae981dd0e06deab86369d0f8def8",
+      "version": "0.11.0"
+    },
+    "commerce-operations-skills:inventory-planner": {
+      "path": "skills/inventory-planner",
+      "sha256": "9e16c06c22f84933ae94d26b9771e1d8b0d259147b11cad5cb810bc65c9bae53",
+      "version": "0.11.0"
+    },
+    "commerce-operations-skills:profit-engine": {
+      "path": "skills/profit-engine",
+      "sha256": "388bd008053d45d9d424eb3625ee0f4bbf4fe9638f4dae9e4a30116c5cfb382f",
+      "version": "0.11.0"
+    },
+    "enterprise-operations-skills:devops-incident-responder": {
+      "path": "skills/devops-incident-responder",
+      "sha256": "bfd86f8fde69a8b5017d39e917124bd0d402e6e6039068ab9052a498a90f8654",
+      "version": "0.11.0"
+    },
+    "enterprise-operations-skills:enterprise-legal-audit": {
+      "path": "skills/enterprise-legal-audit",
+      "sha256": "def2e75e8da1829b2e340b39cdd3faea2ca9c6d0ef4c3158ee3c7c7294149afc",
+      "version": "0.11.0"
+    },
+    "enterprise-operations-skills:logistics-warehouse-audit": {
+      "path": "skills/logistics-warehouse-audit",
+      "sha256": "eb155fe4b4b49ee02f50745573abbd7235e7e0d0176282dfc7b5237fad9bd942",
       "version": "0.11.0"
     },
     "logistics-operations-skills:carrier-scorecard": {
@@ -122,6 +182,11 @@
     "quant-research-skills:strategy-generation": {
       "path": "skills/strategy-generation",
       "sha256": "38cb5fba064ba9f6cfc225b334f18f4d61a9ad5701b2d90b7c0fdda7b4f0a47d",
+      "version": "0.11.0"
+    },
+    "quant-research-skills:supply-chain-knowledge-graph": {
+      "path": "skills/supply-chain-knowledge-graph",
+      "sha256": "8403e01d7fa915937670d3115bd843f0233ad8a49988790d4058cac8062ca71e",
       "version": "0.11.0"
     },
     "realty-operations-skills:operator-revenue-integrity": {

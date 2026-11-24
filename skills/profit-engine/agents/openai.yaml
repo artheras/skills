@@ -1,0 +1,4 @@
+interface:
+  display_name: "Profit Engine"
+  short_description: "Net profit per store plus a bucket-by-bucket bridge explaining why it moved — refuses to zero-fill a missing cost"
+  default_prompt: "Use $profit-engine to build this month's profit bridge across my stores."

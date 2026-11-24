@@ -1,0 +1,4 @@
+interface:
+  display_name: "Competitor Monitor"
+  short_description: "Price/inventory-proxy/rank/review-velocity deltas -> named, hedged pattern reads — never a confirmed claim about a competitor's strategy"
+  default_prompt: "Use $competitor-monitor to read this competitor's price, rank, and inventory-proxy changes for a pattern."

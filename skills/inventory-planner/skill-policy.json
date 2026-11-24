@@ -1,0 +1,17 @@
+{
+  "schema_version": "aria.skill-policy.v1",
+  "allowed_tools": [
+    "read_file",
+    "run_command",
+    "warehouse.inventory_health",
+    "erp.get_sales_velocity",
+    "erp.get_supplier_lead_time",
+    "erp.draft_replenishment_order"
+  ],
+  "permissions": ["read-only", "workspace-write"],
+  "scripts": {
+    "execution": "none",
+    "network": false,
+    "workspace_write": false
+  }
+}

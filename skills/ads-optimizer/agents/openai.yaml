@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ads Optimizer"
+  short_description: "Bid-adjustment recommendations from a declared ACOS policy — pause/decrease/increase/no-action, never an executed bid change"
+  default_prompt: "Use $ads-optimizer to review my campaigns against my ACOS target and recommend bid changes."

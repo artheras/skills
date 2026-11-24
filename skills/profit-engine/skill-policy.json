@@ -1,0 +1,19 @@
+{
+  "schema_version": "aria.skill-policy.v1",
+  "allowed_tools": [
+    "read_file",
+    "run_command",
+    "erp.get_orders",
+    "erp.get_returns_refunds",
+    "ads.get_ads_metrics",
+    "logistics.get_shipping_costs",
+    "finance.get_payment_fees",
+    "finance.get_fx_rates"
+  ],
+  "permissions": ["read-only"],
+  "scripts": {
+    "execution": "none",
+    "network": false,
+    "workspace_write": false
+  }
+}

@@ -42,6 +42,19 @@ TEMPLATE = {
         "caption": {"size": 11, "weight": 400, "mono": False},
     },
     "stroke": {"hairline": 0.5, "border": 1},
+    # Motion lives in the same file as color/spacing so animation stays part of
+    # the design system instead of being reinvented per component. Owned by the
+    # web-motion-design skill; see its references/motion_tokens.md. Optional —
+    # a token file with no "motion" key stays valid.
+    "motion": {
+        "duration": {"instant": 100, "fast": 150, "base": 200, "slow": 300, "deliberate": 400},
+        "easing": {
+            "enter": [0, 0, 0.2, 1],
+            "exit": [0.4, 0, 1, 1],
+            "inOut": [0.4, 0, 0.2, 1],
+        },
+        "reduced_motion": "reduce",
+    },
     "contrast_pairs": [
         {"text": "textPrimary", "on": "canvas", "min": 4.5},
         {"text": "textSecondary", "on": "canvas", "min": 4.5},
@@ -128,6 +141,53 @@ def validate(tokens: dict) -> dict:
             svals = list(steps.values())
             if sorted(svals) != sorted(set(svals)):
                 errors.append("spacing.steps must be distinct")
+
+    # motion: duration tiers in ms, easing as 4-point cubic-bezier
+    motion = tokens.get("motion", {})
+    if motion:
+        if not isinstance(motion, dict):
+            errors.append("motion must be an object")
+            motion = {}
+
+        durations = motion.get("duration", {}) or {}
+        for k, v in durations.items():
+            if not isinstance(v, (int, float)) or isinstance(v, bool) or v <= 0:
+                errors.append(f"motion.duration.{k}={v!r} must be a positive number (milliseconds)")
+            elif v < 1:
+                # 0.3 in a ms field is almost always "0.3 seconds" written into the
+                # wrong unit — it validates as a number but produces a 0.3ms
+                # animation, i.e. invisible. Catch it rather than let it ship.
+                errors.append(
+                    f"motion.duration.{k}={v} is under 1ms — looks like seconds in a "
+                    f"milliseconds field (did you mean {int(v * 1000)}?)"
+                )
+            elif v > 1000:
+                warnings.append(
+                    f"motion.duration.{k}={v}ms is over 1s — fine for a loading "
+                    f"illustration, too slow for a UI transition"
+                )
+        dvals = [v for v in durations.values() if isinstance(v, (int, float))]
+        if dvals and sorted(dvals) != sorted(set(dvals)):
+            errors.append("motion.duration tiers must be distinct (no two the same value)")
+
+        easings = motion.get("easing", {}) or {}
+        for k, v in easings.items():
+            if not (isinstance(v, list) and len(v) == 4 and
+                    all(isinstance(n, (int, float)) and not isinstance(n, bool) for n in v)):
+                errors.append(f"motion.easing.{k} must be 4 numbers [x1,y1,x2,y2]")
+                continue
+            # Only the time axis (x) is clamped by the CSS spec. y may exceed
+            # [0,1] — that is how overshoot/anticipation curves are expressed.
+            for idx in (0, 2):
+                if not 0 <= v[idx] <= 1:
+                    errors.append(
+                        f"motion.easing.{k}[{idx}]={v[idx]} out of range — cubic-bezier "
+                        f"x control points must be within [0,1]"
+                    )
+
+        reduced = motion.get("reduced_motion")
+        if reduced is not None and reduced not in ("reduce", "disable"):
+            errors.append("motion.reduced_motion must be 'reduce' or 'disable'")
 
     # contrast_pairs: WCAG in every declared appearance
     contrast: list[dict] = []

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Commerce Operations Agent"
+  short_description: "Publish approved Wildberries drafts and cancel eligible FBS orders under seller policy"
+  default_prompt: "Use $commerce-operations-agent to process my approved marketplace operations safely."

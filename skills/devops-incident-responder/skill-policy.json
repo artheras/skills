@@ -1,0 +1,18 @@
+{
+  "_comment": "This is the only skill in the catalog whose declared workflow takes actions with real, non-reversible side effects on running infrastructure: restart_enterprise_service restarts a live service, and update_it_ticket_status writes back to the incident system of record. The SKILL.md body also contemplates run_command / edit_file against local docker-compose settings. Declared accordingly rather than optimistically: execution requires approval, workspace_write and network are true. Do not relax these without changing the workflow first.",
+  "schema_version": "aria.skill-policy.v1",
+  "allowed_tools": [
+    "read_file",
+    "edit_file",
+    "run_command",
+    "query_enterprise_knowledge_base",
+    "restart_enterprise_service",
+    "update_it_ticket_status"
+  ],
+  "permissions": ["read-only", "workspace-write"],
+  "scripts": {
+    "execution": "approval",
+    "network": true,
+    "workspace_write": true
+  }
+}

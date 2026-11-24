@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma Design Sync"
+  short_description: "Inspect Figma nodes, export vector/raster assets, and sync design tokens into code"
+  default_prompt: "Use $figma-design-sync to inspect this Figma design URL and translate it into production React components and assets."

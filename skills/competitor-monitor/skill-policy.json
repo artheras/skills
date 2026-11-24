@@ -1,0 +1,17 @@
+{
+  "schema_version": "aria.skill-policy.v1",
+  "allowed_tools": [
+    "read_file",
+    "run_command",
+    "marketplace.get_competitor_price_history",
+    "marketplace.get_competitor_rank_history",
+    "marketplace.get_competitor_review_activity",
+    "marketplace.get_competitor_inventory_proxy"
+  ],
+  "permissions": ["read-only"],
+  "scripts": {
+    "execution": "none",
+    "network": false,
+    "workspace_write": false
+  }
+}

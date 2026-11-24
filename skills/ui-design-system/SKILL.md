@@ -38,7 +38,13 @@ durable value here is **the user's own consistency**, enforced deterministically
 
 ## Workflow
 
-1. **Establish the tokens.** If the user has existing code, harvest what it
+1. **Establish the product ontology before styling.** Write one sentence for
+   each of: the product's enduring identity, its current core capability, its
+   first proven application domain, and its longer-term direction. Do not let
+   an application domain silently become the brand itself. Then inventory
+   which claims are shipped, demonstrated, measured, or directional. Use
+   `references/product_ontology.md` for the brief and evidence rules.
+2. **Establish the tokens.** If the user has existing code, harvest what it
    already uses — `python scripts/design_tokens.py --extract src/` scans the
    codebase, clusters near-duplicate colors, and prints a tokens *draft* to
    rename and prune (the system already exists implicitly; you are writing it
@@ -47,22 +53,22 @@ durable value here is **the user's own consistency**, enforced deterministically
    scripts/design_tokens.py --template` prints the annotated skeleton to fill.
    Either way the result is a `design-tokens.json` in the user's project.
    Schema lives in `references/token_schema.md`.
-2. **Validate the tokens are sound** (objective, not aesthetic):
+3. **Validate the tokens are sound** (objective, not aesthetic):
    `python scripts/design_tokens.py --validate design-tokens.json`. Checks
    schema completeness, WCAG contrast of each text color against its surface
    (< 4.5:1 body text is flagged), radius/spacing scales are monotonic, and
    spacing steps are consistent multiples of the base. Report failures; a
    pretty palette that fails contrast is not the user's friend.
-3. **Generate UI against the tokens.** When building components (any target),
+4. **Generate UI against the tokens.** When building components (any target),
    every color/radius/space references a token, never a fresh literal. The
    target's syntax is the user's choice; the values come from their file.
-4. **Enforce consistency.** `python scripts/design_lint.py --tokens
+5. **Enforce consistency.** `python scripts/design_lint.py --tokens
    design-tokens.json --paths <files/dirs>` scans generated code for
    color/radius literals that are NOT in the user's token set, and (per the
    user's declared convention) emoji-as-icon. Verdict first: violations
    file:line grouped by rule, then the fix routes to the token that should
    have been used.
-5. **Iterate on the system, not around it.** If a screen genuinely needs a
+6. **Iterate on the system, not around it.** If a screen genuinely needs a
    value the tokens don't have, that is a change to `design-tokens.json`
    (a considered addition the user makes), re-validated — not a one-off
    literal smuggled into one component.
@@ -75,6 +81,18 @@ durable value here is **the user's own consistency**, enforced deterministically
   the skill does not hardcode this preference.
 - Never substitute a value the user didn't choose. If a token is missing, ask
   or flag it — do not quietly pick a color "that looks close."
+- Never turn a launch domain into the product identity without the user's
+  explicit decision. Navigation, hero copy, proof, and imagery must preserve
+  the hierarchy between enduring identity, core capability, and application
+  domains.
+- Do not fabricate metrics, customer logos, testimonials, uptime, latency, or
+  maturity. Label roadmap capabilities as direction; label prototypes as
+  demonstrations. A visually persuasive claim still needs a real evidence
+  state.
+- Open-source references are inputs, not a visual identity. Verify the license
+  at the path used, record what is being adopted, and copy neither another
+  product's brand expression nor proprietary example applications. See
+  `references/product_ontology.md`.
 - Contrast and scale checks are objective and not negotiable down for
   aesthetics: failing body-text contrast is an accessibility defect, reported
   as such regardless of how the palette looks.
@@ -105,3 +123,6 @@ durable value here is **the user's own consistency**, enforced deterministically
 - `references/methodology.md` — how to establish tokens from user input
   (extract vs. converse), contrast/scale rationale, and how tokens map to each
   target's syntax.
+- `references/product_ontology.md` — separates enduring identity, capability,
+  application domains, and roadmap; defines claim evidence states and a
+  license-aware method for learning from open-source design systems.

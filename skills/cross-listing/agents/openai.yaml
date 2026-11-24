@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cross-Marketplace Listing"
+  short_description: "Migrate a listing between marketplaces (OZON ↔ Wildberries) as a validated draft — never a live publish"
+  default_prompt: "Use $cross-listing to migrate this OZON listing to Wildberries as a draft."

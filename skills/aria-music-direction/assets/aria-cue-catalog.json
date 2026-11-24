@@ -1,0 +1,78 @@
+{
+  "catalog_version": "1.0.0",
+  "notice": "Direction-only catalog. Entries are not audio files, licences, or proof of clearance.",
+  "cues": [
+    {
+      "id": "quiet-open",
+      "name": "Quiet Open",
+      "tempo_bpm": "68-76",
+      "energy": "low",
+      "instrumentation": ["felt piano", "harbor ambience texture", "warm pad"],
+      "best_for": ["poster", "short_video"],
+      "use_for": "Editorial opening cards, research summaries, calm travel or harbor visuals.",
+      "avoid_for": ["urgent calls to action", "high-frequency trading claims"],
+      "asset_status": "brief_only",
+      "requires_clearance": true
+    },
+    {
+      "id": "clarity-grid",
+      "name": "Clarity Grid",
+      "tempo_bpm": "96-104",
+      "energy": "low-medium",
+      "instrumentation": ["soft marimba", "micro-percussion", "clean sub pulse"],
+      "best_for": ["product_demo", "short_video"],
+      "use_for": "Product walkthroughs and structured explainers.",
+      "avoid_for": ["breaking news", "fear-based framing"],
+      "asset_status": "brief_only",
+      "requires_clearance": true
+    },
+    {
+      "id": "signal-line",
+      "name": "Signal Line",
+      "tempo_bpm": "112-120",
+      "energy": "medium",
+      "instrumentation": ["analog pulse", "muted kick", "short synth"],
+      "best_for": ["data_recap", "short_video"],
+      "use_for": "Measured data recaps with a clear pacing arc.",
+      "avoid_for": ["certainty claims", "buy-sell calls"],
+      "asset_status": "brief_only",
+      "requires_clearance": true
+    },
+    {
+      "id": "deep-research",
+      "name": "Deep Research",
+      "tempo_bpm": "78-86",
+      "energy": "low",
+      "instrumentation": ["piano", "cello", "paper texture"],
+      "best_for": ["research", "report_promo"],
+      "use_for": "Long-form research and source-led insight clips.",
+      "avoid_for": ["urgent calls to action", "loud transitions"],
+      "asset_status": "brief_only",
+      "requires_clearance": true
+    },
+    {
+      "id": "after-hours",
+      "name": "After Hours",
+      "tempo_bpm": "82-90",
+      "energy": "low-medium",
+      "instrumentation": ["soft synth", "round bass", "electric piano"],
+      "best_for": ["lifestyle", "short_video"],
+      "use_for": "Evening recaps and restrained lifestyle storytelling.",
+      "avoid_for": ["market predictions", "high-pressure sales"],
+      "asset_status": "brief_only",
+      "requires_clearance": true
+    },
+    {
+      "id": "clean-close",
+      "name": "Clean Close",
+      "tempo_bpm": "90-98",
+      "energy": "low",
+      "instrumentation": ["soft pluck", "resolved chord", "minimal pad"],
+      "best_for": ["endcard", "poster"],
+      "use_for": "End cards, title resolves, and logo moments.",
+      "avoid_for": ["dense narration", "rapid cuts"],
+      "asset_status": "brief_only",
+      "requires_clearance": true
+    }
+  ]
+}

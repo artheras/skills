@@ -1,0 +1,4 @@
+interface:
+  display_name: "Enterprise Legal Audit"
+  short_description: "Scan vendor contracts and SLAs for liability, auto-renewal, and termination traps"
+  default_prompt: "Use $enterprise-legal-audit to review this contract for high-risk clauses before it goes to sign-off."
