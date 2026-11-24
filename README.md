@@ -129,6 +129,12 @@ Report vulnerabilities privately — see [SECURITY.md](SECURITY.md). CI rejects
 any skill that runs code from a source that can change after review, and the
 skills that touch money or wallets never ask for a private key or seed phrase.
 
+## Security
+
+Report vulnerabilities privately — see [SECURITY.md](SECURITY.md). CI rejects
+any skill that runs code from a source that can change after review, and the
+skills that touch money or wallets never ask for a private key or seed phrase.
+
 ## Install
 
 Aria Code discovers the catalog through `ARIA_SKILLS_PATH` or a sibling
