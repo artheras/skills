@@ -3,12 +3,12 @@ name: carrier-scorecard
 description: >-
   Compare carriers by lane and find freight overcharges and savings from actual
   waybills. Trigger for "哪家快递/物流更好", "承运商评分", "运费是不是贵了",
-  "运费异常", "怎么降运费", "准时率", "换哪家承运商", "carrier scorecard",
+  "运费异常", "怎么降运费", "承运商准时率", "换哪家承运商", "carrier scorecard",
   "freight audit", "which carrier is cheaper", "on-time performance",
   "are we overcharged", or whenever the user supplies waybills/shipments with
   carrier, cost and delivery status and asks which carrier to use or where
   money is leaking. Also fire for a 3PL doing this for one client (货主). Do NOT
-  trigger for tracking a single parcel's location, for inventory/replenishment
+  trigger for tracking a single parcel’s location, for inventory/replenishment
   questions (that is inventory-policy), or for building a rate card from
   carrier quotes with no shipment history.
 ---

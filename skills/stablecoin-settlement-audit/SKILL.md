@@ -1,8 +1,8 @@
 ---
 name: stablecoin-settlement-audit
 description: >-
-  Reconcile freight or logistics invoices against stablecoin (USDC) payments
-  on Solana: which invoices are paid, short-paid, paid twice, overdue, or paid
+  Reconcile freight or logistics invoices against on-chain stablecoin (USDC)
+  payments: which invoices are paid, short-paid, paid twice, overdue, or paid
   to an address that is not the payee. Trigger for "运费有没有付清", "USDC 对账",
   "稳定币对账", "链上付款核对", "重复付款", "付错地址", "哪些发票逾期",
   "reconcile USDC payments", "stablecoin settlement audit", "did we pay this
@@ -20,6 +20,10 @@ invoice was paid twice, short by a fee, or to a lookalike address does not.
 This skill reconciles invoices against the transfers that actually landed on
 chain, with the same discipline as the other logistics skills: exact
 arithmetic, stated rules, one shipper at a time, and no guessing.
+
+The matching rules do not depend on the network. Reading payments directly
+from a chain (`--rpc`) currently supports USDC on Solana; for any other
+network, export the transfers to a file.
 
 ## Principles
 

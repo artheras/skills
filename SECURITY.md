@@ -41,6 +41,6 @@ they never sign or send a transaction.
 
 ## Releases
 
-Directories that list these skills, such as solana.com/skills, link to a tagged
-release rather than `main`. A listed skill changes only through a new tag,
-which each directory reviews again.
+Link to a skill by a tagged release, not `main`: a tag is the content that was
+reviewed, and a listed skill should change only through a new tag that is
+reviewed again.

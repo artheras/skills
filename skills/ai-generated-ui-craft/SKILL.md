@@ -2,14 +2,17 @@
 name: ai-generated-ui-craft
 description: >-
   The generation-time discipline for an AI producing UI code — not a UI
-  category (see `terminal-software-design` for dashboards, `conversational-ui-restraint`
-  for chat) but the self-critique process that separates a considered design
-  from a templated one. Trigger for "this looks AI-generated", "make this feel
-  less generic/templated", "why does every AI-built page look the same", "make
-  this look considered/deliberate", or — proactively — before finalizing any
-  UI generation task, as a self-check pass. Trigger regardless of which UI
-  category skill was also used; this is orthogonal to both. Portable:
-  self-contained prose, no script dependency.
+  category (see `terminal-software-design` for dashboards,
+  `conversational-ui-restraint` for chat) but the self-critique process that
+  separates a considered design from a templated one. Trigger for "this looks
+  AI-generated", "make this feel less generic", "this feels templated", "why
+  does every AI-built page look the same", "make this look more deliberate",
+  or — proactively — before finalizing any UI generation task, as a
+  self-check pass. Trigger regardless of which UI category skill was also
+  used; this is orthogonal to both. Do NOT trigger in place of
+  `conversational-ui-restraint` for chat-interface structure, or for picking
+  an industry direction from scratch (`industry-design-direction`). Portable: self-contained prose,
+  no script dependency.
 ---
 
 # AI-Generated UI Craft

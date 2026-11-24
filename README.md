@@ -1,11 +1,13 @@
-# Arthera Skills
+# Aria Skills
 
 [![test](https://github.com/artheras/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artheras/skills/actions/workflows/test.yml)
 
 The skill catalog for **Aria Code** — Arthera's AI quant terminal. Each skill
-packages one piece of research discipline (point-in-time data hygiene, backtest
-trust gates, risk decomposition, strategy spec gates…) as instructions plus
-runnable verification scripts that Aria loads dynamically when a task matches.
+packages one piece of discipline — quant research (point-in-time data hygiene,
+backtest trust gates, risk decomposition, strategy spec gates…), app
+engineering and design, realty operations, and third-party logistics — as
+instructions, usually with runnable verification scripts, that Aria loads
+dynamically when a task matches.
 Maintained by [`artheras`](https://github.com/artheras).
 
 The catalog uses the open Agent Skills layout — a flat `skills/` directory, a
@@ -85,7 +87,13 @@ use that is marked not for client distribution:
 |---|---|
 | [`inventory-policy`](skills/inventory-policy) | Reorder points, safety stock and order quantities from a shipper's own demand history and lead times — safety stock z·√(L·σ_d² + d̄²·σ_L²), so lead-time spread counts as well as demand spread — plus ABC by annual consumption value, XYZ by demand variability, and dead/slow stock. Refuses to produce a policy from under 14 days of history rather than a confidently wrong one, and states what it does not model (capacity, MOQs, case packs, supplier terms). Standard library only; `scripts/inventory_policy.py --demo` checks hand-computed reference values (safety stock 18, reorder point 78, order 133). |
 | [`carrier-scorecard`](skills/carrier-scorecard) | Ranks carriers within each lane by the Wilson lower bound of their on-time rate, so one lucky delivery (1/1 → 0.21) does not outrank a long record (98/100 → 0.93); flags freight overcharges by modified z-score of cost per kg — falling back to mean absolute deviation on contracted lanes, where most shipments share one rate and the usual median absolute deviation is zero; and suggests a switch only when the alternative is cheaper *and* at least as reliable. Standard library only; `scripts/carrier_scorecard.py --demo` reproduces a 900 saving and a contracted-lane overcharge. |
-| [`stablecoin-settlement-audit`](skills/stablecoin-settlement-audit) | Reconciles freight invoices against USDC payments on Solana — paid, short-paid, paid twice, overdue — and reports first any payment that cited an invoice but went to an address other than its payee, the signature of address substitution, without counting it as paid. Matches by memo reference before amount, resolves references against every shipper's invoices before scoping to one (so another shipper's payment is never credited to this one), and keeps money as exact integers of the token's smallest unit. Read-only: it never needs or accepts a private key; payments come from an export or, with `--rpc`, from a Solana node, including Transaction V1, and any transaction it cannot read is reported as incomplete data rather than skipped. Standard library only; `scripts/settlement_audit.py --demo` reproduces a 300 shortfall, a 640.50 duplicate and 300 paid to the wrong address. |
+| [`stablecoin-settlement-audit`](skills/stablecoin-settlement-audit) | Reconciles freight invoices against on-chain stablecoin (USDC) payments — paid, short-paid, paid twice, overdue — and reports first any payment that cited an invoice but went to an address other than its payee, the signature of address substitution, without counting it as paid. Matches by memo reference before amount, resolves references against every shipper's invoices before scoping to one (so another shipper's payment is never credited to this one), and keeps money as exact integers of the token's smallest unit. Read-only: it never needs or accepts a private key; payments come from an export or, with `--rpc`, from a chain node (Solana today, Transaction V1 included), and any transaction it cannot read is reported as incomplete data rather than skipped. Standard library only; `scripts/settlement_audit.py --demo` reproduces a 300 shortfall, a 640.50 duplicate and 300 paid to the wrong address. |
+
+## Security
+
+Report vulnerabilities privately — see [SECURITY.md](SECURITY.md). CI rejects
+any skill that runs code from a source that can change after review, and the
+skills that touch money or wallets never ask for a private key or seed phrase.
 
 ## Security
 
@@ -163,7 +171,7 @@ python scripts/build_skill_lock.py --check
 ## Layout
 
 ```
-aria-skills/
+skills/                      # repository root (artheras/skills)
 ├── .claude-plugin/
 │   ├── marketplace.json     # installable marketplace metadata
 │   └── skills.lock.json     # versioned content-integrity lock
@@ -171,15 +179,27 @@ aria-skills/
 │   └── <skill-name>/
 │       ├── SKILL.md         # triggering + workflow + guardrails
 │       ├── skill-policy.json# declared tools / permissions / script policy
+│       ├── agents/          # interface descriptor (openai.yaml)
 │       ├── references/      # methodology, thresholds, schemas
 │       └── scripts/         # runnable harness or gate + its pytest suite
 ├── spec/                    # the SKILL.md format, briefly
-├── scripts/                 # catalog integrity tooling (skills.lock builder)
+├── scripts/                 # catalog tooling: lock builder, catalog validator,
+│                            # known Aria tool names (aria_known_tools.json)
 └── template/                # scaffold for a new skill
 ```
 
-Every skill ships an executable verifier with a `--demo` mode — the discipline
-is enforced by scripts and exit codes, not by prose.
+Most skills ship an executable verifier, and most of those have a `--demo`
+mode — where a check can be mechanical, it is enforced by scripts and exit
+codes, not by prose. The exceptions are deliberate:
+
+- **Reference-only, no scripts:** `terminal-software-design`,
+  `conversational-ui-restraint`, `ai-generated-ui-craft`, and
+  `operator-revenue-integrity` (which directs work to Aria Code's realty
+  agents instead). Their policies declare `"execution": "none"`.
+- **Verifier without `--demo`:** `equity-research-report`
+  (`validate_equity_report.py`) and `short-form-video-editing`
+  (`video_delivery_gate.py`) validate a real manifest; CI runs their tests and
+  checks that an empty or invalid manifest fails closed.
 
 ## Run the bundled harness
 

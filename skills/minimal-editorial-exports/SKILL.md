@@ -1,19 +1,22 @@
 ---
 name: minimal-editorial-exports
 description: >-
-  An alternate visual style for aria-code's own generated exports — report
+  An alternate visual style for aria-code’s own generated exports — report
   covers, PPTX title slides, single-chart share images, Canva one-pagers —
   built on heavy negative space, one accent color, and restrained
   serif/monospace type, instead of the default dense institutional/dashboard
-  look. Trigger for "极简", "杂志风", "editorial", "zine", "less corporate",
-  "make the cover page quieter", "one number, lots of white space", or when
-  the user wants a report/deck/chart export that reads as considered rather
-  than templated-dashboard. Do NOT trigger for the default financial report
-  body (tables, indicators, full analysis) — this governs cover pages, title
-  slides, and single-focal-point exports only, never dense data views (use
-  `terminal-software-design` or the existing institutional/bloomberg themes
-  for those). Do NOT trigger to invent a generic aesthetic from nothing — use
-  `ui-ux-pro-max` for open-ended exploration instead.
+  look. Trigger for "极简封面", "极简风格的报告封面", "杂志风封面",
+  "editorial cover", "editorial-style export", "zine-style cover", "make the
+  cover less corporate", "make the cover page quieter", "one number, lots of
+  white space", or when the user wants a report/deck/chart export that reads
+  as considered rather than templated-dashboard. Do NOT trigger for the
+  default financial report body (tables, indicators, full analysis) — this
+  governs cover pages, title slides, and single-focal-point exports only,
+  never dense data views (use `terminal-software-design` or the existing
+  institutional/bloomberg themes for those). Do NOT trigger for a standalone
+  poster from a theme or story (use `minimal-editorial-poster`). Do NOT
+  trigger to invent a generic aesthetic from nothing — use
+  `industry-design-direction` for open-ended exploration instead.
 ---
 
 # Minimal Editorial Exports

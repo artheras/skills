@@ -1,6 +1,6 @@
 {
   "schema_version": "aria.skill-policy.v1",
-  "allowed_tools": ["read_file", "run_command", "calculate_factors", "run_backtest"],
+  "allowed_tools": ["read_file", "run_command", "calculate_factors", "backtest_strategy"],
   "permissions": ["read-only", "workspace-write"],
   "scripts": {
     "execution": "approval",

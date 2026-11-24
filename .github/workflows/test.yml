@@ -387,6 +387,36 @@ jobs:
       - name: Regression tests
         run: pytest test_poster_gate.py -q
 
+  short-form-video-editing:
+    name: short-form-video-editing delivery gate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/short-form-video-editing/scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Standard library only by design, so pytest is the only install.
+      - name: Install test dependency
+        run: pip install --quiet pytest
+
+      - name: Regression tests
+        run: pytest test_video_delivery_gate.py -q
+
+      # No --demo mode: the gate validates a real manifest. An empty one must
+      # be rejected, not waved through.
+      - name: Empty manifest fails closed
+        run: |
+          echo '{}' > "$RUNNER_TEMP/empty-manifest.json"
+          if python -W error::RuntimeWarning video_delivery_gate.py --manifest "$RUNNER_TEMP/empty-manifest.json" > /dev/null; then
+            echo "delivery gate unexpectedly accepted an empty manifest"
+            exit 1
+          fi
+
   ui-asset-sourcing:
     name: ui-asset-sourcing harness
     runs-on: ubuntu-latest

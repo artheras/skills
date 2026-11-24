@@ -9,8 +9,8 @@ description: >-
   "review my components against my tokens", or whenever the user is building
   UI and wants coherence across screens rather than one-off styling. Do NOT
   trigger to invent an aesthetic from a blank slate with no user input (ask
-  them, or use ui-ux-pro-max for exploration first) — this skill operationalizes
-  the user's OWN choices, it does not impose a house style. Works across
+  them, or use `industry-design-direction` to pick a direction first) — this skill operationalizes
+  the user’s OWN choices, it does not impose a house style. Works across
   targets (CSS/Tailwind, SwiftUI, React Native, Flutter) because tokens are
   platform-neutral.
 ---
@@ -28,8 +28,8 @@ durable value here is **the user's own consistency**, enforced deterministically
 ## Division of labor — what is a taste call vs a machine check
 
 - **Taste calls** (which blue, serif vs sans, playful vs austere) belong to
-  the user, reached through conversation — draw on `ui-ux-pro-max` for options
-  if they want to explore. This skill never overrides those with a preferred
+  the user, reached through conversation — draw on `industry-design-direction`
+  for options if they want to explore. This skill never overrides those with a preferred
   style.
 - **Machine checks** (is text readable on canvas, is the radius scale
   monotonic, does this component use a color that isn't in the system) are
@@ -43,7 +43,7 @@ durable value here is **the user's own consistency**, enforced deterministically
    codebase, clusters near-duplicate colors, and prints a tokens *draft* to
    rename and prune (the system already exists implicitly; you are writing it
    down). If starting fresh, converse to pin down choices (lean on
-   `ui-ux-pro-max` for exploration), then record them — `python
+   `industry-design-direction` for exploration), then record them — `python
    scripts/design_tokens.py --template` prints the annotated skeleton to fill.
    Either way the result is a `design-tokens.json` in the user's project.
    Schema lives in `references/token_schema.md`.

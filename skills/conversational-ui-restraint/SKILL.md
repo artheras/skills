@@ -3,15 +3,18 @@ name: conversational-ui-restraint
 description: >-
   Build or review a chat/copilot/assistant interface — message list, composer,
   streaming responses, conversation sidebar, canvas/side-panel for structured
-  output. Trigger for "make this chat UI look like ChatGPT/Claude", "为什么我的
-  对话界面看起来很乱", "streaming response feels janky", "conversation sidebar
-  needs work", "this looks AI-generated", or when reviewing a chat/assistant
-  screen before shipping it. This is a DIFFERENT problem than dense dashboards
-  — a chat UI's job is to get out of the way of the content, not to show more
-  data per screen (use `terminal-software-design` for tables/dashboards/data
-  grids, not this). Do NOT trigger to invent a generic app aesthetic from a
-  blank slate (use `ui-ux-pro-max`) or for landing pages. Portable:
-  self-contained prose, no script dependency — works pasted into any assistant.
+  output. Trigger for "make this chat UI look like ChatGPT", "chat UI like
+  Claude", "为什么我的对话界面看起来很乱", "streaming response feels janky",
+  "conversation sidebar needs work", "chat UI feels cluttered", or when
+  reviewing a chat/assistant screen before shipping it. This is a DIFFERENT
+  problem than dense dashboards — a chat UI’s job is to get out of the way of
+  the content, not to show more data per screen (use
+  `terminal-software-design` for tables/dashboards/data grids, not this). Do
+  NOT trigger for a cross-category templated-look critique of a non-chat
+  page (use `ai-generated-ui-craft`), to invent a generic app
+  aesthetic from a blank slate (use `industry-design-direction`), or for
+  landing pages. Portable: self-contained prose, no script dependency — works
+  pasted into any assistant.
 ---
 
 # Conversational UI Restraint

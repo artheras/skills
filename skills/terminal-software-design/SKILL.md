@@ -4,18 +4,19 @@ description: >-
   Build or review UI for a terminal, IDE, trading/data dashboard, admin/ops
   tool, or any dense data-driven desktop/web app — as opposed to a marketing
   site or landing page. Trigger for "review my sidebar", "why does this look
-  unfinished", "dashboard feels too sparse/too dense", "Electron window has a
-  weird line at the edge", "make this table easier to scan", "这个侧边栏要怎么改",
-  "为什么这个终端界面看起来不对", or when reviewing a finished
-  screen/component in one of these product categories before shipping it.
-  Portable: every reference file here is self-contained prose with no script
-  dependency — it works pasted as instructions into any assistant, not only
-  inside this harness. Do NOT trigger to invent a generic app aesthetic from a
-  blank slate (use `ui-ux-pro-max`), to match one specific reference product's
-  own conventions like TradingView/X/Trading212 (use `trading-ui-patterns`),
-  or to freeze the user's own palette/spacing into reusable tokens (use
-  `ui-design-system`) — this skill is the density/composition/native-chrome
-  discipline that applies regardless of which of those you're also doing.
+  unfinished", "dashboard feels too sparse", "dashboard feels too dense",
+  "Electron window has a weird line at the edge", "make this table easier to
+  scan", "这个侧边栏要怎么改", "为什么这个终端界面看起来不对", or when reviewing
+  a finished screen/component in one of these product categories before
+  shipping it. Portable: every reference file here is self-contained prose
+  with no script dependency — it works pasted as instructions into any
+  assistant, not only inside this harness. Do NOT trigger to invent a generic
+  app aesthetic from a blank slate (use `industry-design-direction`), to match
+  one specific reference product’s own conventions like TradingView/X/Trading212
+  (use `trading-ui-patterns`), or to freeze the user’s own palette/spacing into
+  reusable tokens (use `ui-design-system`) — this skill is the
+  density/composition/native-chrome discipline that applies regardless of
+  which of those you’re also doing.
 ---
 
 # Terminal & Software UI Design

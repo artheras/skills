@@ -1,8 +1,8 @@
 # Settlement audit rules
 
-All amounts are integers in the token's smallest unit. For USDC on Solana
-(mint `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`, 6 decimals),
-1.25 USDC = 1 250 000 units. Comparisons are exact.
+All amounts are integers in the token's smallest unit. For USDC (6 decimals),
+1.25 USDC = 1 250 000 units. Comparisons are exact. The rules below do not
+depend on the network; only reading the chain (last section) does.
 
 ## Which transfers count
 
@@ -46,10 +46,16 @@ underpaid_overdue, unpaid_overdue, ambiguous, matched_by_amount, underpaid.
 
 ## Reading the chain (`--rpc`)
 
+Supported network: Solana. The default mint is USDC
+(`EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`); `--mint` and `--decimals`
+select another token.
+
 For each payee: `getTokenAccountsByOwner` (mint filter) → `getSignaturesForAddress`
 on each token account (`--limit`, default 100) → `getTransaction` with
 `jsonParsed` and `maxSupportedTransactionVersion: 1` (Transaction V1 reached
 mainnet in September 2026; requesting version 0 makes the node refuse V1
 transactions). A transaction that cannot be read is listed under
-`incomplete`, never skipped. Only https URLs or a local node are accepted.
+`incomplete`, never skipped. Only https URLs or a local node are accepted —
+plain http only when the parsed host is `localhost`, `127.0.0.1` or `::1`, so
+`http://localhost.evil.com` is refused.
 Nothing is signed or sent.

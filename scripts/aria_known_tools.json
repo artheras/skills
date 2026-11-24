@@ -1,0 +1,52 @@
+{
+  "_comment": [
+    "Tool names a skill-policy.json `allowed_tools` entry may use. Checked by",
+    "scripts/validate_catalog.py; a name that is not a real tool silently grants nothing.",
+    "Go engine (the default; aria-code go/runtime/skills.go): a turn that",
+    "activates a skill ($name or /skills use) offers its allowed_tools. Older",
+    "Python names map to Go tools there (skillToolAliases): get_market_data,",
+    "get_market_history, calculate_factors, backtest_strategy, get_risk_metrics,",
+    "optimize_positions and analyze_news to financial-service tools,",
+    "analyze_file to read_file, generate_image and edit_image to Aria's own",
+    "tool server (aria.report.*). Add a name here and an alias there together.",
+    "Python engine (until it is removed): apps/cli/local_tool_schemas.py,",
+    "aria_cli.py LOCAL_TOOLS, packages/aria_skills/loader.py CORE_FILE_TOOLS,",
+    "tools/local_finance_tools.py, tools/image_gen_tools.py and MCP tools",
+    "matched by short name (mcp__<server>__<short_name>), such as the research-run",
+    "tools of an external research server. Fully-qualified mcp__<server>__<tool>",
+    "names are accepted without being listed here."
+  ],
+  "core": [
+    "read_file", "analyze_file", "write_file", "edit_file", "multi_edit",
+    "list_files", "list_dir", "search_code", "search", "glob",
+    "run_command", "process", "web_fetch", "github",
+    "notebook_read", "notebook_edit",
+    "lsp_hover", "lsp_definition", "lsp_references",
+    "ask_user", "update_todos",
+    "write_spreadsheet", "export_markdown_pdf",
+    "get_market_data", "get_market_history", "broker_query", "broker_order"
+  ],
+  "finance": [
+    "get_crypto_data", "get_forex_data", "get_commodities_data", "get_futures_data",
+    "calculate_factors", "get_ai_signal", "get_market_insights", "get_predictions",
+    "backtest_strategy", "cloud_backtest", "get_risk_metrics", "optimize_positions",
+    "get_sector_performance", "get_northbound_flow", "screen_ashare",
+    "get_limit_up_pool", "get_market_indices", "analyze_news", "get_bonds_data",
+    "piotroski_fscore", "altman_zscore", "get_options_chain", "calculate_ichimoku",
+    "get_fear_greed_index", "get_funding_rates", "get_funding_rates_compare",
+    "walk_forward_backtest", "run_portfolio_backtest", "peer_comparison",
+    "web_search"
+  ],
+  "image": [
+    "generate_image", "edit_image"
+  ],
+  "mcp": [
+    "research_report_assess",
+    "research_run_create", "research_run_get", "research_run_transition",
+    "research_run_attach_artifact", "research_run_record_quality",
+    "research_run_events",
+    "aria.report.generate_image", "aria.report.edit_image",
+    "aria.report.generate_image_local", "aria.report.edit_image_local",
+    "aria.report.estimate_image_cost"
+  ]
+}

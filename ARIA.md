@@ -66,12 +66,16 @@ the regression tests.
 
 ## Domain guardrail
 
-This catalog covers quantitative finance. Skills here produce analyst work
-product for human review — they do not make investment recommendations and do
-not execute trades. When adding or editing a skill that touches sizing,
-execution, or any live-money path, keep the paper-only posture explicit in both
-the skill body and its policy file, and keep the README's disclaimer accurate
-with respect to what the catalog can now do.
+The catalog spans four plugins: quantitative finance research
+(`quant-research-skills`), app engineering and design
+(`app-engineering-skills`), operating-rights and revenue-share property
+arrangements (`realty-operations-skills`), and third-party logistics
+(`logistics-operations-skills`). Skills here produce work product for human
+review — they do not make investment recommendations, do not execute trades,
+and do not move money. When adding or editing a skill that touches sizing,
+execution, payments, or any live-money path, keep the paper-only / read-only
+posture explicit in both the skill body and its policy file, and keep the
+README's disclaimer accurate with respect to what the catalog can now do.
 
 ## Verify before committing
 
@@ -79,6 +83,11 @@ with respect to what the catalog can now do.
 python scripts/build_skill_lock.py --check   # integrity lock is current
 python scripts/validate_catalog.py           # disk / marketplace / policy / descriptor / README agree
 ```
+
+The validator also enforces Aria Code's loader limits, that every
+`allowed_tools` entry is a real Aria tool (`scripts/aria_known_tools.json`),
+that quoted trigger phrases are specific enough, and that every skill with a
+`scripts/` directory has a CI job — see `spec/README.md` for the rules.
 
 Both are what CI runs. `validate_catalog.py --demo` shows what a failure looks
 like against a synthetic broken catalog if you want to see the output shape

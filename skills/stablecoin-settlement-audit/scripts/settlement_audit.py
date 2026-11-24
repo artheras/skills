@@ -8,7 +8,7 @@ settlement_audit.py — reconcile freight invoices against on-chain stablecoin p
 
 Standard library only. Read-only: it never needs, asks for, or accepts a private
 key or seed phrase. Payments are read from a file you export, or — only with
---rpc — from a Solana JSON-RPC endpoint.
+--rpc — from a chain node (the supported network today is Solana).
 
 Every amount is an integer count of the token's smallest unit (USDC: 6 decimals,
 so 1.25 USDC = 1_250_000). Floats are never used for money; an amount with more
@@ -37,7 +37,7 @@ attribute to that shipper's invoices.
 
 Usage:
     python settlement_audit.py --invoices invoices.csv --transfers transfers.csv --owner ACME
-    python settlement_audit.py --invoices invoices.csv --rpc https://api.mainnet-beta.solana.com
+    python settlement_audit.py --invoices invoices.csv --rpc https://<your-rpc-node>
     python settlement_audit.py --demo
 """
 
@@ -49,13 +49,14 @@ import json
 import re
 import ssl
 import sys
+import urllib.parse
 import urllib.request
 from collections import defaultdict
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
-USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"   # USDC on Solana mainnet
+USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"   # USDC on the network --rpc reads (Solana)
 USDC_DECIMALS = 6
 INTERNAL = "INTERNAL — cross-shipper view; not for client distribution"
 _BASE58 = re.compile(r"^[1-9A-HJ-NP-Za-km-z]{32,44}$")
@@ -101,7 +102,7 @@ def _field(rec: dict, *names: str) -> str:
 def _wallet(value: str, where: str) -> str:
     if not _BASE58.match(value or ""):
         # A mistyped payee is exactly what lets a payment go astray unnoticed.
-        raise InputError(f"{where}: {value!r} is not a Solana address")
+        raise InputError(f"{where}: {value!r} is not a valid wallet address")
     return value
 
 
@@ -384,6 +385,32 @@ def _rpc(url: str, method: str, params: list):
 MAX_TX_VERSION = 1
 
 
+LOCAL_RPC_HOSTS = {"localhost", "127.0.0.1", "::1"}
+
+
+def _check_rpc_url(url: str) -> None:
+    """https anywhere, plain http only to this machine.
+
+    The host is parsed, not prefix-matched: "http://localhost.evil.com" and
+    "http://127.0.0.1.evil.com" start with a local-looking string but resolve
+    to someone else's server, which would then see every payee wallet queried
+    over an unencrypted connection and could answer with forged transfers.
+    """
+    try:
+        parsed = urllib.parse.urlsplit(url)
+        host = parsed.hostname
+        parsed.port  # raises ValueError on a malformed port
+    except ValueError:
+        raise InputError("--rpc is not a valid URL") from None
+    if not host:
+        raise InputError("--rpc must be an https URL (or a local node)")
+    if parsed.scheme == "https":
+        return
+    if parsed.scheme == "http" and host in LOCAL_RPC_HOSTS:
+        return
+    raise InputError("--rpc must be an https URL (or a local node: localhost, 127.0.0.1, ::1)")
+
+
 def fetch_transfers(url: str, payees, mint=USDC_MINT, limit=100, rpc=_rpc, unreadable=None) -> list:
     """Incoming `mint` transfers to each payee wallet. Reads only; signs nothing.
 
@@ -392,8 +419,7 @@ def fetch_transfers(url: str, payees, mint=USDC_MINT, limit=100, rpc=_rpc, unrea
     turn a paid invoice into an "unpaid" one.
     """
     unreadable = unreadable if unreadable is not None else []
-    if not (url.startswith("https://") or url.startswith("http://localhost") or url.startswith("http://127.0.0.1")):
-        raise InputError("--rpc must be an https URL (or a local node)")
+    _check_rpc_url(url)
     found = []
     for payee in sorted(set(payees)):
         accounts = rpc(url, "getTokenAccountsByOwner", [payee, {"mint": mint}, {"encoding": "jsonParsed"}])
@@ -480,7 +506,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Reconcile freight invoices against stablecoin payments")
     ap.add_argument("--invoices", type=Path, help="CSV or JSON of invoices")
     ap.add_argument("--transfers", type=Path, help="CSV or JSON of exported transfers")
-    ap.add_argument("--rpc", help="read transfers from this Solana JSON-RPC URL instead")
+    ap.add_argument("--rpc", help="read transfers from this chain node's JSON-RPC URL instead (Solana)")
     ap.add_argument("--limit", type=int, default=100, help="signatures to read per token account (with --rpc)")
     ap.add_argument("--owner", help="shipper (owner_id) to report on")
     ap.add_argument("--all-owners", action="store_true", help="internal cross-shipper view")

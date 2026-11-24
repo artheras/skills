@@ -7,13 +7,14 @@ description: >-
   this skill whenever the user: (1) backtests a strategy or factor, (2) asks
   for a Sharpe / alpha / IC / return — even as a quick one-liner ("just give
   me the Sharpe", "run this backtest"), (3) reviews or asks you to confirm /
-  audit / validate quant or backtest code ("is my code PIT clean?", "confirm
-  this is correct", "check my backtest for look-ahead"), (4) evaluates whether
-  a signal or edge is real, or (5) screens on fundamentals. Fire even when the
-  user claims they already fixed PIT issues — check specifically for whichever
-  of the three silent leaks (period-end dating, latest-value overwrite,
-  same-session execution) may remain. Do NOT trigger for generic finance
-  questions that involve no simulation or data join.
+  audit / validate quant or backtest code ("is my code PIT clean?", "check my
+  backtest for look-ahead", or simply asking whether the backtest code is
+  correct), (4) evaluates whether a signal or edge is real, or (5) screens on
+  fundamentals. Fire even when the user claims they already fixed PIT issues
+  — check specifically for whichever of the three silent leaks (period-end
+  dating, latest-value overwrite, same-session execution) may remain. Do NOT
+  trigger for generic finance questions that involve no simulation or data
+  join.
 ---
 
 # Point-in-Time Quant Research

@@ -77,7 +77,21 @@ ignore it. Unknown keys are ignored, so adding a field is backward-compatible.
 }
 ```
 
-- **`allowed_tools`** — tool names the skill may call.
+- **`allowed_tools`** — tool names the skill may call. While a skill is
+  active, Aria Code narrows the model's tool schema to its core file tools
+  (`read_file`, `analyze_file`, `write_file`, `edit_file`, `multi_edit`,
+  `write_spreadsheet`, `export_markdown_pdf`) plus the union of the active
+  skills' `allowed_tools`. A name that is not a real tool therefore grants
+  nothing, and the tool the author meant is silently unavailable. Use the
+  names in [`scripts/aria_known_tools.json`](../scripts/aria_known_tools.json)
+  (sourced from aria-code's `apps/cli/local_tool_schemas.py` and tool
+  registries) — e.g. `list_files`, not `list_directory`; `backtest_strategy`,
+  not `run_backtest`. MCP tools are matched by their short name (the part
+  after the last `__`, such as `aria.report.generate_image_local`), or may be
+  given fully qualified as `mcp__<server>__<tool>`. A skill that ships
+  scripts with `"execution": "approval"` and a non-empty list must include
+  `run_command`, or the agent cannot run them. An empty list means no
+  narrowing at all.
 - **`agents`** — specialist agents the skill orchestrates, by registry name.
   Advisory: the loader never imports an agent registry, so a skill declaring
   agents still loads in runtimes that have none. Declare an agent only if the
@@ -92,6 +106,25 @@ Reference-only skills still need this file; omit it and the skill loads with
 the most restrictive defaults, which is safe but silently wrong if the skill
 actually needed a tool.
 
+## Loader limits
+
+Aria Code's loader skips a skill **silently** — no error, no trace — when any
+of these fail, so `scripts/validate_catalog.py` checks them in CI:
+
+- `SKILL.md` starts with exactly `---\n` — no byte-order mark, nothing before
+  it.
+- LF line endings. The loader itself tolerates CRLF, but `skills.lock.json`
+  pins a SHA-256 of the raw bytes, so a CRLF checkout fails integrity and the
+  skill can no longer activate automatically. `.gitattributes` pins text files
+  to LF.
+- `SKILL.md` is at most 20,000 characters. Move material into `references/`.
+- `name` matches `^[a-z0-9][a-z0-9-]{0,63}$` (and the folder name).
+- `description` is non-empty, and there is a non-empty body after the
+  frontmatter.
+
+Every skill with a `scripts/` directory also needs a job in
+`.github/workflows/test.yml`.
+
 ## Description guidance
 
 The `description` is a triggering classifier, not marketing copy. Good
@@ -101,6 +134,28 @@ descriptions:
   would actually use;
 - include near-miss phrasings the user might say instead of the technical term;
 - state an explicit exclusion when the skill is easy to over-trigger.
+
+### Quoted trigger phrases
+
+Aria Code activates a skill outright when any phrase quoted in its
+description — `"…"`, `“…”`, or `'…'` — appears as a substring of the user's
+message, wherever in the description the quote sits (an exclusion clause
+included). So a quoted phrase is a hard trigger, not an example:
+
+- At least 5 characters (4 if it contains CJK characters), and not a single
+  bare English word. `"VaR"` fires on "various", `"done"` on nearly anything,
+  `"significant"` on any sentence that uses the word.
+- Keep each phrase on one line: a fold inside the quotes becomes a space
+  (`"写一个BTC均值 回归策略"`), which no real message contains.
+- Do not quote phrases you are only describing or excluding — write them
+  unquoted. Write apostrophes as `’`: two ASCII `'` in one description open an
+  accidental single-quoted phrase.
+- No phrase may be contained in another skill's phrase, or every message that
+  fires the other skill fires this one too. Neighbouring skills should each
+  carry a "Do NOT trigger for … (use `other-skill`)" clause instead.
+
+Unquoted words still count toward a weaker word-overlap score, so keep
+exclusion clauses short and avoid common words there.
 
 ## Conventions in this repo
 

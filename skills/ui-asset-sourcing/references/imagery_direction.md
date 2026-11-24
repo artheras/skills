@@ -55,6 +55,10 @@ approximate, and one drifted image undoes the palette work.
 
 ## Backend choice
 
+Inside Aria Code's own chat loop the local backend is called as
+`generate_image` / `edit_image`; the names below are the MCP tool names an
+external client sees. The paid OpenAI backend is MCP-only.
+
 - **`aria.report.generate_image_local`** (SDXL-Turbo, free, local): abstract
   backgrounds, textures, gradient fields, light restyling of an existing photo.
   It is a 4-step distilled model — it will not follow an aggressive
@@ -66,8 +70,9 @@ approximate, and one drifted image undoes the palette work.
   `confirmed: true` — call `aria.report.estimate_image_cost` first and tell the
   user the number.
 
-For turning an existing user photo into on-direction art, the `edit_image` /
-`edit_image_local` variants take the photo as the starting point.
+For turning an existing user photo into on-direction art, the
+`aria.report.edit_image` / `aria.report.edit_image_local` variants (or
+`edit_image` in Aria's chat loop) take the photo as the starting point.
 
 ## When generating is the wrong call
 

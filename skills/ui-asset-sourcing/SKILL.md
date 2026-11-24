@@ -9,12 +9,14 @@ description: >-
   brand", or whenever a design direction exists and the remaining gap is the
   visual material to fill it. Names which icon set fits which aesthetic, how to
   fetch real icon and brand SVGs rather than inventing path data, and how to
-  generate on-palette imagery with Aria Code's own image tools
-  (`aria.report.generate_image_local` free/local, or `aria.report.generate_image`
-  paid) when a stock photo would be wrong. Do NOT trigger to choose the design
+  generate on-palette imagery with Aria Code’s own image tools
+  (`generate_image` / `edit_image` in Aria’s chat loop, free/local; over MCP,
+  `aria.report.generate_image_local` or the paid `aria.report.generate_image`)
+  when a stock photo would be wrong. Do NOT trigger to choose the design
   direction itself (use `industry-design-direction`) or to compile a single
-  editorial poster (`minimal-editorial-poster`). Portable: self-contained prose,
-  no script dependency.
+  editorial poster (`minimal-editorial-poster`). The guidance is plain prose
+  usable in any assistant; the lint and icon fetcher under `scripts/` need
+  Python (and network access for fetching).
 ---
 
 # UI asset sourcing
@@ -74,8 +76,12 @@ python scripts/fetch_icon.py --demo                                       # offl
 
 Fetches from each registry's real published URL (`unpkg.com`/`raw.githubusercontent.com`
 for Lucide/Heroicons/Tabler/Phosphor/Simple Icons — see the script header for
-the exact templates) and validates the response actually parses as SVG with a
-real shape element before accepting it — several of these CDNs return HTTP 200
+the exact templates), pinned to one released version per registry rather than
+`@latest`/`master`, and validates the response actually parses as SVG with a
+real shape element before accepting it. It also refuses SVGs carrying active
+content (`<script>`, `on*` handlers, `<foreignObject>`, `javascript:` URLs,
+external `<use>` references, DOCTYPE/ENTITY declarations), since a fetched
+icon is pasted straight into the user's markup — several of these CDNs return HTTP 200
 with an HTML or plain-text error body for a bad name, so status code alone
 isn't proof. Fails loud with the resolved URL on a miss rather than writing
 garbage to disk. `--demo` proves the fetch/validate logic offline by injecting
@@ -112,16 +118,26 @@ is a bigger error than a mediocre execution of the right kind.
 Generate when the image must sit inside the palette you already chose, when
 the subject is specific to this product, or when stock would read as
 generic-corporate (the smiling-team-around-a-laptop problem). Aria Code has
-two backends, both MCP-exposed:
+two backends. Which tool names you can call depends on where you are running:
 
-- `aria.report.generate_image_local` — self-hosted SDXL-Turbo. No API key, no
-  per-call cost. Good for texture, abstract backgrounds, and light restyling.
-  Weak at aggressive restyling and **cannot render legible text** — do not ask
-  it for anything with words in the image.
-- `aria.report.generate_image` — OpenAI `gpt-image-1`. Real per-call cost, so
-  it requires `confirmed: true`; call `aria.report.estimate_image_cost` first.
-  Markedly better at instruction-following, flat/graphic styles, and legible
-  text.
+- **Inside Aria Code's own chat loop** the tools are `generate_image` (new
+  image from a prompt) and `edit_image` (restyle an existing local photo).
+  Both run the local SDXL-Turbo backend only; the paid OpenAI backend is
+  deliberately not wired into the interactive loop.
+- **From an MCP client connected to Aria Code** (Claude Code, Codex, …) the
+  same backends are exposed as:
+  - `aria.report.generate_image_local` / `aria.report.edit_image_local` —
+    self-hosted SDXL-Turbo. No API key, no per-call cost.
+  - `aria.report.generate_image` / `aria.report.edit_image` — OpenAI
+    `gpt-image-1`. Real per-call cost, so it requires `confirmed: true`; call
+    `aria.report.estimate_image_cost` first.
+
+The local SDXL-Turbo backend is good for texture, abstract backgrounds, and
+light restyling, but weak at aggressive restyling and **cannot render legible
+text** — do not ask it for anything with words in the image. `gpt-image-1` is
+markedly better at instruction-following, flat/graphic styles, and legible
+text. If neither set of tools is available, say so and hand over the prompt
+instead of pretending an image was generated.
 
 Put the palette's hex values in the prompt. An image generated without them
 will land near-but-not-on your colors, which reads worse than an obviously

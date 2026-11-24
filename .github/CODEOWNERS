@@ -1,4 +1,3 @@
 # Every change, including to a skill's scripts or policy, needs review from a
-# maintainer. Directories that list these skills (solana.com/skills) ask for a
-# clear maintainer list.
+# maintainer, and anyone installing a skill can see who maintains it.
 * @Cinsoul
