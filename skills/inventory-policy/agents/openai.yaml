@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inventory Policy"
+  short_description: "Reorder points, safety stock and dead stock from real demand history, one shipper at a time"
+  default_prompt: "Use $inventory-policy to work out reorder points and order quantities for these SKUs."

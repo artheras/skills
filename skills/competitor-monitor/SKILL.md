@@ -1,15 +1,15 @@
 ---
 name: competitor-monitor
 description: >-
-  Turn a competitor's price, inventory-proxy, search rank, and review-velocity
+  Turn a competitor’s price, inventory-proxy, search rank, and review-velocity
   changes into named, hedged inferences about what they might be doing —
   clearing stock, running ads, heading toward a stockout — never a confirmed
   statement of their strategy. Trigger for "对手是不是在降价冲销量",
-  "竞品排名突然涨了", "这个竞品是不是要断货了", "why did this competitor's
+  "竞品排名突然涨了", "这个竞品是不是要断货了", "why did this competitor’s
   rank jump", "is this competitor clearing inventory", "competitor price drop
   analysis". Do NOT trigger for a single-field price check with no other
-  signal available (that's just a lookup, not a monitoring inference), and
-  do NOT trigger to make a pricing or ad-spend decision on the seller's own
+  signal available (that’s just a lookup, not a monitoring inference), and
+  do NOT trigger to make a pricing or ad-spend decision on the seller’s own
   listings — that decision belongs to `ads-optimizer`/the seller, informed by
   this skill's output, not made by it.
 ---

@@ -1,12 +1,14 @@
-# Arthera Skills
+# Aria Skills
 
-[![test](https://github.com/artherahq/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artherahq/skills/actions/workflows/test.yml)
+[![test](https://github.com/artheras/skills/actions/workflows/test.yml/badge.svg)](https://github.com/artheras/skills/actions/workflows/test.yml)
 
 The skill catalog for **Aria Code** — Arthera's AI quant terminal. Each skill
-packages one piece of research discipline (point-in-time data hygiene, backtest
-trust gates, risk decomposition, strategy spec gates…) as instructions plus
-runnable verification scripts that Aria loads dynamically when a task matches.
-Maintained by [`artherahq`](https://github.com/artherahq).
+packages one piece of discipline — quant research (point-in-time data hygiene,
+backtest trust gates, risk decomposition, strategy spec gates…), app
+engineering and design, realty operations, and third-party logistics — as
+instructions, usually with runnable verification scripts, that Aria loads
+dynamically when a task matches.
+Maintained by [`artheras`](https://github.com/artheras).
 
 The catalog uses the open Agent Skills layout — a flat `skills/` directory, a
 `spec/` describing the format, a `template/` for new skills, and a plugin
@@ -67,6 +69,7 @@ standards:
 | [`figma-design-sync`](skills/figma-design-sync) | Connects professional Figma designs directly to code: inspects node structure and AutoLayout properties, exports high-res vector SVGs/PNGs into local assets, and synchronizes Figma Variables into `design-tokens.json` and CSS variables, eliminating AI-generated geometric guesswork and templated styling. |
 | [`minimal-editorial-exports`](skills/minimal-editorial-exports) | A second, deliberately restrained style for the one surface per document that's allowed to be quiet — a report cover page, a PPTX title slide, a standalone chart export, a Canva one-pager — never the dense report body itself. Heavy negative space around one focal point, one accent color tied to real signal meaning, restrained serif/monospace type, texture only where the export format can render it (HTML/PDF, not PPTX/DOCX). Names exactly where this plugs into Aria Code's own export pipeline (`report_generator.py`'s chart palette, `pdf_report.py`'s theme cover page, `report_exporters.py`'s PPTX/DOCX title slide, `canva_client.py`'s Autofill data). Ships a runnable gate (`scripts/exports_gate.py --demo`) that fails a dense cover carrying borrowed dashboard chrome and format-mismatched texture next to a corrected minimal-editorial compile of the same cover. |
 | [`minimal-editorial-poster`](skills/minimal-editorial-poster) | Domain-agnostic sibling of `minimal-editorial-exports` — compiles a minimal zine/editorial poster prompt for a theme, sentence, or brief from any domain Aria Code touches (finance, real estate, or none at all), not just for styling Aria Code's own exports. Nine first-principles fields answered in order (canvas, attention geometry, anchor, anchor treatment, typography, color logic, texture, emotional temperature, hard avoids), a variation engine so a batch of posters doesn't compile to the same recipe, and an explicit negative-constraints list. Actually executes the compiled prompt when a backend is configured — local self-hosted SDXL-Turbo (`aria.report.generate_image_local`/`edit_image_local`, no API key) or OpenAI's `gpt-image-1` — choosing generate vs. edit from the Anchor field and an `img2img` `strength` value from ranges tuned against a real run (0.55 confirmed on an actual portrait: duotone + simplified background + texture all came through while the subject stayed recognizable). Falls back to prompt-only + a non-image brief when no backend is configured. Ships a runnable gate (`scripts/poster_gate.py --demo`) that reproduces a real commercial-travel-poster prompt failing next to the corrected minimal-editorial compile for the same photo, catching leaked hard-avoid terms, doubled saturated colors, and negative-space that isn't really 70%+. |
+| [`short-form-video-editing`](skills/short-form-video-editing) | Turns approved footage, posters, charts and image assets into a platform-ready short-form video package — edit plan, captions, publish copy and a delivery manifest — with platform specs, asset provenance and finance-content rules in its references. Prepares the package; it does not publish, handle account credentials, or invent rights for a source asset. Ships a delivery gate (`scripts/video_delivery_gate.py --manifest delivery.json`) that validates the manifest against `assets/delivery-manifest.schema.json` before release. |
 
 | [`short-form-video-editing`](skills/short-form-video-editing) | Turns a script and the user's own images or clips into a finished short-form video: edit plan, narration, burned-in captions, the rendered file, and the checks it ran. Keeps provenance explicit — recorded asset and music rights, no invented claims, and a signed-off delivery manifest before release, with stricter rules for finance and other content where being wrong costs the viewer. |
 | [`aria-music-direction`](skills/aria-music-direction) | Creates rights-aware music direction for ARIA media: no-music rationale or an original/licensed/commissioned/user-supplied cue declaration, concise cue brief, mix targets, territory and term, proof location, clearance status, and named release approval. Ships an offline gate that blocks incomplete or uncleared cue manifests while intentionally bundling no third-party audio. |
@@ -108,13 +111,31 @@ seller-controlled policy the Agent cannot enable itself:
 | [`competitor-monitor`](skills/competitor-monitor) | Reads a competitor's price, inventory-proxy, search rank, and review-velocity deltas against six named patterns (clearance push, aggressive ad push, stockout risk, price war, fading listing, restock recovery) — requiring at least two corroborating signals per match, and phrasing every result as "consistent with," never "is." A single moving number, or fewer than two available signals, is `no_clear_pattern` rather than a forced narrative. Ranks competitors by how much evidence corroborates a read, not by how dramatic a lone signal looks, and never calls a tool that changes the seller's own price, bid, or listing — the response is the next skill's or the seller's decision. |
 | [`commerce-operations-agent`](skills/commerce-operations-agent) | The one skill in this catalog authorised to take a live marketplace action — publishing a validated Wildberries `cross-listing` draft, or cancelling eligible Wildberries FBS orders — and only because both are deny-by-default behind a seller-maintained automation policy the Agent cannot itself create, edit, or enable. Checks `commerce.automation.status` before either operation, generates a fresh idempotency key per new request (never per retry), and for cancellation requires explicit order IDs plus a fresh eligibility preflight — never a product title, fuzzy search, or inferred order. OZON stays draft-only here too, for the same reason `cross-listing` never fabricates a category mapping: no verified product-import adapter exists for it yet. |
 
+A sixth plugin, `logistics-operations-skills`, is for third-party logistics.
+A 3PL holds many shippers' stock and waybills side by side, so every skill here runs
+for one shipper at a time and refuse to mix clients' data — a refusal never
+names the other shippers — with an explicit internal view for the 3PL's own
+use that is marked not for client distribution:
+
+| Skill | What it does |
+|---|---|
+| [`inventory-policy`](skills/inventory-policy) | Reorder points, safety stock and order quantities from a shipper's own demand history and lead times — safety stock z·√(L·σ_d² + d̄²·σ_L²), so lead-time spread counts as well as demand spread — plus ABC by annual consumption value, XYZ by demand variability, and dead/slow stock. Refuses to produce a policy from under 14 days of history rather than a confidently wrong one, and states what it does not model (capacity, MOQs, case packs, supplier terms). Standard library only; `scripts/inventory_policy.py --demo` checks hand-computed reference values (safety stock 18, reorder point 78, order 133). |
+| [`carrier-scorecard`](skills/carrier-scorecard) | Ranks carriers within each lane by the Wilson lower bound of their on-time rate, so one lucky delivery (1/1 → 0.21) does not outrank a long record (98/100 → 0.93); flags freight overcharges by modified z-score of cost per kg — falling back to mean absolute deviation on contracted lanes, where most shipments share one rate and the usual median absolute deviation is zero; and suggests a switch only when the alternative is cheaper *and* at least as reliable. Standard library only; `scripts/carrier_scorecard.py --demo` reproduces a 900 saving and a contracted-lane overcharge. |
+| [`stablecoin-settlement-audit`](skills/stablecoin-settlement-audit) | Reconciles freight invoices against on-chain stablecoin (USDC) payments — paid, short-paid, paid twice, overdue — and reports first any payment that cited an invoice but went to an address other than its payee, the signature of address substitution, without counting it as paid. Matches by memo reference before amount, resolves references against every shipper's invoices before scoping to one (so another shipper's payment is never credited to this one), and keeps money as exact integers of the token's smallest unit. Read-only: it never needs or accepts a private key; payments come from an export or, with `--rpc`, from a chain node (Solana today, Transaction V1 included), and any transaction it cannot read is reported as incomplete data rather than skipped. Standard library only; `scripts/settlement_audit.py --demo` reproduces a 300 shortfall, a 640.50 duplicate and 300 paid to the wrong address. |
+
+## Security
+
+Report vulnerabilities privately — see [SECURITY.md](SECURITY.md). CI rejects
+any skill that runs code from a source that can change after review, and the
+skills that touch money or wallets never ask for a private key or seed phrase.
+
 ## Install
 
 Aria Code discovers the catalog through `ARIA_SKILLS_PATH` or a sibling
 checkout and registers each skill as `plugin:skill`:
 
 ```bash
-git clone https://github.com/artherahq/skills aria-skills
+git clone https://github.com/artheras/skills aria-skills
 export ARIA_SKILLS_PATH=/path/to/aria-skills/skills
 ```
 
@@ -163,6 +184,9 @@ $commerce-operations-skills:profit-engine
 $commerce-operations-skills:ads-optimizer
 $commerce-operations-skills:competitor-monitor
 $commerce-operations-skills:commerce-operations-agent
+$logistics-operations-skills:inventory-policy
+$logistics-operations-skills:carrier-scorecard
+$logistics-operations-skills:stablecoin-settlement-audit
 ```
 
 Inside Aria Code:
@@ -170,7 +194,7 @@ Inside Aria Code:
 - `/skills doctor` verifies catalog integrity and declared permissions.
 - `/skills trace` shows why a skill was selected or blocked.
 
-The repo doubles as a standard plugin marketplace (`artherahq/skills`), so any
+The repo doubles as a standard plugin marketplace (`artheras/skills`), so any
 Agent-Skills-compatible runtime can install the same catalog.
 
 ## Integrity And Permissions
@@ -188,7 +212,7 @@ python scripts/build_skill_lock.py --check
 ## Layout
 
 ```
-aria-skills/
+skills/                      # repository root (artheras/skills)
 ├── .claude-plugin/
 │   ├── marketplace.json     # installable marketplace metadata
 │   └── skills.lock.json     # versioned content-integrity lock
@@ -196,15 +220,27 @@ aria-skills/
 │   └── <skill-name>/
 │       ├── SKILL.md         # triggering + workflow + guardrails
 │       ├── skill-policy.json# declared tools / permissions / script policy
+│       ├── agents/          # interface descriptor (openai.yaml)
 │       ├── references/      # methodology, thresholds, schemas
 │       └── scripts/         # runnable harness or gate + its pytest suite
 ├── spec/                    # the SKILL.md format, briefly
-├── scripts/                 # catalog integrity tooling (skills.lock builder)
+├── scripts/                 # catalog tooling: lock builder, catalog validator,
+│                            # known Aria tool names (aria_known_tools.json)
 └── template/                # scaffold for a new skill
 ```
 
-Every skill ships an executable verifier with a `--demo` mode — the discipline
-is enforced by scripts and exit codes, not by prose.
+Most skills ship an executable verifier, and most of those have a `--demo`
+mode — where a check can be mechanical, it is enforced by scripts and exit
+codes, not by prose. The exceptions are deliberate:
+
+- **Reference-only, no scripts:** `terminal-software-design`,
+  `conversational-ui-restraint`, `ai-generated-ui-craft`, and
+  `operator-revenue-integrity` (which directs work to Aria Code's realty
+  agents instead). Their policies declare `"execution": "none"`.
+- **Verifier without `--demo`:** `equity-research-report`
+  (`validate_equity_report.py`) and `short-form-video-editing`
+  (`video_delivery_gate.py`) validate a real manifest; CI runs their tests and
+  checks that an empty or invalid manifest fails closed.
 
 ## Run the bundled harness
 

@@ -1,6 +1,6 @@
 {
   "schema_version": "aria.skill-policy.v1",
-  "allowed_tools": ["read_file", "list_directory", "write_file", "edit_file"],
+  "allowed_tools": ["read_file", "list_files", "write_file", "edit_file"],
   "permissions": ["read-only", "workspace-write"],
   "scripts": {
     "execution": "none",

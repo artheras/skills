@@ -1,6 +1,6 @@
 {
   "schema_version": "aria.skill-policy.v1",
-  "allowed_tools": ["read_file", "list_directory"],
+  "allowed_tools": ["read_file", "list_files"],
   "permissions": ["read-only"],
   "scripts": {
     "execution": "none",

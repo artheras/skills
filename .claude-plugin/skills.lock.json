@@ -1,183 +1,198 @@
 {
   "schema_version": "aria.skills-lock.v1",
-  "organization": "artherahq",
-  "repository": "https://github.com/artherahq/skills",
-  "catalog_version": "0.9.0",
+  "organization": "artheras",
+  "repository": "https://github.com/artheras/skills",
+  "catalog_version": "0.11.0",
   "skills": {
     "app-engineering-skills:ai-generated-ui-craft": {
       "path": "skills/ai-generated-ui-craft",
-      "sha256": "2b028648cda5e3780e9f96f61105a4671ea57e3d73238b6001e3b8924481e632",
-      "version": "0.9.0"
+      "sha256": "b6e749bd99103b8eadee00c8c899503b7afeac0e78c30d628209bc20441df093",
+      "version": "0.11.0"
     },
     "app-engineering-skills:aria-music-direction": {
       "path": "skills/aria-music-direction",
       "sha256": "186b7817055fbeffb5bcbfa7cf698f86d600a339f22d9935224559ec116b6600",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "app-engineering-skills:conversational-ui-restraint": {
       "path": "skills/conversational-ui-restraint",
-      "sha256": "79bca0d4e1838140002bdf0e0ca202331b3a39cf53bc03682863c13bc66f1df7",
-      "version": "0.9.0"
+      "sha256": "9cf3e120aae485ff1bc8b2a80a5026d14a8b1fa1da2b2c79da09422182056588",
+      "version": "0.11.0"
     },
     "app-engineering-skills:figma-design-sync": {
       "path": "skills/figma-design-sync",
-      "sha256": "99b713225bb65b0705964b453ac40b3e21abeea58695dfb379761d92aeb84d6e",
-      "version": "0.9.0"
+      "sha256": "3b83f459338255af3cdbd9888ce926170878fc0f2603d274100c2763e0d626e9",
+      "version": "0.11.0"
     },
     "app-engineering-skills:industry-design-direction": {
       "path": "skills/industry-design-direction",
-      "sha256": "8880b3a3a021f7d9c84d1d5b6f59a78aed5a1e89e986703eb088dc222b15b05f",
-      "version": "0.9.0"
+      "sha256": "0e47195b0e377c9ad96cb65ca7d708c1be41231cdd3520922cf9de392cbaa456",
+      "version": "0.11.0"
     },
     "app-engineering-skills:minimal-editorial-exports": {
       "path": "skills/minimal-editorial-exports",
-      "sha256": "f985089cac692da0bb59193ce0922208f06a6bee4a36eb61e6781ce3cd429934",
-      "version": "0.9.0"
+      "sha256": "5e04e937349e902fd27570b6a4aa7d77fee1ab36156e45a5f6cd841f8f00ebc3",
+      "version": "0.11.0"
     },
     "app-engineering-skills:minimal-editorial-poster": {
       "path": "skills/minimal-editorial-poster",
-      "sha256": "37b5fb749d3e793c159c694c21ef49786a3a1e98b7ae1c906f646385881eb6e4",
-      "version": "0.9.0"
+      "sha256": "e320e46a0285c9a4ecf7f918ea214067863a0a36f0f00e7877545d55e2784e0c",
+      "version": "0.11.0"
     },
     "app-engineering-skills:short-form-video-editing": {
       "path": "skills/short-form-video-editing",
-      "sha256": "55b0202d5f19343039bbc07f91cf38e06d6248fe223e18e0cfcfc8f319099d94",
-      "version": "0.9.0"
+      "sha256": "753f0d671705af7be9091081a0961656dca58234350bbc9d6bfce70e7be6c738",
+      "version": "0.11.0"
     },
     "app-engineering-skills:terminal-software-design": {
       "path": "skills/terminal-software-design",
-      "sha256": "f718eda25f2455ffff74d53ec952c9ee3f54895cdaee31e2a750330f4ff59ac5",
-      "version": "0.9.0"
+      "sha256": "332144d0afaeb316c12edb4ce24feefd885dd54be4bb555826048d509864e472",
+      "version": "0.11.0"
     },
     "app-engineering-skills:trading-ui-patterns": {
       "path": "skills/trading-ui-patterns",
-      "sha256": "50267e363e44d051a607696281ef586f3c8f83d5d4e664ff76b842abe3f035f9",
-      "version": "0.9.0"
+      "sha256": "9b6e70e28981565264beafb14865762262d999021d5ee71ba4ba185d58f14523",
+      "version": "0.11.0"
     },
     "app-engineering-skills:ui-asset-sourcing": {
       "path": "skills/ui-asset-sourcing",
-      "sha256": "1aa6506877b3817137fb0c08bac56ca17daf28a511c19eed62a18ec6cff34e43",
-      "version": "0.9.0"
+      "sha256": "9cc9e149e450f4e2f51ef2635a324e8ad930b0c145dbb29893b9535fe56bb582",
+      "version": "0.11.0"
     },
     "app-engineering-skills:ui-design-system": {
       "path": "skills/ui-design-system",
-      "sha256": "69bad0e231e2a9b94d628f71e21c055a7370bed306883c36218d8ecea5dc0204",
-      "version": "0.9.0"
+      "sha256": "a1c3157b64405198384b68dfc5ff6301406f1d26a89f113723aea8dc75ba3526",
+      "version": "0.11.0"
     },
     "app-engineering-skills:web-motion-design": {
       "path": "skills/web-motion-design",
-      "sha256": "3daa4811f5fe64e1aefadb841be1baa3ee36132bd888e9efccf8b3c5d1f7c103",
-      "version": "0.9.0"
+      "sha256": "2f073839290cd561fae50c2bcc2fcf2794ac95fd2e6aa0cb0bf8ac8dde802d26",
+      "version": "0.11.0"
     },
     "commerce-operations-skills:ads-optimizer": {
       "path": "skills/ads-optimizer",
       "sha256": "6cdf85c396fc2fb2fff6046d54332ef5f844e2cee5952eeed9327de30b6ece4c",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "commerce-operations-skills:commerce-operations-agent": {
       "path": "skills/commerce-operations-agent",
       "sha256": "a9f1f369d473f531a9c38879ec432b5ba12ba23ff07118f6f28c4c247baadf94",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "commerce-operations-skills:competitor-monitor": {
       "path": "skills/competitor-monitor",
-      "sha256": "903ef5e23e074502bee5d8adbce3927947c25745c7c1538fd26af039a0302a30",
-      "version": "0.9.0"
+      "sha256": "c062a9ae2d7d20dc06148d85e7d482ed67fb1374204fe9214807d67c135c1679",
+      "version": "0.11.0"
     },
     "commerce-operations-skills:cross-listing": {
       "path": "skills/cross-listing",
       "sha256": "802e66f83cdcecdb9c894435e7b9d50a5d7aae981dd0e06deab86369d0f8def8",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "commerce-operations-skills:inventory-planner": {
       "path": "skills/inventory-planner",
-      "sha256": "133d39b3bc8ea885a14121c060cdff55943eeb958e35634c2a810300c8566480",
-      "version": "0.9.0"
+      "sha256": "9e16c06c22f84933ae94d26b9771e1d8b0d259147b11cad5cb810bc65c9bae53",
+      "version": "0.11.0"
     },
     "commerce-operations-skills:profit-engine": {
       "path": "skills/profit-engine",
       "sha256": "388bd008053d45d9d424eb3625ee0f4bbf4fe9638f4dae9e4a30116c5cfb382f",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "enterprise-operations-skills:devops-incident-responder": {
       "path": "skills/devops-incident-responder",
       "sha256": "bfd86f8fde69a8b5017d39e917124bd0d402e6e6039068ab9052a498a90f8654",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "enterprise-operations-skills:enterprise-legal-audit": {
       "path": "skills/enterprise-legal-audit",
       "sha256": "def2e75e8da1829b2e340b39cdd3faea2ca9c6d0ef4c3158ee3c7c7294149afc",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "enterprise-operations-skills:logistics-warehouse-audit": {
       "path": "skills/logistics-warehouse-audit",
       "sha256": "eb155fe4b4b49ee02f50745573abbd7235e7e0d0176282dfc7b5237fad9bd942",
-      "version": "0.9.0"
+      "version": "0.11.0"
+    },
+    "logistics-operations-skills:carrier-scorecard": {
+      "path": "skills/carrier-scorecard",
+      "sha256": "148b39fc67d872480837129cfa2345f7270b58989a44d0adc8a9738217d0fb0d",
+      "version": "0.11.0"
+    },
+    "logistics-operations-skills:inventory-policy": {
+      "path": "skills/inventory-policy",
+      "sha256": "87517047bcd2b24529e2559331c791aa562deebd4f1a3d6a3f14acbb5eb3a168",
+      "version": "0.11.0"
+    },
+    "logistics-operations-skills:stablecoin-settlement-audit": {
+      "path": "skills/stablecoin-settlement-audit",
+      "sha256": "0b5babd48910039496284289a506bad6c6fa866ad32f098f3cd05650b9ab44f2",
+      "version": "0.11.0"
     },
     "quant-research-skills:backtest-validation": {
       "path": "skills/backtest-validation",
-      "sha256": "3e8fbe9e534aafe6c6cb4aec56e7459ac7ae377f2f1ecd7f0942eea9ab0b3218",
-      "version": "0.9.0"
+      "sha256": "acda5db07ac1980e316183a9b74ae35be123aebd1cef6ded711f7ca8a819964a",
+      "version": "0.11.0"
     },
     "quant-research-skills:compliance-audit-trail": {
       "path": "skills/compliance-audit-trail",
-      "sha256": "1139fbbba43c097d3a13dafe39b710aba085b0e8fb84a6e5d7df4c22db6596c6",
-      "version": "0.9.0"
+      "sha256": "38d3932f12aadc2ee31562caf15aed73c437fbbaa006be0d018e9baf9d70b217",
+      "version": "0.11.0"
     },
     "quant-research-skills:equity-research-report": {
       "path": "skills/equity-research-report",
-      "sha256": "02eb93144b2289b7518098081835ddb50f71f83563f2951331d1935b35328373",
-      "version": "0.9.0"
+      "sha256": "557996058c992d4be1f759ed8151822f659ccf318723506eeb7e10d142c591ac",
+      "version": "0.11.0"
     },
     "quant-research-skills:execution-position": {
       "path": "skills/execution-position",
-      "sha256": "a2d5659bb88a1a1108b32cd5a51e81c2a26e8ec0def0155a339bd4e15bd87dfa",
-      "version": "0.9.0"
+      "sha256": "380d104e6bb23de3f119988dd3a2e770b0c52e4384629cc75048ed3570e068bd",
+      "version": "0.11.0"
     },
     "quant-research-skills:factor-research": {
       "path": "skills/factor-research",
-      "sha256": "52c35bdc911a55ccef9f8ca4d47ef6084a5715f2b6f3dd82189b008a9174f087",
-      "version": "0.9.0"
+      "sha256": "9d93f07a32ed037f43894c2ea6d9ef07aee50edab93c9e969f41b5c7fe28eb3e",
+      "version": "0.11.0"
     },
     "quant-research-skills:gamma-exposure": {
       "path": "skills/gamma-exposure",
-      "sha256": "8e99fc7211f61dafed7ca3994aee90a90fea0814a3d25c4ed990799ad0982c64",
-      "version": "0.9.0"
+      "sha256": "1037d6de56001ac29eba9e681259fa1335418ccf80ead69e277e91a146e166d8",
+      "version": "0.11.0"
     },
     "quant-research-skills:multiple-testing-correction": {
       "path": "skills/multiple-testing-correction",
-      "sha256": "f11f3bb2b2d5d976a51908abda53694873ede976b59000162546ee57e014aac1",
-      "version": "0.9.0"
+      "sha256": "90491bf5d3500f9394f583a7a03a856f7aa40211e4c277f14581fe7c0ac446f7",
+      "version": "0.11.0"
     },
     "quant-research-skills:point-in-time-research": {
       "path": "skills/point-in-time-research",
-      "sha256": "e391d61bc892529c69c7356b297e4396926c3d139462da91f8418769e461c176",
-      "version": "0.9.0"
+      "sha256": "63009b2319dc5daeaf7986e6f08c1836da4bc3cf24e0f42c3f4ae4a5e61433ca",
+      "version": "0.11.0"
     },
     "quant-research-skills:portfolio-optimization": {
       "path": "skills/portfolio-optimization",
       "sha256": "e3e5f5f6846164336e4d186aa7466026c38661783ee4f42df496d26aff1f62c0",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "quant-research-skills:risk-assessment": {
       "path": "skills/risk-assessment",
-      "sha256": "20aa1cbba789d51df36e0696984c0721f32b37cc5c35a4c9623f953dc71c5608",
-      "version": "0.9.0"
+      "sha256": "4c3a60e782b7c07a822c7ff685d50daf07c3f85072d2df2607f990a2346a936e",
+      "version": "0.11.0"
     },
     "quant-research-skills:strategy-generation": {
       "path": "skills/strategy-generation",
-      "sha256": "191eb595327e1e2149a7b35efa063c3199bd7566e01687777640dc72b1d91628",
-      "version": "0.9.0"
+      "sha256": "38cb5fba064ba9f6cfc225b334f18f4d61a9ad5701b2d90b7c0fdda7b4f0a47d",
+      "version": "0.11.0"
     },
     "quant-research-skills:supply-chain-knowledge-graph": {
       "path": "skills/supply-chain-knowledge-graph",
       "sha256": "8403e01d7fa915937670d3115bd843f0233ad8a49988790d4058cac8062ca71e",
-      "version": "0.9.0"
+      "version": "0.11.0"
     },
     "realty-operations-skills:operator-revenue-integrity": {
       "path": "skills/operator-revenue-integrity",
-      "sha256": "e80b2c0d49b1a151d4357938e2cd8937f9b7dfb928429916c85b4a48db008dea",
-      "version": "0.9.0"
+      "sha256": "fe3ddf4b02e23c87058e482f82f915110cb379d29468e590b14929fbd79d8135",
+      "version": "0.11.0"
     }
   }
 }

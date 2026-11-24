@@ -6,7 +6,7 @@ description: >-
   page transitions, and the duration/easing scale that keeps them coherent.
   Trigger for "加点动效", "这个页面太生硬了", "加个过渡动画", "hover 效果",
   "make this feel smoother", "add animation to this component", "page transition",
-  "scroll reveal", "微交互", "loading 动画", "为什么我的动画很卡", or whenever a
+  "scroll reveal", "网页微交互", "loading 动画", "为什么我的动画很卡", or whenever a
   built UI is functionally correct but reads as static, abrupt, or janky. Also
   trigger when reviewing motion someone already wrote — over-animation is the
   more common failure, and cutting animation is a valid outcome of this skill.

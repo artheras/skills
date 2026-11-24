@@ -1,0 +1,4 @@
+interface:
+  display_name: "Carrier Scorecard"
+  short_description: "Rank carriers by lane, flag freight overcharges, and find savings that don't cost reliability"
+  default_prompt: "Use $carrier-scorecard to rank these carriers by lane and find where we're overpaying for freight."

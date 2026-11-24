@@ -2,15 +2,15 @@
 name: strategy-generation
 description: >-
   Turn a natural-language trading idea into a disciplined, testable strategy
-  spec and implementation. Trigger for "帮我生成一个动量策略", "写一个BTC均值
-  回归策略", "设计多因子选股", "做一个ETF轮动", "generate a momentum strategy",
-  "build me a trading strategy", "turn this idea into code", or whenever the
-  user (1) describes a trading idea and wants it made concrete, (2) asks for
-  strategy code, (3) wants strategy variants compared, or (4) asks to improve
-  an existing strategy. Fire even for vague asks ("有什么好策略推荐吗" —
-  the answer is a disciplined spec, not a tip). Do NOT trigger for validating
-  an already-backtested result (backtest-validation) or for pure factor
-  evaluation (factor-research).
+  spec and implementation. Trigger for "帮我生成一个动量策略",
+  "写一个BTC均值回归策略", "设计多因子选股", "做一个ETF轮动", "generate a
+  momentum strategy", "build me a trading strategy", "turn this idea into
+  code", or whenever the user (1) describes a trading idea and wants it made
+  concrete, (2) asks for strategy code, (3) wants strategy variants compared,
+  or (4) asks to improve an existing strategy. Fire even for vague asks
+  ("有什么好策略推荐吗" — the answer is a disciplined spec, not a tip). Do NOT
+  trigger for validating an already-backtested result (backtest-validation)
+  or for pure factor evaluation (factor-research).
 ---
 
 # Strategy Generation

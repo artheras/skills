@@ -17,7 +17,7 @@ def test_demo_accepts_valid_rejects_invalid():
 
 def test_resolve_url_known_library():
     url = resolve_url("lucide", "arrow-right")
-    assert url == "https://unpkg.com/lucide-static@latest/icons/arrow-right.svg"
+    assert url == "https://unpkg.com/lucide-static@1.66.0/icons/arrow-right.svg"
 
 
 def test_resolve_url_normalizes_name():
@@ -56,7 +56,7 @@ def test_simple_icons_uses_real_slug_convention_not_kebab_case(brand, expected_s
     # this test was written (a prior version of this function 404'd on all
     # of these by hyphenating "american-express" instead).
     url = resolve_url("simple-icons", brand)
-    assert url == f"https://unpkg.com/simple-icons@latest/icons/{expected_slug}.svg"
+    assert url == f"https://unpkg.com/simple-icons@16.36.0/icons/{expected_slug}.svg"
 
 
 def test_other_registries_still_use_kebab_case():
@@ -133,3 +133,43 @@ def test_fetch_icon_same_content_same_hash():
     r1 = fetch_icon("lucide", "arrow-right", fetch_fn=fn)
     r2 = fetch_icon("heroicons", "arrow-right", fetch_fn=fn)
     assert r1["sha256"] == r2["sha256"]  # same bytes -> same hash regardless of source
+
+
+# ───────────────────────────── pinned sources ──────────────────────────────
+
+@pytest.mark.parametrize("library", ["lucide", "heroicons", "tabler", "phosphor", "simple-icons"])
+def test_every_registry_is_pinned_to_a_release(library):
+    url = resolve_url(library, "arrow-right")
+    assert "@latest" not in url and "/master/" not in url and "/main/" not in url
+
+
+# ───────────────────────────── active content ──────────────────────────────
+
+_SHAPE = '<path d="M5 12h14"/>'
+
+
+@pytest.mark.parametrize("svg, reason", [
+    (f'<svg><script>alert(1)</script>{_SHAPE}</svg>', "<script>"),
+    (f'<svg onload="alert(1)">{_SHAPE}</svg>', "on* event"),
+    (f'<svg>{_SHAPE[:-2]} onclick="x()"/></svg>', "on* event"),
+    (f'<svg><foreignObject><div/></foreignObject>{_SHAPE}</svg>', "foreignObject"),
+    (f'<svg><a href="javascript:alert(1)">{_SHAPE}</a></svg>', "javascript:"),
+    (f'<svg><a xlink:href=" JavaScript:alert(1)">{_SHAPE}</a></svg>', "javascript:"),
+    (f'<svg><use href="https://evil.example/sprite.svg#i"/>{_SHAPE}</svg>', "outside the document"),
+    (f'<svg><use xlink:href="sprite.svg#i"/>{_SHAPE}</svg>', "outside the document"),
+    (f'<!DOCTYPE svg [<!ENTITY x SYSTEM "file:///etc/passwd">]><svg>{_SHAPE}</svg>', "DOCTYPE"),
+])
+def test_validate_svg_rejects_active_content(svg, reason):
+    ok, why = validate_svg(svg)
+    assert not ok and reason in why
+
+
+def test_validate_svg_allows_local_use_reference():
+    svg = (f'<svg><defs><g id="i">{_SHAPE}</g></defs>'
+           '<use href="#i"/><use xlink:href="#i"/></svg>')
+    assert validate_svg(svg) == (True, "ok")
+
+
+def test_fetch_icon_refuses_unsafe_svg():
+    result = fetch_icon("lucide", "x", fetch_fn=lambda url: f'<svg onload="x()">{_SHAPE}</svg>')
+    assert result["ok"] is False and result["content"] is None

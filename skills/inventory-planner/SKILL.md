@@ -3,8 +3,8 @@ name: inventory-planner
 description: >-
   Turn current stock, sales velocity, and supplier lead time into a
   replenishment recommendation — which SKUs to reorder, how much, and how
-  urgently — never an actual purchase order. Trigger for "备货表",
-  "该补多少货", "哪些 SKU 要断货了", "这批要提前多久下单", "restock plan",
+  urgently — never an actual purchase order. Trigger for "电商备货表",
+  "跨境补货计划", "哪些 SKU 要断货了", "这批要提前多久下单", "restock plan",
   "when should I reorder this SKU", "how much inventory should I order",
   "which products are about to stock out". Do NOT trigger for a one-off
   ERP health check with no forecasting involved (use
