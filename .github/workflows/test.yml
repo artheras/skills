@@ -520,10 +520,11 @@ jobs:
         run: pip install --quiet pytest
 
       - name: Regression tests
-        run: pytest test_video_delivery_gate.py -q
+        run: pytest -q
 
-      # No --demo mode: the gate validates a real manifest. An empty one must
-      # be rejected, not waved through.
+      - name: Smoke — delivery gate runs and emits no warnings
+        run: python -W error::RuntimeWarning video_delivery_gate.py --demo > /dev/null
+
       - name: Empty manifest fails closed
         run: |
           echo '{}' > "$RUNNER_TEMP/empty-manifest.json"
@@ -578,24 +579,6 @@ jobs:
 
       - name: Regression tests
         run: pytest test_pattern_audit.py -q
-
-  short-form-video-editing:
-    name: short-form-video-editing harness
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: skills/short-form-video-editing/scripts
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install test dependency
-        run: pip install --quiet pytest
-      - name: Smoke — delivery gate runs and emits no warnings
-        run: python -W error::RuntimeWarning video_delivery_gate.py --demo > /dev/null
-      - name: Regression tests
-        run: pytest test_video_delivery_gate.py -q
 
   aria-music-direction:
     name: aria-music-direction harness
